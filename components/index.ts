@@ -37,3 +37,6 @@ export { Footer } from "./sections/Footer";
 export { AuthForm } from "./sections/AuthForm";
 export { Dashboard } from "./sections/Dashboard";
 export { BillingSection } from "./sections/BillingSection";
+
+// Layout
+export { AppShell } from "./layout/AppShell";

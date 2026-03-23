@@ -112,7 +112,7 @@ export function Pricing({
                   {plan.features.map((feature, j) => (
                     <li key={j} className="flex items-start gap-2 text-sm">
                       <svg
-                        className={`w-4 h-4 mt-0.5 flex-shrink-0 ${isHighlighted ? "text-white" : checkColor}`}
+                        className={`w-4 h-4 mt-0.5 shrink-0 ${isHighlighted ? "text-white" : checkColor}`}
                         fill="none" viewBox="0 0 24 24" stroke="currentColor"
                       >
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
