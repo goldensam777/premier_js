@@ -15,9 +15,6 @@ interface ContactProps {
   bgColor?: string;
   titleColor?: string;
   subtitleColor?: string;
-  inputBorderColor?: string;
-  inputFocusColor?: string;
-  labelColor?: string;
 }
 
 export function Contact({
@@ -28,12 +25,9 @@ export function Contact({
   messagePlaceholder = "Votre message...",
   ctaLabel = "Envoyer",
   onSubmit,
-  bgColor = "bg-white",
-  titleColor = "text-gray-900",
-  subtitleColor = "text-gray-500",
-  inputBorderColor = "border-gray-300",
-  inputFocusColor = "focus:ring-blue-500",
-  labelColor = "text-gray-700",
+  bgColor = "var(--color-background)",
+  titleColor = "var(--color-text)",
+  subtitleColor = "var(--color-text-muted)",
 }: ContactProps) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -45,12 +39,20 @@ export function Contact({
   };
 
   return (
-    <section className={`${bgColor} py-20 px-6`}>
+    <section className="py-20 px-6" style={{ backgroundColor: bgColor }}>
       <div className="max-w-xl mx-auto">
         {(title || subtitle) && (
           <div className="text-center mb-10">
-            {title && <h2 className={`text-3xl md:text-4xl font-bold ${titleColor}`}>{title}</h2>}
-            {subtitle && <p className={`mt-4 text-lg ${subtitleColor}`}>{subtitle}</p>}
+            {title && (
+              <h2 className="text-3xl md:text-4xl font-bold" style={{ color: titleColor }}>
+                {title}
+              </h2>
+            )}
+            {subtitle && (
+              <p className="mt-4 text-lg" style={{ color: subtitleColor }}>
+                {subtitle}
+              </p>
+            )}
           </div>
         )}
 
@@ -60,9 +62,6 @@ export function Contact({
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder={namePlaceholder}
-            borderColor={inputBorderColor}
-            focusRingColor={inputFocusColor}
-            labelColor={labelColor}
           />
           <Input
             label="Email"
@@ -70,9 +69,6 @@ export function Contact({
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder={emailPlaceholder}
-            borderColor={inputBorderColor}
-            focusRingColor={inputFocusColor}
-            labelColor={labelColor}
           />
           <Textarea
             label="Message"
@@ -80,9 +76,6 @@ export function Contact({
             onChange={(e) => setMessage(e.target.value)}
             placeholder={messagePlaceholder}
             rows={5}
-            borderColor={inputBorderColor}
-            focusRingColor={inputFocusColor}
-            labelColor={labelColor}
           />
           <Button isDefault={false} className="w-full justify-center">
             {ctaLabel}

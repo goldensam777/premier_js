@@ -115,10 +115,10 @@ export function ColorPicker({
     onChange?.(hex);
   };
 
-  const handleGradient = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleGradient = (clientX: number, clientY: number) => {
     const rect = gradientRef.current!.getBoundingClientRect();
-    const x = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
-    const y = Math.max(0, Math.min(1, (e.clientY - rect.top) / rect.height));
+    const x = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+    const y = Math.max(0, Math.min(1, (clientY - rect.top) / rect.height));
     const s = Math.round(x * 100);
     const l = Math.round((1 - y) * 50 + (1 - x) * y * 50);
     const next = { ...hsl, s, l };
@@ -126,9 +126,9 @@ export function ColorPicker({
     emit(next.h, next.s, next.l);
   };
 
-  const handleHue = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleHue = (clientX: number) => {
     const rect = hueRef.current!.getBoundingClientRect();
-    const x = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+    const x = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
     const h = Math.round(x * 360);
     const next = { ...hsl, h };
     setHsl(next);
@@ -163,7 +163,24 @@ export function ColorPicker({
       {/* Trigger */}
       <button
         disabled={disabled}
-        onClick={() => !disabled && setOpen((v) => !v)}
+        onClick={(e) => {
+          if (!disabled) {
+            const rect = (e.target as HTMLElement).getBoundingClientRect();
+            const panelW = 256; // w-64
+            // Ouvre à droite du trigger ; si ça dépasse à droite, recule
+            let left = rect.right + 8;
+            if (left + panelW > window.innerWidth - 8) {
+              left = rect.left - panelW - 8;
+            }
+            // Dernier recours : centré sur le trigger
+            if (left < 8) left = Math.max(8, rect.left);
+            if (ref.current) {
+              ref.current.style.setProperty('--picker-top', `${rect.top}px`);
+              ref.current.style.setProperty('--picker-left', `${left}px`);
+            }
+            setOpen((v) => !v);
+          }
+        }}
         className={`${sizeStyles[size]} rounded-lg border-2 ${borderColor}
           shadow-sm transition-transform hover:scale-105 disabled:opacity-50
           disabled:cursor-not-allowed`}
@@ -172,9 +189,15 @@ export function ColorPicker({
 
       {/* Picker panel */}
       {open && (
-        <div className={`absolute top-full left-0 mt-2 z-50 w-64 rounded-2xl
-          border ${borderColor} ${bgColor} shadow-xl p-4 flex flex-col gap-3
-          animate-in fade-in zoom-in-95 duration-150`}>
+        <div
+          className={`fixed z-9999 w-64 rounded-2xl
+            border ${borderColor} ${bgColor} shadow-xl p-4 flex flex-col gap-3
+            animate-in fade-in zoom-in-95 duration-150`}
+          style={{
+            top:  ref.current?.style.getPropertyValue('--picker-top')  ?? '0px',
+            left: ref.current?.style.getPropertyValue('--picker-left') ?? '0px',
+          }}
+        >
 
           {/* Gradient */}
           <div
@@ -186,8 +209,14 @@ export function ColorPicker({
                 linear-gradient(to right, white, hsl(${hsl.h}, 100%, 50%))
               `,
             }}
-            onMouseDown={handleGradient}
-            onMouseMove={(e) => e.buttons === 1 && handleGradient(e)}
+            onPointerDown={(e) => {
+              e.currentTarget.setPointerCapture(e.pointerId);
+              handleGradient(e.clientX, e.clientY);
+            }}
+            onPointerMove={(e) => {
+              if (e.buttons !== 1) return;
+              handleGradient(e.clientX, e.clientY);
+            }}
           >
             {/* Thumb */}
             <div
@@ -208,8 +237,14 @@ export function ColorPicker({
             style={{
               background: "linear-gradient(to right, #ff0000, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000)",
             }}
-            onMouseDown={handleHue}
-            onMouseMove={(e) => e.buttons === 1 && handleHue(e)}
+            onPointerDown={(e) => {
+              e.currentTarget.setPointerCapture(e.pointerId);
+              handleHue(e.clientX);
+            }}
+            onPointerMove={(e) => {
+              if (e.buttons !== 1) return;
+              handleHue(e.clientX);
+            }}
           >
             <div
               className="absolute w-4 h-4 rounded-full border-2 border-white shadow-md
@@ -253,7 +288,7 @@ export function ColorPicker({
                 value={inputVal}
                 onChange={(e) => handleInput(e.target.value)}
                 className={`flex-1 px-2 py-1 text-sm font-mono rounded-lg
-                  border ${borderColor} focus:outline-none focus:ring-2
+                  border ${borderColor} text-gray-900 focus:outline-none focus:ring-2
                   focus:ring-blue-500 focus:border-transparent`}
                 placeholder="#000000"
                 maxLength={7}

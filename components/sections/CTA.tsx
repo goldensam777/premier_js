@@ -22,19 +22,26 @@ export function CTA({
   secondaryCtaLabel,
   secondaryCtaHref = "#",
   align = "center",
-  bgColor = "bg-blue-600",
-  titleColor = "text-white",
-  descriptionColor = "text-blue-100",
+  bgColor = "var(--color-primary)",
+  titleColor = "#ffffff",
+  descriptionColor = "rgba(255,255,255,0.75)",
 }: CTAProps) {
   const isCenter = align === "center";
 
   return (
-    <section className={`${bgColor} py-20 px-6`}>
+    <section className="py-20 px-6" style={{ backgroundColor: bgColor }}>
       <div className={`max-w-3xl mx-auto ${isCenter ? "text-center" : "text-left"}`}>
-        <h2 className={`text-3xl md:text-4xl font-bold leading-tight ${titleColor}`}>{title}</h2>
+        <h2
+          className="text-3xl md:text-4xl font-bold leading-tight"
+          style={{ color: titleColor }}
+        >
+          {title}
+        </h2>
 
         {description && (
-          <p className={`mt-4 text-lg ${descriptionColor}`}>{description}</p>
+          <p className="mt-4 text-lg" style={{ color: descriptionColor }}>
+            {description}
+          </p>
         )}
 
         <div className={`mt-8 flex flex-wrap gap-3 ${isCenter ? "justify-center" : ""}`}>

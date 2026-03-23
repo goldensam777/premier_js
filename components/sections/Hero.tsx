@@ -1,6 +1,5 @@
 import React from "react";
 import { Button } from "../ui/Button";
-import { Badge } from "../ui/Badge";
 
 interface HeroProps {
   title: string;
@@ -18,8 +17,6 @@ interface HeroProps {
   titleColor?: string;
   subtitleColor?: string;
   descriptionColor?: string;
-  badgeBgColor?: string;
-  badgeTextColor?: string;
 }
 
 export function Hero({
@@ -34,38 +31,46 @@ export function Hero({
   imageSrc,
   imageAlt = "",
   align = "center",
-  bgColor = "bg-white",
-  titleColor = "text-gray-900",
-  subtitleColor = "text-blue-600",
-  descriptionColor = "text-gray-500",
-  badgeBgColor = "bg-blue-50",
-  badgeTextColor = "text-blue-700",
+  bgColor = "var(--color-background)",
+  titleColor = "var(--color-text)",
+  subtitleColor = "var(--color-primary)",
+  descriptionColor = "var(--color-text-muted)",
 }: HeroProps) {
   const isCenter = align === "center";
 
   return (
-    <section className={`${bgColor} py-20 px-6`}>
+    <section className="py-20 px-6" style={{ backgroundColor: bgColor }}>
       <div className={`max-w-6xl mx-auto ${isCenter ? "text-center" : "text-left"}`}>
         <div className={`${isCenter ? "flex flex-col items-center" : ""} gap-6`}>
 
           {badgeLabel && (
-            <Badge bgColor={badgeBgColor} textColor={badgeTextColor} borderColor="border-transparent">
+            <span
+              className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium"
+              style={{
+                backgroundColor: "var(--color-primary)",
+                color: "#ffffff",
+                opacity: 0.9,
+              }}
+            >
               {badgeLabel}
-            </Badge>
+            </span>
           )}
 
-          <h1 className={`text-4xl md:text-6xl font-bold leading-tight tracking-tight ${titleColor}`}>
+          <h1
+            className="text-4xl md:text-6xl font-bold leading-tight tracking-tight"
+            style={{ color: titleColor }}
+          >
             {title}
           </h1>
 
           {subtitle && (
-            <p className={`text-xl md:text-2xl font-medium ${subtitleColor}`}>
+            <p className="text-xl md:text-2xl font-medium" style={{ color: subtitleColor }}>
               {subtitle}
             </p>
           )}
 
           {description && (
-            <p className={`text-base md:text-lg max-w-2xl ${descriptionColor}`}>
+            <p className="text-base md:text-lg max-w-2xl" style={{ color: descriptionColor }}>
               {description}
             </p>
           )}
@@ -90,7 +95,8 @@ export function Hero({
               <img
                 src={imageSrc}
                 alt={imageAlt}
-                className="w-full rounded-2xl shadow-xl border border-gray-100"
+                className="w-full rounded-2xl shadow-xl"
+                style={{ borderColor: "var(--color-border)", border: "1px solid" }}
               />
             </div>
           )}

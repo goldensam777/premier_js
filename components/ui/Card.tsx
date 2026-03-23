@@ -15,8 +15,8 @@ export function Card({
   children,
   padding = "p-6",
   shadow = "md",
-  borderColor = "border-gray-200",
-  bgColor = "bg-white",
+  borderColor = "var(--color-border)",
+  bgColor = "var(--color-surface)",
   rounded = "xl",
   hoverable = false,
   className = "",
@@ -39,10 +39,10 @@ export function Card({
 
   return (
     <div
-      className={`border ${borderColor} ${bgColor} ${padding}
-        ${shadowStyles[shadow]} ${roundedStyles[rounded]}
+      className={`border ${padding} ${shadowStyles[shadow]} ${roundedStyles[rounded]}
         ${hoverable ? "hover:shadow-lg hover:-translate-y-1 transition-all duration-200" : ""}
         ${className}`}
+      style={{ backgroundColor: bgColor, borderColor: borderColor }}
     >
       {children}
     </div>

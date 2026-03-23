@@ -1,7 +1,6 @@
 import React from "react";
 import { Card } from "../ui/Card";
 import { Button } from "../ui/Button";
-import { Badge } from "../ui/Badge";
 
 interface PricingPlan {
   name: string;
@@ -23,44 +22,32 @@ interface PricingProps {
   bgColor?: string;
   titleColor?: string;
   subtitleColor?: string;
-  cardBgColor?: string;
-  cardBorderColor?: string;
-  highlightedBgColor?: string;
-  highlightedBorderColor?: string;
-  planNameColor?: string;
-  priceColor?: string;
-  periodColor?: string;
-  descColor?: string;
-  featureColor?: string;
-  checkColor?: string;
 }
 
 export function Pricing({
   id,
   title,
   subtitle,
-  plans,
-  bgColor = "bg-gray-50",
-  titleColor = "text-gray-900",
-  subtitleColor = "text-gray-500",
-  cardBgColor = "bg-white",
-  cardBorderColor = "border-gray-200",
-  highlightedBgColor = "bg-blue-600",
-  highlightedBorderColor = "border-blue-600",
-  planNameColor = "text-gray-700",
-  priceColor = "text-gray-900",
-  periodColor = "text-gray-400",
-  descColor = "text-gray-500",
-  featureColor = "text-gray-600",
-  checkColor = "text-blue-500",
+  plans = [],
+  bgColor = "var(--color-surface)",
+  titleColor = "var(--color-text)",
+  subtitleColor = "var(--color-text-muted)",
 }: PricingProps) {
   return (
-    <section id={id} className={`${bgColor} py-20 px-6`}>
+    <section id={id} className="py-20 px-6" style={{ backgroundColor: bgColor }}>
       <div className="max-w-6xl mx-auto">
         {(title || subtitle) && (
           <div className="text-center mb-14">
-            {title && <h2 className={`text-3xl md:text-4xl font-bold ${titleColor}`}>{title}</h2>}
-            {subtitle && <p className={`mt-4 text-lg max-w-2xl mx-auto ${subtitleColor}`}>{subtitle}</p>}
+            {title && (
+              <h2 className="text-3xl md:text-4xl font-bold" style={{ color: titleColor }}>
+                {title}
+              </h2>
+            )}
+            {subtitle && (
+              <p className="mt-4 text-lg max-w-2xl mx-auto" style={{ color: subtitleColor }}>
+                {subtitle}
+              </p>
+            )}
           </div>
         )}
 
@@ -70,54 +57,69 @@ export function Pricing({
             return (
               <Card
                 key={i}
-                bgColor={isHighlighted ? highlightedBgColor : cardBgColor}
-                borderColor={isHighlighted ? highlightedBorderColor : cardBorderColor}
+                bgColor={isHighlighted ? "var(--color-primary)" : "var(--color-surface)"}
                 shadow={isHighlighted ? "xl" : "sm"}
                 className="flex flex-col"
               >
                 <div className="flex items-center justify-between mb-4">
-                  <span className={`font-semibold text-sm ${isHighlighted ? "text-white/80" : planNameColor}`}>
+                  <span
+                    className="font-semibold text-sm"
+                    style={{ color: isHighlighted ? "rgba(255,255,255,0.85)" : "var(--color-text-muted)" }}
+                  >
                     {plan.name}
                   </span>
                   {plan.badgeLabel && (
-                    <Badge
-                      bgColor={isHighlighted ? "bg-white/20" : "bg-blue-50"}
-                      textColor={isHighlighted ? "text-white" : "text-blue-700"}
-                      borderColor="border-transparent"
-                      size="sm"
+                    <span
+                      className="text-xs px-2 py-0.5 rounded-full font-medium"
+                      style={{
+                        backgroundColor: isHighlighted ? "rgba(255,255,255,0.2)" : "var(--color-primary)",
+                        color: "#ffffff",
+                      }}
                     >
                       {plan.badgeLabel}
-                    </Badge>
+                    </span>
                   )}
                 </div>
 
                 <div className="mb-4">
-                  <span className={`text-4xl font-bold ${isHighlighted ? "text-white" : priceColor}`}>
+                  <span
+                    className="text-4xl font-bold"
+                    style={{ color: isHighlighted ? "#ffffff" : "var(--color-text)" }}
+                  >
                     {typeof plan.price === "number" ? `$${plan.price}` : plan.price}
                   </span>
                   {plan.period && (
-                    <span className={`text-sm ml-1 ${isHighlighted ? "text-white/60" : periodColor}`}>
+                    <span
+                      className="text-sm ml-1"
+                      style={{ color: isHighlighted ? "rgba(255,255,255,0.6)" : "var(--color-text-muted)" }}
+                    >
                       /{plan.period}
                     </span>
                   )}
                 </div>
 
                 {plan.description && (
-                  <p className={`text-sm mb-6 ${isHighlighted ? "text-white/70" : descColor}`}>
+                  <p
+                    className="text-sm mb-6"
+                    style={{ color: isHighlighted ? "rgba(255,255,255,0.7)" : "var(--color-text-muted)" }}
+                  >
                     {plan.description}
                   </p>
                 )}
 
                 <ul className="flex flex-col gap-3 mb-8 flex-1">
-                  {plan.features.map((feature, j) => (
+                  {(plan.features ?? []).map((feature, j) => (
                     <li key={j} className="flex items-start gap-2 text-sm">
                       <svg
-                        className={`w-4 h-4 mt-0.5 shrink-0 ${isHighlighted ? "text-white" : checkColor}`}
+                        className="w-4 h-4 mt-0.5 shrink-0"
+                        style={{ color: isHighlighted ? "#ffffff" : "var(--color-primary)" }}
                         fill="none" viewBox="0 0 24 24" stroke="currentColor"
                       >
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
                       </svg>
-                      <span className={isHighlighted ? "text-white/80" : featureColor}>{feature}</span>
+                      <span style={{ color: isHighlighted ? "rgba(255,255,255,0.85)" : "var(--color-text-muted)" }}>
+                        {feature}
+                      </span>
                     </li>
                   ))}
                 </ul>

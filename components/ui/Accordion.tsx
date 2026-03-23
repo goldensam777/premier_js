@@ -21,12 +21,12 @@ interface AccordionProps {
 export function Accordion({
   items,
   defaultOpen,
-  borderColor = "border-gray-200",
-  headerBgColor = "bg-white",
-  headerTextColor = "text-gray-800",
-  contentBgColor = "bg-gray-50",
-  contentTextColor = "text-gray-600",
-  iconColor = "text-gray-400",
+  borderColor = "var(--color-border)",
+  headerBgColor = "var(--color-surface)",
+  headerTextColor = "var(--color-text)",
+  contentBgColor = "var(--color-background)",
+  contentTextColor = "var(--color-text-muted)",
+  iconColor = "var(--color-text-muted)",
   allowMultiple = false,
 }: AccordionProps) {
   const [openIndexes, setOpenIndexes] = useState<number[]>(
@@ -44,19 +44,28 @@ export function Accordion({
   };
 
   return (
-    <div className={`border ${borderColor} rounded-xl overflow-hidden divide-y ${borderColor}`}>
+    <div
+      className="border rounded-xl overflow-hidden"
+      style={{ borderColor }}
+    >
       {items.map((item, index) => {
         const isOpen = openIndexes.includes(index);
         return (
-          <div key={index}>
+          <div
+            key={index}
+            className={index > 0 ? "border-t" : ""}
+            style={{ borderColor }}
+          >
             <button
               onClick={() => toggle(index)}
-              className={`w-full flex items-center justify-between px-5 py-4 text-left
-                ${headerBgColor} ${headerTextColor} hover:brightness-95 transition-all duration-150`}
+              className="w-full flex items-center justify-between px-5 py-4 text-left
+                hover:brightness-95 transition-all duration-150"
+              style={{ backgroundColor: headerBgColor, color: headerTextColor }}
             >
               <span className="font-medium text-sm">{item.title}</span>
               <svg
-                className={`w-4 h-4 flex-shrink-0 ${iconColor} transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
+                className={`w-4 h-4 flex-shrink-0 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
+                style={{ color: iconColor }}
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -65,7 +74,10 @@ export function Accordion({
               </svg>
             </button>
             {isOpen && (
-              <div className={`px-5 py-4 text-sm ${contentBgColor} ${contentTextColor}`}>
+              <div
+                className="px-5 py-4 text-sm"
+                style={{ backgroundColor: contentBgColor, color: contentTextColor }}
+              >
                 {item.content}
               </div>
             )}

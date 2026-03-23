@@ -18,30 +18,22 @@ interface TestimonialsProps {
   bgColor?: string;
   titleColor?: string;
   subtitleColor?: string;
-  cardBgColor?: string;
-  cardBorderColor?: string;
   quoteColor?: string;
   nameColor?: string;
   roleColor?: string;
-  avatarBgColor?: string;
-  avatarTextColor?: string;
 }
 
 export function Testimonials({
   title,
   subtitle,
-  items,
+  items = [],
   columns = 3,
-  bgColor = "bg-white",
-  titleColor = "text-gray-900",
-  subtitleColor = "text-gray-500",
-  cardBgColor = "bg-gray-50",
-  cardBorderColor = "border-gray-200",
-  quoteColor = "text-gray-600",
-  nameColor = "text-gray-900",
-  roleColor = "text-gray-400",
-  avatarBgColor = "bg-blue-100",
-  avatarTextColor = "text-blue-700",
+  bgColor = "var(--color-surface)",
+  titleColor = "var(--color-text)",
+  subtitleColor = "var(--color-text-muted)",
+  quoteColor = "var(--color-text-muted)",
+  nameColor = "var(--color-text)",
+  roleColor = "var(--color-text-muted)",
 }: TestimonialsProps) {
   const colStyles = {
     2: "grid-cols-1 sm:grid-cols-2",
@@ -49,30 +41,44 @@ export function Testimonials({
   };
 
   return (
-    <section className={`${bgColor} py-20 px-6`}>
+    <section className="py-20 px-6" style={{ backgroundColor: bgColor }}>
       <div className="max-w-6xl mx-auto">
         {(title || subtitle) && (
           <div className="text-center mb-14">
-            {title && <h2 className={`text-3xl md:text-4xl font-bold ${titleColor}`}>{title}</h2>}
-            {subtitle && <p className={`mt-4 text-lg max-w-2xl mx-auto ${subtitleColor}`}>{subtitle}</p>}
+            {title && (
+              <h2 className="text-3xl md:text-4xl font-bold" style={{ color: titleColor }}>
+                {title}
+              </h2>
+            )}
+            {subtitle && (
+              <p className="mt-4 text-lg max-w-2xl mx-auto" style={{ color: subtitleColor }}>
+                {subtitle}
+              </p>
+            )}
           </div>
         )}
 
         <div className={`grid gap-6 ${colStyles[columns]}`}>
           {items.map((item, i) => (
-            <Card key={i} bgColor={cardBgColor} borderColor={cardBorderColor} shadow="sm">
-              <p className={`text-sm leading-relaxed mb-5 ${quoteColor}`}>"{item.quote}"</p>
+            <Card key={i} shadow="sm">
+              <p className="text-sm leading-relaxed mb-5" style={{ color: quoteColor }}>
+                &ldquo;{item.quote}&rdquo;
+              </p>
               <div className="flex items-center gap-3">
                 <Avatar
                   src={item.avatarSrc}
                   initials={item.initials ?? item.name}
                   size="sm"
-                  bgColor={avatarBgColor}
-                  textColor={avatarTextColor}
                 />
                 <div>
-                  <p className={`text-sm font-semibold ${nameColor}`}>{item.name}</p>
-                  {item.role && <p className={`text-xs ${roleColor}`}>{item.role}</p>}
+                  <p className="text-sm font-semibold" style={{ color: nameColor }}>
+                    {item.name}
+                  </p>
+                  {item.role && (
+                    <p className="text-xs" style={{ color: roleColor }}>
+                      {item.role}
+                    </p>
+                  )}
                 </div>
               </div>
             </Card>

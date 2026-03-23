@@ -26,21 +26,22 @@ export function Navbar({
   links = [],
   ctaLabel,
   ctaHref = "#",
-  bgColor = "bg-white",
-  textColor = "text-gray-600",
-  borderColor = "border-gray-200",
-  logoColor = "text-gray-900",
+  bgColor = "var(--color-surface)",
+  textColor = "var(--color-text-muted)",
+  borderColor = "var(--color-border)",
+  logoColor = "var(--color-text)",
   sticky = true,
 }: NavbarProps) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <nav
-      className={`w-full border-b ${bgColor} ${borderColor} ${sticky ? "sticky top-0 z-50" : ""}`}
+      className={`w-full border-b ${sticky ? "sticky top-0 z-50" : ""}`}
+      style={{ backgroundColor: bgColor, borderColor }}
     >
       <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
         {/* Logo */}
-        <a href="/" className={`font-bold text-xl ${logoColor}`}>
+        <a href="/" className="font-bold text-xl" style={{ color: logoColor }}>
           {logoSrc ? <img src={logoSrc} alt={logo} className="h-8" /> : logo}
         </a>
 
@@ -50,7 +51,8 @@ export function Navbar({
             <a
               key={link.href}
               href={link.href}
-              className={`text-sm font-medium ${textColor} hover:text-gray-900 transition-colors`}
+              className="text-sm font-medium hover:opacity-80 transition-opacity"
+              style={{ color: textColor }}
             >
               {link.label}
             </a>
@@ -68,7 +70,8 @@ export function Navbar({
 
         {/* Mobile burger */}
         <button
-          className={`md:hidden ${textColor}`}
+          className="md:hidden"
+          style={{ color: textColor }}
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Menu"
         >
@@ -83,12 +86,16 @@ export function Navbar({
 
       {/* Mobile menu */}
       {menuOpen && (
-        <div className={`md:hidden px-6 pb-4 flex flex-col gap-4 ${bgColor} border-t ${borderColor}`}>
+        <div
+          className="md:hidden px-6 pb-4 flex flex-col gap-4 border-t"
+          style={{ backgroundColor: bgColor, borderColor }}
+        >
           {links.map((link) => (
             <a
               key={link.href}
               href={link.href}
-              className={`text-sm font-medium ${textColor} hover:text-gray-900`}
+              className="text-sm font-medium hover:opacity-80"
+              style={{ color: textColor }}
               onClick={() => setMenuOpen(false)}
             >
               {link.label}

@@ -1,29 +1,26 @@
-with open('/home/samuel-yevi/Dev/OFFMODE/premierjs_frmwrk/app/layout.tsx', 'r') as f:
+with open('/home/samuel-yevi/Dev/OFFMODE/premierjs_frmwrk/components/ui/ColorPicker.tsx', 'r') as f:
     mc = f.read()
 
-old = '''import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";'''
+old = """      {open && (
+        <div className={`absolute top-full left-0 mt-2 z-50 w-64 rounded-2xl
+          border ${borderColor} ${bgColor} shadow-xl p-4 flex flex-col gap-3
+          animate-in fade-in zoom-in-95 duration-150`}>"""
 
-new = '''import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
-import { ToastContainer } from "@/components/ui/Toast";'''
+new = """      {open && (
+        <div
+          className={`fixed z-[9999] w-64 rounded-2xl
+            border ${borderColor} ${bgColor} shadow-xl p-4 flex flex-col gap-3
+            animate-in fade-in zoom-in-95 duration-150`}
+          style={{
+            top:  ref.current?.style.getPropertyValue('--picker-top')  ?? '0px',
+            left: ref.current?.style.getPropertyValue('--picker-left') ?? '0px',
+          }}
+        >"""
 
-assert old in mc, "ERREUR: pattern import non trouvé"
+assert old in mc, "ERREUR: pattern non trouvé"
 mc = mc.replace(old, new)
 
-old_body = '''        {children}
-      </body>'''
-
-new_body = '''        {children}
-        <ToastContainer position="top-right" />
-      </body>'''
-
-assert old_body in mc, "ERREUR: pattern body non trouvé"
-mc = mc.replace(old_body, new_body)
-
-with open('/home/samuel-yevi/Dev/OFFMODE/premierjs_frmwrk/app/layout.tsx', 'w') as f:
+with open('/home/samuel-yevi/Dev/OFFMODE/premierjs_frmwrk/components/ui/ColorPicker.tsx', 'w') as f:
     f.write(mc)
 
-print("✓ ToastContainer ajouté au layout.")
+print("Fix appliqué.")

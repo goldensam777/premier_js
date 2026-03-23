@@ -1,5 +1,4 @@
 import React from "react";
-import { Divider } from "../ui/Divider";
 
 interface FooterLinkGroup {
   section: string;
@@ -27,32 +26,34 @@ export function Footer({
   description,
   linkGroups = [],
   copyright,
-  bgColor = "bg-gray-900",
-  borderColor = "border-gray-800",
-  logoColor = "text-white",
-  descriptionColor = "text-gray-400",
-  sectionTitleColor = "text-gray-200",
-  linkColor = "text-gray-400",
-  copyrightColor = "text-gray-500",
+  bgColor = "#111827",
+  borderColor = "#1f2937",
+  logoColor = "#ffffff",
+  descriptionColor = "#9ca3af",
+  sectionTitleColor = "#e5e7eb",
+  linkColor = "#9ca3af",
+  copyrightColor = "#6b7280",
 }: FooterProps) {
   return (
-    <footer className={`${bgColor} px-6 pt-16 pb-8`}>
+    <footer className="px-6 pt-16 pb-8" style={{ backgroundColor: bgColor }}>
       <div className="max-w-6xl mx-auto">
         <div className={`grid grid-cols-1 gap-10 ${linkGroups.length > 0 ? "md:grid-cols-[2fr_repeat(3,1fr)]" : ""}`}>
           {/* Brand */}
           <div className="flex flex-col gap-4">
-            <a href="/" className={`font-bold text-xl ${logoColor}`}>
+            <a href="/" className="font-bold text-xl" style={{ color: logoColor }}>
               {logoSrc ? <img src={logoSrc} alt={logo} className="h-8" /> : logo}
             </a>
             {description && (
-              <p className={`text-sm leading-relaxed max-w-xs ${descriptionColor}`}>{description}</p>
+              <p className="text-sm leading-relaxed max-w-xs" style={{ color: descriptionColor }}>
+                {description}
+              </p>
             )}
           </div>
 
           {/* Link groups */}
           {linkGroups.map((group, i) => (
             <div key={i} className="flex flex-col gap-3">
-              <p className={`text-xs font-semibold uppercase tracking-widest ${sectionTitleColor}`}>
+              <p className="text-xs font-semibold uppercase tracking-widest" style={{ color: sectionTitleColor }}>
                 {group.section}
               </p>
               <ul className="flex flex-col gap-2">
@@ -60,7 +61,8 @@ export function Footer({
                   <li key={j}>
                     <a
                       href={link.href}
-                      className={`text-sm ${linkColor} hover:text-white transition-colors`}
+                      className="text-sm hover:text-white transition-colors"
+                      style={{ color: linkColor }}
                     >
                       {link.label}
                     </a>
@@ -73,10 +75,10 @@ export function Footer({
 
         {copyright && (
           <>
-            <div className="mt-12">
-              <Divider color={borderColor} />
-            </div>
-            <p className={`mt-6 text-xs text-center ${copyrightColor}`}>{copyright}</p>
+            <div className="mt-12 h-px" style={{ backgroundColor: borderColor }} />
+            <p className="mt-6 text-xs text-center" style={{ color: copyrightColor }}>
+              {copyright}
+            </p>
           </>
         )}
       </div>
