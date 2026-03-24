@@ -46,3 +46,15 @@ export { EditableContext, useEditable } from "./editor/EditableContext";
 export type { FieldStyle } from "./editor/EditableContext";
 export { EditableText } from "./editor/EditableText";
 export { FloatingToolbar } from "./editor/FloatingToolbar";
+
+// Dashboard — UI primitives
+export { StatusBadge }  from "./ui/StatusBadge";
+export { StatCard }     from "./ui/StatCard";
+export { MiniChart }    from "./ui/MiniChart";
+export { ActivityFeed } from "./ui/ActivityFeed";
+export { DataTable }    from "./ui/DataTable";
+export type { TableColumn } from "./ui/DataTable";
+
+// Dashboard — Sections
+export { DashboardStats }  from "./sections/DashboardStats";
+export { DashboardChart }  from "./sections/DashboardChart";
