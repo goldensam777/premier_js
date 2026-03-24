@@ -40,3 +40,9 @@ export { BillingSection } from "./sections/BillingSection";
 
 // Layout
 export { AppShell } from "./layout/AppShell";
+
+// Editor — inline editing primitives
+export { EditableContext, useEditable } from "./editor/EditableContext";
+export type { FieldStyle } from "./editor/EditableContext";
+export { EditableText } from "./editor/EditableText";
+export { FloatingToolbar } from "./editor/FloatingToolbar";
