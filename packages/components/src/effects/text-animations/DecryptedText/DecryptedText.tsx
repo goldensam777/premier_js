@@ -1,24 +1,8 @@
+"use client"
 import { cn } from "@premier-js/core"
 import { useEffect, useState, useRef, useMemo, useCallback } from 'react';
 import { motion } from 'motion/react';
 import type { HTMLMotionProps } from 'motion/react';
-
-const styles = {
-  wrapper: {
-    display: 'inline-block',
-    whiteSpace: 'pre-wrap'
-  },
-  srOnly: {
-    position: 'absolute' as const,
-    width: '1px',
-    height: '1px',
-    padding: 0,
-    margin: '-1px',
-    overflow: 'hidden',
-    clip: 'rect(0,0,0,0)',
-    border: 0
-  }
-};
 
 interface DecryptedTextProps extends HTMLMotionProps<'span'> {
   text: string;
@@ -29,8 +13,8 @@ interface DecryptedTextProps extends HTMLMotionProps<'span'> {
   useOriginalCharsOnly?: boolean;
   characters?: string;
   className?: string;
-  parentClassName?: string;
   encryptedClassName?: string;
+  parentClassName?: string;
   animateOn?: 'view' | 'hover' | 'inViewHover' | 'click';
   clickMode?: 'once' | 'toggle';
 }
@@ -74,7 +58,7 @@ function DecryptedText({
     (originalText: string, currentRevealed: Set<number>) => {
       return originalText
         .split('')
-        .map((char: any, i: number) => {
+        .map((char, i) => {
           if (char === ' ') return ' ';
           if (currentRevealed.has(i)) return originalText[i];
           return availableChars[Math.floor(Math.random() * availableChars.length)];
@@ -343,9 +327,7 @@ function DecryptedText({
     }
 
     return () => {
-      if (currentRef) {
-        observer.unobserve(currentRef);
-      }
+      if (currentRef) observer.unobserve(currentRef);
     };
   }, [animateOn, hasAnimated, triggerDecrypt]);
 
@@ -373,11 +355,16 @@ function DecryptedText({
         : {};
 
   return (
-    <motion.span className={cn(parentClassName)} ref={containerRef} style={styles.wrapper} {...animateProps} {...props}>
-      <span style={styles.srOnly}>{displayText}</span>
+    <motion.span
+      ref={containerRef}
+      className={cn('inline-block whitespace-pre-wrap', parentClassName)}
+      {...animateProps}
+      {...props}
+    >
+      <span className="sr-only">{displayText}</span>
 
       <span aria-hidden="true">
-        {displayText.split('').map((char: any, index: number) => {
+        {displayText.split('').map((char, index) => {
           const isRevealedOrDone = revealedIndices.has(index) || (!isAnimating && isDecrypted);
 
           return (

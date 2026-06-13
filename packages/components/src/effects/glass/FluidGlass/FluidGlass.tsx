@@ -1,5 +1,5 @@
+"use client";
 /* eslint-disable react/no-unknown-property */
-import { cn } from "@premier-js/core"
 import * as THREE from 'three';
 import { useRef, useState, useEffect, memo, type ReactNode } from 'react';
 import { Canvas, createPortal, useFrame, useThree } from '@react-three/fiber';
@@ -21,7 +21,7 @@ type NavItem = {
   link: string;
 };
 
-type ModeProps = Record<string, any> & {
+type ModeProps = Record<string, unknown> & {
   navItems?: NavItem[];
   scale?: number;
   ior?: number;
@@ -29,10 +29,6 @@ type ModeProps = Record<string, any> & {
   anisotropy?: number;
   chromaticAberration?: number;
 };
-
-const DreiText: any = Text;
-const DreiImage: any = Image;
-const TransmissionMaterial: any = MeshTransmissionMaterial;
 
 export function FluidGlass({
   mode = 'lens',
@@ -66,7 +62,6 @@ export function FluidGlass({
             <Typography />
             <Images />
           </Scroll>
-          <Scroll html />
           <Preload />
         </Wrapper>
       </ScrollControls>
@@ -119,7 +114,7 @@ const ModeWrapper = memo(function ModeWrapper({
     if (modeProps.scale == null) {
       const maxWorld = v.width * 0.9;
       const desired = maxWorld / geoWidthRef.current;
-      ref.current.scale.setScalar(Math.min(0.15, desired));
+      ref.current.scale.setScalar(Math.min(0.25, desired));
     }
 
     gl.setRenderTarget(buffer);
@@ -140,7 +135,7 @@ const ModeWrapper = memo(function ModeWrapper({
         <meshBasicMaterial map={buffer.texture} transparent />
       </mesh>
       <mesh ref={ref} scale={scale ?? 0.15} rotation-x={Math.PI / 2} geometry={nodes[geometryKey]?.geometry} {...props}>
-          <TransmissionMaterial
+          <MeshTransmissionMaterial
             buffer={buffer.texture}
             ior={ior ?? 1.15}
             thickness={thickness ?? 5}
@@ -167,8 +162,8 @@ function Bar({ modeProps = {}, ...p }: any) {
     roughness: 0,
     thickness: 10,
     ior: 1.15,
-    color: 'var(--gs-text)',
-    attenuationColor: 'var(--gs-text)',
+    color: '#ffffff',
+    attenuationColor: '#ffffff',
     attenuationDistance: 0.25
   };
 
@@ -185,7 +180,7 @@ function Bar({ modeProps = {}, ...p }: any) {
 }
 
 function NavItems({ items }: { items: NavItem[] }) {
-  const group = useRef<any>(null);
+  const group = useRef<THREE.Group>(null!);
   const { viewport, camera } = useThree();
 
   const DEVICE = {
@@ -212,9 +207,10 @@ function NavItems({ items }: { items: NavItem[] }) {
   useFrame(() => {
     if (!group.current) return;
     const v = viewport.getCurrentViewport(camera, [0, 0, 15]);
-    group.current!.position.set(0, -v.height / 2 + 0.2, 15.1);
+    if (!group.current) return;
+    group.current.position.set(0, -v.height / 2 + 0.2, 15.1);
 
-    group.current!.children.forEach((child: any, i: any) => {
+    group.current.children.forEach((child, i) => {
       child.position.x = (i - (items.length - 1) / 2) * spacing;
     });
   });
@@ -226,8 +222,8 @@ function NavItems({ items }: { items: NavItem[] }) {
 
   return (
     <group ref={group} renderOrder={10}>
-      {items.map(({ label, link }: any) => (
-        <DreiText
+      {items.map(({ label, link }) => (
+        <Text
           key={label}
           fontSize={fontSize}
           color="white"
@@ -236,7 +232,7 @@ function NavItems({ items }: { items: NavItem[] }) {
           depthWrite={false}
           outlineWidth={0}
           outlineBlur="20%"
-          outlineColor="var(--gs-bg)"
+          outlineColor="#000000"
           outlineOpacity={0.5}
           depthTest={false}
           renderOrder={10}
@@ -248,32 +244,34 @@ function NavItems({ items }: { items: NavItem[] }) {
           onPointerOut={() => (document.body.style.cursor = 'auto')}
         >
           {label}
-        </DreiText>
+        </Text>
       ))}
     </group>
   );
 }
 
 function Images() {
-  const group = useRef<any>(null);
+  const group = useRef<THREE.Group>(null!);
   const data = useScroll();
   const { height } = useThree(s => s.viewport);
 
   useFrame(() => {
-    group.current!.children[0].material.zoom = 1 + data.range(0, 1 / 3) / 3;
-    group.current!.children[1].material.zoom = 1 + data.range(0, 1 / 3) / 3;
-    group.current!.children[2].material.zoom = 1 + data.range(1.15 / 3, 1 / 3) / 2;
-    group.current!.children[3].material.zoom = 1 + data.range(1.15 / 3, 1 / 3) / 2;
-    group.current!.children[4].material.zoom = 1 + data.range(1.15 / 3, 1 / 3) / 2;
+    if (!group.current) return;
+    const c = group.current.children as unknown as THREE.Mesh[];
+    c[0].material.zoom = 1 + data.range(0, 1 / 3) / 3;
+    c[1].material.zoom = 1 + data.range(0, 1 / 3) / 3;
+    c[2].material.zoom = 1 + data.range(1.15 / 3, 1 / 3) / 2;
+    c[3].material.zoom = 1 + data.range(1.15 / 3, 1 / 3) / 2;
+    c[4].material.zoom = 1 + data.range(1.15 / 3, 1 / 3) / 2;
   });
 
   return (
     <group ref={group}>
-      <DreiImage position={[-2, 0, 0]} scale={[3, height / 1.1, 1] as any} url="/assets/demo/cs1.webp" />
-      <DreiImage position={[2, 0, 3]} scale={3 as any} url="/assets/demo/cs2.webp" />
-      <DreiImage position={[-2.05, -height, 6]} scale={[1, 3, 1] as any} url="/assets/demo/cs3.webp" />
-      <DreiImage position={[-0.6, -height, 9]} scale={[1, 2, 1] as any} url="/assets/demo/cs1.webp" />
-      <DreiImage position={[0.75, -height, 10.5]} scale={1.5 as any} url="/assets/demo/cs2.webp" />
+      <Image position={[-2, 0, 0]} scale={[3, height / 1.1]} url="/assets/demo/cs1.webp" />
+      <Image position={[2, 0, 3]} scale={3} url="/assets/demo/cs2.webp" />
+      <Image position={[-2.05, -height, 6]} scale={[1, 3]} url="/assets/demo/cs3.webp" />
+      <Image position={[-0.6, -height, 9]} scale={[1, 2]} url="/assets/demo/cs1.webp" />
+      <Image position={[0.75, -height, 10.5]} scale={1.5} url="/assets/demo/cs2.webp" />
     </group>
   );
 }
@@ -300,19 +298,19 @@ function Typography() {
   const { fontSize } = DEVICE[device];
 
   return (
-      <DreiText
+      <Text
         position={[0, 0, 12]}
         fontSize={fontSize}
       letterSpacing={-0.05}
       outlineWidth={0}
       outlineBlur="20%"
-      outlineColor="var(--gs-bg)"
+      outlineColor="#000000"
       outlineOpacity={0.5}
       color="white"
       anchorX="center"
       anchorY="middle"
       >
         React Bits
-      </DreiText>
+      </Text>
     );
 }

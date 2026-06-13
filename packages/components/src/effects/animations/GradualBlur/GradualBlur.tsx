@@ -1,3 +1,4 @@
+"use client";
 import { cn } from "@premier-js/core"
 import React, { useEffect, useRef, useState, useMemo } from 'react';
 
@@ -22,7 +23,7 @@ type GradualBlurConfig = {
   target: 'parent' | 'page';
   className: string;
   style: React.CSSProperties;
-  [key: string]: any;
+  [key: string]: unknown;
 };
 
 type GradualBlurProps = Partial<Omit<GradualBlurConfig, 'position' | 'curve' | 'target' | 'style'>> & {
@@ -202,7 +203,7 @@ function GradualBlur(props: GradualBlurProps) {
     const isHorizontal = ['left', 'right'].includes(config.position);
     const isPageTarget = config.target === 'page';
 
-    const baseStyle: React.CSSProperties & Record<string, any> = {
+    const baseStyle: React.CSSProperties & Record<string, string | number | undefined> = {
       position: isPageTarget ? 'fixed' : 'absolute',
       pointerEvents: config.hoverIntensity ? 'auto' : 'none',
       opacity: isVisible ? 1 : 0,
@@ -227,6 +228,8 @@ function GradualBlur(props: GradualBlurProps) {
 
     return baseStyle;
   }, [config, responsiveHeight, responsiveWidth, isVisible]);
+
+  useEffect(() => { injectStyles(); }, []);
 
   const { hoverIntensity, animated, onAnimationComplete, duration } = config;
 
@@ -260,18 +263,17 @@ function GradualBlur(props: GradualBlurProps) {
   );
 }
 
-const GradualBlurMemo = React.memo(GradualBlur) as unknown as typeof GradualBlur & {
+const GradualBlurMemo = React.memo(GradualBlur) as typeof GradualBlur & {
+  displayName: string;
   PRESETS: typeof PRESETS;
   CURVE_FUNCTIONS: typeof CURVE_FUNCTIONS;
 };
-((GradualBlurMemo as any).displayName = 'GradualBlur');
-((GradualBlurMemo as any).PRESETS = PRESETS);
-((GradualBlurMemo as any).CURVE_FUNCTIONS = CURVE_FUNCTIONS);
+GradualBlurMemo.displayName = 'GradualBlur';
+GradualBlurMemo.PRESETS = PRESETS;
+GradualBlurMemo.CURVE_FUNCTIONS = CURVE_FUNCTIONS;
 export { GradualBlurMemo as GradualBlur };
 
 const injectStyles = () => {
-  if (typeof document === 'undefined') return;
-
   const styleId = 'gradual-blur-styles';
   if (document.getElementById(styleId)) return;
 
@@ -284,7 +286,3 @@ const injectStyles = () => {
 
   document.head.appendChild(styleElement);
 };
-
-if (typeof document !== 'undefined') {
-  injectStyles();
-}

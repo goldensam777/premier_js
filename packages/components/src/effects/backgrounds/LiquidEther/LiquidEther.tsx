@@ -1,3 +1,4 @@
+"use client";
 import { cn } from "@premier-js/core"
 import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
@@ -97,8 +98,7 @@ init(container: any) {
         this.renderer.domElement.style.width = '100%';
         this.renderer.domElement.style.height = '100%';
         this.renderer.domElement.style.display = 'block';
-        this.clock = new THREE.Clock();
-        this.clock.start();
+        this.clock = new THREE.Timer();
       }
       resize() {
         if (!this.container) return;

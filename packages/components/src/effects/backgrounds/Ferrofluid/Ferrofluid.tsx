@@ -1,24 +1,47 @@
-import { cn } from "@premier-js/core"
-import React, { useEffect, useRef } from 'react';
+"use client";
+import { useEffect, useRef } from 'react';
 import { Renderer, Program, Mesh, Triangle } from 'ogl';
-import './Ferrofluid.css';
+
+export interface FerrofluidProps {
+  className?: string;
+  dpr?: number;
+  paused?: boolean;
+  colors?: string[];
+  speed?: number;
+  scale?: number;
+  turbulence?: number;
+  fluidity?: number;
+  rimWidth?: number;
+  sharpness?: number;
+  shimmer?: number;
+  glow?: number;
+  flowDirection?: 'up' | 'down' | 'left' | 'right';
+  opacity?: number;
+  mouseInteraction?: boolean;
+  mouseStrength?: number;
+  mouseRadius?: number;
+  mouseDampening?: number;
+  mixBlendMode?: string;
+}
+
+type RGB = [number, number, number];
 
 const MAX_COLORS = 8;
 
-const hexToRGB = (hex: string): [number, number, number] => {
+const hexToRGB = (hex: string): RGB => {
   const c = hex.replace('#', '').padEnd(6, '0');
   const r = parseInt(c.slice(0, 2), 16) / 255;
   const g = parseInt(c.slice(2, 4), 16) / 255;
   const b = parseInt(c.slice(4, 6), 16) / 255;
-  return [r, g, b] as [number, number, number];
+  return [r, g, b];
 };
 
-const prepColors = (input: string[]) => {
+const prepColors = (input?: string[]) => {
   const base = (input && input.length ? input : ['#4F46E5', '#06B6D4', '#E0F2FE']).slice(0, MAX_COLORS);
   const count = base.length;
-  const arr: [number, number, number][] = [];
+  const arr: RGB[] = [];
   for (let i = 0; i < MAX_COLORS; i++) arr.push(hexToRGB(base[Math.min(i, base.length - 1)]));
-  const avg: [number, number, number] = [0, 0, 0];
+  const avg: RGB = [0, 0, 0];
   for (let i = 0; i < count; i++) {
     avg[0] += arr[i][0];
     avg[1] += arr[i][1];
@@ -30,18 +53,18 @@ const prepColors = (input: string[]) => {
   return { arr, count, avg };
 };
 
-const flowVec = (d: string): [number, number] => {
+const flowVec = (d?: string): [number, number] => {
   switch (d) {
     case 'up':
-      return [0, 1] as [number, number];
+      return [0, 1];
     case 'down':
-      return [0, -1] as [number, number];
+      return [0, -1];
     case 'left':
-      return [-1, 0] as [number, number];
+      return [-1, 0];
     case 'right':
-      return [1, 0] as [number, number];
+      return [1, 0];
     default:
-      return [0, -1] as [number, number];
+      return [0, -1];
   }
 };
 
@@ -188,11 +211,11 @@ void main() {
 }
 `;
 
-export const Ferrofluid = ({
+export const Ferrofluid: React.FC<FerrofluidProps> = ({
   className,
   dpr,
   paused = false,
-  colors = ['var(--gs-text)', 'var(--gs-text)', 'var(--gs-text)'],
+  colors = ['#ffffff', '#ffffff', '#ffffff'],
   speed = 0.5,
   scale = 1.6,
   turbulence = 1,
@@ -208,14 +231,14 @@ export const Ferrofluid = ({
   mouseRadius = 0.35,
   mouseDampening = 0.15,
   mixBlendMode
-}: any) => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const rafRef = useRef<any>(null);
-  const programRef = useRef<any>(null);
-  const meshRef = useRef<any>(null);
-  const geometryRef = useRef<any>(null);
-  const rendererRef = useRef<any>(null);
-  const mouseTargetRef = useRef([0, 0]);
+}) => {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const rafRef = useRef<number | null>(null);
+  const programRef = useRef<Program | null>(null);
+  const meshRef = useRef<Mesh | null>(null);
+  const geometryRef = useRef<Triangle | null>(null);
+  const rendererRef = useRef<Renderer | null>(null);
+  const mouseTargetRef = useRef<[number, number]>([0, 0]);
   const lastTimeRef = useRef(0);
 
   useEffect(() => {
@@ -231,9 +254,9 @@ export const Ferrofluid = ({
     const gl = renderer.gl;
     const canvas = gl.canvas as HTMLCanvasElement;
     gl.clearColor(0, 0, 0, 0);
-    canvas!.style.width = '100%';
-    canvas!.style.height = '100%';
-    canvas!.style.display = 'block';
+    canvas.style.width = '100%';
+    canvas.style.height = '100%';
+    canvas.style.display = 'block';
     container.appendChild(canvas);
 
     const { arr, count, avg } = prepColors(colors);
@@ -310,7 +333,7 @@ export const Ferrofluid = ({
         let factor = 1 - Math.exp(-dt / tau);
         if (factor > 1) factor = 1;
         const target = mouseTargetRef.current;
-        const cur = uniforms.iMouse.value;
+        const cur = uniforms.iMouse.value as number[];
         cur[0] += (target[0] - cur[0]) * factor;
         cur[1] += (target[1] - cur[1]) * factor;
       } else {
@@ -330,13 +353,13 @@ export const Ferrofluid = ({
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
       if (mouseInteraction) canvas.removeEventListener('pointermove', onPointerMove);
       ro.disconnect();
-      if (canvas.parentElement! === container) {
+      if (canvas.parentElement === container) {
         container.removeChild(canvas);
       }
-      const callIfFn = (obj: Record<string, unknown> | null, key: string) => {
-        const fn = obj && obj[key];
+      const callIfFn = (obj: unknown, key: string) => {
+        const fn = obj && (obj as Record<string, unknown>)[key];
         if (typeof fn === 'function') {
-          fn.call(obj);
+          (fn as () => void).call(obj);
         }
       };
       callIfFn(programRef.current, 'remove');
@@ -371,10 +394,12 @@ export const Ferrofluid = ({
   return (
     <div
       ref={containerRef}
-      className={cn("ferrofluid-container", className ?? '')}
+      className={`w-full h-full overflow-hidden relative ${className ?? ''}`}
       style={{
-        ...(mixBlendMode && { mixBlendMode })
+        ...(mixBlendMode && { mixBlendMode: mixBlendMode as React.CSSProperties['mixBlendMode'] })
       }}
     />
   );
 };
+
+export default Ferrofluid;

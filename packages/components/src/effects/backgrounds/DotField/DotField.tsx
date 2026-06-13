@@ -6,7 +6,7 @@ import './DotField.css';
 const TWO_PI = Math.PI * 2;
 
 const DotField = memo(({
-  dotRadius = 1.5,
+  dotRadius = 3,
   dotSpacing = 14,
   cursorRadius = 500,
   cursorForce = 0.1,

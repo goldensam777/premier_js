@@ -1,3 +1,4 @@
+"use client";
 import { cn } from "@premier-js/core"
 import { useLayoutEffect, useRef, useCallback, type ReactNode } from 'react';
 import Lenis from 'lenis';
@@ -14,6 +15,22 @@ export const ScrollStackItem = ({ children, itemClassName = '' }: { children: Re
   <div className={`scroll-stack-card ${itemClassName}`.trim()}>{children}</div>
 );
 
+interface ScrollStackProps {
+  children: React.ReactNode;
+  className?: string;
+  itemDistance?: number;
+  itemScale?: number;
+  itemStackDistance?: number;
+  stackPosition?: string;
+  scaleEndPosition?: string;
+  baseScale?: number;
+  scaleDuration?: number;
+  rotationAmount?: number;
+  blurAmount?: number;
+  useWindowScroll?: boolean;
+  onStackComplete?: () => void;
+}
+
 export const ScrollStack = ({
   children,
   className = '',
@@ -28,7 +45,7 @@ export const ScrollStack = ({
   blurAmount = 0,
   useWindowScroll = false,
   onStackComplete
-}: any) => {
+}: ScrollStackProps) => {
   const scrollerRef = useRef<HTMLDivElement>(null);
   const stackCompletedRef = useRef(false);
   const animationFrameRef = useRef<number | null>(null);

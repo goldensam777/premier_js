@@ -16,5 +16,10 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/goldensam777/premier_js.git"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "next": "^16.2.9"
   }
 }

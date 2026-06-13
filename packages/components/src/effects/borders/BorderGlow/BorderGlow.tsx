@@ -1,4 +1,5 @@
-import { useRef, useCallback, useEffect, type CSSProperties, type PointerEvent as ReactPointerEvent, type ReactNode } from 'react'
+"use client";
+import { useRef, useCallback, useEffect, type CSSProperties, type ReactNode } from 'react'
 import { cn } from "@premier-js/core"
 import './BorderGlow.css'
 
@@ -117,36 +118,52 @@ export function BorderGlow({
     return degrees
   }, [getCenterOfElement])
 
-  const handlePointerMove = useCallback((e: ReactPointerEvent<HTMLDivElement>) => {
-    const card = cardRef.current
-    if (!card) return
+  useEffect(() => {
+    const card = cardRef.current;
+    if (!(card instanceof HTMLElement)) return;
 
-    const rect = card.getBoundingClientRect()
-    const x = e.clientX - rect.left
-    const y = e.clientY - rect.top
+    const FALLOFF = 160;
 
-    const edge = getEdgeProximity(card, x, y)
-    const angle = getCursorAngle(card, x, y) as number
+    const onPointerMove = (e: PointerEvent) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
 
-    (card as any).style.setProperty('--edge-proximity', `${(edge * 100).toFixed(3)}`)
-    (card as any).style.setProperty('--cursor-angle', `${angle.toFixed(3)}deg`)
+      const edge = getEdgeProximity(card, x, y);
+      const angle = getCursorAngle(card, x, y) as number;
+
+      let adjustedEdge = edge;
+      if (x < 0 || y < 0 || x > rect.width || y > rect.height) {
+        const dx = Math.max(0, -x, x - rect.width);
+        const dy = Math.max(0, -y, y - rect.height);
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        adjustedEdge = Math.max(0, edge * (1 - dist / FALLOFF));
+      }
+
+      card.style.setProperty('--edge-proximity', `${(adjustedEdge * 100).toFixed(3)}`);
+      card.style.setProperty('--cursor-angle', `${angle.toFixed(3)}deg`);
+    };
+
+    window.addEventListener('pointermove', onPointerMove);
+    return () => window.removeEventListener('pointermove', onPointerMove);
   }, [getEdgeProximity, getCursorAngle])
 
   useEffect(() => {
-    if (!animated || !cardRef.current) return;
+    if (!animated) return;
     const card = cardRef.current;
+    if (!(card instanceof HTMLElement)) return;
     const angleStart = 110;
     const angleEnd = 465;
-    (card as any).classList.add('sweep-active');
-    (card as any).style.setProperty('--cursor-angle', `${angleStart}deg`);
+    card.classList.add('sweep-active');
+    card.style.setProperty('--cursor-angle', `${angleStart}deg`);
 
-    animateValue({ duration: 500, onUpdate: (v: number) => (card as any).style.setProperty('--edge-proximity', String(v)) });
+    animateValue({ duration: 500, onUpdate: (v: number) => card.style.setProperty('--edge-proximity', String(v)) });
     animateValue({
       ease: easeInCubic,
       duration: 1500,
       end: 50,
       onUpdate: (v: number) => {
-        (card as any).style.setProperty('--cursor-angle', `${(angleEnd - angleStart) * (v / 100) + angleStart}deg`)
+        card.style.setProperty('--cursor-angle', `${(angleEnd - angleStart) * (v / 100) + angleStart}deg`)
       }
     });
     animateValue({
@@ -156,12 +173,12 @@ export function BorderGlow({
       start: 50,
       end: 100,
       onUpdate: (v: number) => {
-        (card as any).style.setProperty('--cursor-angle', `${(angleEnd - angleStart) * (v / 100) + angleStart}deg`)
+        card.style.setProperty('--cursor-angle', `${(angleEnd - angleStart) * (v / 100) + angleStart}deg`)
       }
     });
     animateValue({ ease: easeInCubic, delay: 2500, duration: 1500, start: 100, end: 0,
-      onUpdate: (v: number) => (card as any).style.setProperty('--edge-proximity', String(v)),
-      onEnd: () => (card as any).classList.remove('sweep-active'),
+      onUpdate: (v: number) => card.style.setProperty('--edge-proximity', String(v)),
+      onEnd: () => card.classList.remove('sweep-active'),
     });
   }, [animated]);
 
@@ -170,7 +187,6 @@ export function BorderGlow({
   return (
     <div
       ref={cardRef}
-      onPointerMove={handlePointerMove}
       className={cn("border-glow-card", className)}
       style={{
         '--card-bg': backgroundColor,
@@ -190,3 +206,4 @@ export function BorderGlow({
     </div>
   )
 }
+export default BorderGlow;

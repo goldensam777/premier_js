@@ -1,4 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+"use client";
 import { cn } from "@premier-js/core"
 import { useEffect, useState, useRef, useId } from 'react';
 import './GlassSurface.css';
@@ -56,11 +57,11 @@ export function GlassSurface({
   const [svgSupported, setSvgSupported] = useState(false);
 
   const containerRef = useRef<HTMLDivElement>(null);
-  const feImageRef = useRef<any>(null);
-  const redChannelRef = useRef<any>(null);
-  const greenChannelRef = useRef<any>(null);
-  const blueChannelRef = useRef<any>(null);
-  const gaussianBlurRef = useRef<any>(null);
+  const feImageRef = useRef<SVGFEImageElement>(null);
+  const redChannelRef = useRef<SVGFEDisplacementMapElement>(null);
+  const greenChannelRef = useRef<SVGFEDisplacementMapElement>(null);
+  const blueChannelRef = useRef<SVGFEDisplacementMapElement>(null);
+  const gaussianBlurRef = useRef<SVGFEGaussianBlurElement>(null);
 
   const generateDisplacementMap = () => {
     const rect = containerRef.current?.getBoundingClientRect();
@@ -100,7 +101,7 @@ export function GlassSurface({
       { ref: redChannelRef, offset: redOffset },
       { ref: greenChannelRef, offset: greenOffset },
       { ref: blueChannelRef, offset: blueOffset }
-    ].forEach(({ ref, offset }: any) => {
+    ].forEach(({ ref, offset }: { ref: React.RefObject<SVGFEDisplacementMapElement | null>; offset: number }) => {
       if (ref.current) {
         ref.current.setAttribute('scale', (distortionScale + offset).toString());
         ref.current.setAttribute('xChannelSelector', xChannel);

@@ -1,8 +1,45 @@
 /* eslint-disable react/no-unknown-property */
-import { cn } from "@premier-js/core"
+"use client";
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { useMemo, useRef } from 'react';
 import * as THREE from 'three';
+
+interface Particle {
+  t: number;
+  factor: number;
+  speed: number;
+  xFactor: number;
+  yFactor: number;
+  zFactor: number;
+  mx: number;
+  my: number;
+  mz: number;
+  cx: number;
+  cy: number;
+  cz: number;
+  vx: number;
+  vy: number;
+  vz: number;
+  randomRadiusOffset: number;
+}
+
+interface AntigravityInnerProps {
+  count?: number;
+  magnetRadius?: number;
+  ringRadius?: number;
+  waveSpeed?: number;
+  waveAmplitude?: number;
+  particleSize?: number;
+  lerpSpeed?: number;
+  color?: string;
+  autoAnimate?: boolean;
+  particleVariance?: number;
+  rotationSpeed?: number;
+  depthFactor?: number;
+  pulseSpeed?: number;
+  particleShape?: 'capsule' | 'sphere' | 'box' | 'tetrahedron';
+  fieldStrength?: number;
+}
 
 const AntigravityInner = ({
   count = 300,
@@ -20,8 +57,8 @@ const AntigravityInner = ({
   pulseSpeed = 3,
   particleShape = 'capsule',
   fieldStrength = 10
-}: any) => {
-  const meshRef = useRef<any>(null);
+}: AntigravityInnerProps) => {
+  const meshRef = useRef<THREE.InstancedMesh>(null);
   const { viewport } = useThree();
   const dummy = useMemo(() => new THREE.Object3D(), []);
 
@@ -101,7 +138,7 @@ const AntigravityInner = ({
 
     const globalRotation = state.clock.getElapsedTime() * rotationSpeed;
 
-    particles.forEach((particle: any, i: any) => {
+    particles.forEach((particle: Particle, i: number) => {
       let { t, speed, mx, my, mz, cz, randomRadiusOffset } = particle;
 
       t = particle.t += speed / 2;
@@ -169,7 +206,7 @@ const AntigravityInner = ({
   );
 };
 
-const Antigravity = (props: any) => {
+const Antigravity = (props: AntigravityInnerProps) => {
   return (
     <Canvas camera={{ position: [0, 0, 50], fov: 35 }}>
       <AntigravityInner {...props} />

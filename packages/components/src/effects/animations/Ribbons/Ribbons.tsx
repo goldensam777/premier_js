@@ -1,4 +1,4 @@
-import { cn } from "@premier-js/core"
+"use client";
 import { useEffect, useRef } from 'react';
 import { Renderer, Transform, Vec3, Color, Polyline } from 'ogl';
 
@@ -13,6 +13,21 @@ type RibbonLine = {
   polyline: Polyline;
 };
 
+interface RibbonsProps {
+  colors?: string[];
+  baseSpring?: number;
+  baseFriction?: number;
+  baseThickness?: number;
+  offsetFactor?: number;
+  maxAge?: number;
+  pointCount?: number;
+  speedMultiplier?: number;
+  enableFade?: boolean;
+  enableShaderEffect?: boolean;
+  effectAmplitude?: number;
+  backgroundColor?: [number, number, number, number];
+}
+
 export const Ribbons = ({
   colors = ['#FC8EAC'],
   baseSpring = 0.03,
@@ -26,7 +41,7 @@ export const Ribbons = ({
   enableShaderEffect = false,
   effectAmplitude = 2,
   backgroundColor = [0, 0, 0, 0]
-}: any) => {
+}: RibbonsProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

@@ -1,71 +1,111 @@
-import { cn } from "@premier-js/core"
-import './GlareHover.css';
+"use client";
+import React, { useRef } from 'react';
 
 interface GlareHoverProps {
-  children: React.ReactNode
-  width?: string
-  height?: string
-  background?: string
-  borderRadius?: string
-  borderColor?: string
-  glareColor?: string
-  glareOpacity?: number
-  glareAngle?: number
-  glareSize?: number
-  transitionDuration?: number
-  playOnce?: boolean
-  className?: string
-  style?: React.CSSProperties
+  width?: string;
+  height?: string;
+  background?: string;
+  borderRadius?: string;
+  borderColor?: string;
+  children?: React.ReactNode;
+  glareColor?: string;
+  glareOpacity?: number;
+  glareAngle?: number;
+  glareSize?: number;
+  transitionDuration?: number;
+  playOnce?: boolean;
+  className?: string;
+  style?: React.CSSProperties;
 }
 
-export function GlareHover({
+const GlareHover: React.FC<GlareHoverProps> = ({
   width = '500px',
   height = '500px',
-  background = 'var(--gs-bg)',
+  background = '#000',
   borderRadius = '10px',
-  borderColor = 'var(--gs-border)',
+  borderColor = '#333',
   children,
-  glareColor = 'var(--gs-text)',
+  glareColor = '#ffffff',
   glareOpacity = 0.5,
   glareAngle = -45,
   glareSize = 250,
   transitionDuration = 650,
   playOnce = false,
-  className,
+  className = '',
   style = {}
-}: GlareHoverProps) {
-  const hex = typeof glareColor === 'string' ? glareColor.replace('#', '') : '';
+}) => {
+  const hex = glareColor.replace('#', '');
   let rgba = glareColor;
-  if (/^[0-9A-Fa-f]{6}$/.test(hex)) {
+  if (/^[\dA-Fa-f]{6}$/.test(hex)) {
     const r = parseInt(hex.slice(0, 2), 16);
     const g = parseInt(hex.slice(2, 4), 16);
     const b = parseInt(hex.slice(4, 6), 16);
     rgba = `rgba(${r}, ${g}, ${b}, ${glareOpacity})`;
-  } else if (/^[0-9A-Fa-f]{3}$/.test(hex)) {
+  } else if (/^[\dA-Fa-f]{3}$/.test(hex)) {
     const r = parseInt(hex[0] + hex[0], 16);
     const g = parseInt(hex[1] + hex[1], 16);
     const b = parseInt(hex[2] + hex[2], 16);
     rgba = `rgba(${r}, ${g}, ${b}, ${glareOpacity})`;
   }
 
-  const vars = {
-    '--gh-width': width,
-    '--gh-height': height,
-    '--gh-bg': background,
-    '--gh-br': borderRadius,
-    '--gh-angle': `${glareAngle}deg`,
-    '--gh-duration': `${transitionDuration}ms`,
-    '--gh-size': `${glareSize}%`,
-    '--gh-rgba': rgba,
-    '--gh-border': borderColor
+  const overlayRef = useRef<HTMLDivElement | null>(null);
+
+  const animateIn = () => {
+    const el = overlayRef.current;
+    if (!el) return;
+
+    el.style.transition = 'none';
+    el.style.backgroundPosition = '-100% -100%, 0 0';
+    void el.offsetHeight;
+    el.style.transition = `${transitionDuration}ms ease`;
+    el.style.backgroundPosition = '100% 100%, 0 0';
+  };
+
+  const animateOut = () => {
+    const el = overlayRef.current;
+    if (!el) return;
+
+    if (playOnce) {
+      el.style.transition = 'none';
+      el.style.backgroundPosition = '-100% -100%, 0 0';
+    } else {
+      el.style.transition = `${transitionDuration}ms ease`;
+      el.style.backgroundPosition = '-100% -100%, 0 0';
+    }
+  };
+
+  const overlayStyle: React.CSSProperties = {
+    position: 'absolute',
+    inset: 0,
+    background: `linear-gradient(${glareAngle}deg,
+        hsla(0,0%,0%,0) 60%,
+        ${rgba} 70%,
+        hsla(0,0%,0%,0) 100%)`,
+    backgroundSize: `${glareSize}% ${glareSize}%, 100% 100%`,
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: '-100% -100%, 0 0',
+    pointerEvents: 'none'
   };
 
   return (
     <div
-      className={cn("glare-hover", playOnce && "glare-hover--play-once", className)}
-      style={{ ...vars, ...style }}
+      className={`relative grid place-items-center overflow-hidden border cursor-pointer ${className}`}
+      style={{
+        width,
+        height,
+        background,
+        borderRadius,
+        borderColor,
+        ...style
+      }}
+      onMouseEnter={animateIn}
+      onMouseLeave={animateOut}
     >
+      <div ref={overlayRef} style={overlayStyle} />
       {children}
     </div>
   );
-}
+};
+
+export default GlareHover;
+export { GlareHover };

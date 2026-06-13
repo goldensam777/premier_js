@@ -1,3 +1,4 @@
+"use client";
 import { useRef, useEffect, useState } from 'react'
 import { cn } from "@premier-js/core"
 import './GooeyNav.css'
@@ -168,7 +169,7 @@ export function GooeyNav({
     <div className="gooey-nav-container" ref={containerRef}>
       <nav>
         <ul ref={navRef}>
-          {items.map((item: any, index: number) => (
+          {items.map((item: GooeyNavItem, index: number) => (
             <li key={index} className={activeIndex === index ? 'active' : ''}>
               <a href={item.href} onClick={e => handleClick(e, index)} onKeyDown={e => handleKeyDown(e, index)}>
                 {item.label}
