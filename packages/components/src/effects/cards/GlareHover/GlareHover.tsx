@@ -1,4 +1,5 @@
 "use client";
+import { cn } from "@premier-js/core"
 import React, { useRef } from 'react';
 
 interface GlareHoverProps {
@@ -21,9 +22,9 @@ interface GlareHoverProps {
 const GlareHover: React.FC<GlareHoverProps> = ({
   width = '500px',
   height = '500px',
-  background = '#000',
+  background = 'var(--gs-bg)',
   borderRadius = '10px',
-  borderColor = '#333',
+  borderColor = 'var(--gs-border)',
   children,
   glareColor = '#ffffff',
   glareOpacity = 0.5,
@@ -89,7 +90,7 @@ const GlareHover: React.FC<GlareHoverProps> = ({
 
   return (
     <div
-      className={`relative grid place-items-center overflow-hidden border cursor-pointer ${className}`}
+      className={cn("relative grid place-items-center overflow-hidden border cursor-pointer", className)}
       style={{
         width,
         height,

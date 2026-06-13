@@ -1,4 +1,5 @@
 "use client";
+import { cn } from "@premier-js/core"
 import React, {
   Children,
   cloneElement,
@@ -24,6 +25,7 @@ export interface CardSwapProps {
   skewAmount?: number;
   easing?: 'linear' | 'elastic';
   children: ReactNode;
+  className?: string;
 }
 
 export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -34,7 +36,12 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(({ customClass, ...res
   <div
     ref={ref}
     {...rest}
-    className={`absolute top-1/2 left-1/2 rounded-xl border border-white bg-black [transform-style:preserve-3d] [will-change:transform] [backface-visibility:hidden] ${customClass ?? ''} ${rest.className ?? ''}`.trim()}
+    className={cn(
+      "absolute top-1/2 left-1/2 rounded-xl [transform-style:preserve-3d] [will-change:transform] [backface-visibility:hidden]",
+      "border border-[var(--gs-border)] bg-[var(--gs-bg)]",
+      customClass,
+      rest.className
+    )}
   />
 ));
 Card.displayName = 'Card';
