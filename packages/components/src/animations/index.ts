@@ -1,1 +1,5 @@
 export { PageTransition } from "./PageTransition/PageTransition"
+export { ScrollReveal }   from "./ScrollReveal/ScrollReveal"
+export { ParallaxSection } from "./ParallaxSection/ParallaxSection"
+export { MagneticButton } from "./MagneticButton/MagneticButton"
+export { SplitText }      from "./SplitText/SplitText"
