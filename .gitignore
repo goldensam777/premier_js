@@ -68,3 +68,7 @@ env.bak
 fixes.pyfixes.py
 changes.py
 .backup
+
+# docs (track only README.md)
+*.md
+!README.md
