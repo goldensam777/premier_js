@@ -11,7 +11,7 @@ export interface SpinnerProps {
 
 export function Spinner({
   size = "md",
-  color = "border-blue-600",
+  color = "border-t-blue-600",
   trackColor = "border-gray-200",
   thickness = "border-2",
   label,
@@ -24,6 +24,13 @@ export function Spinner({
     xl: "w-16 h-16",
   }
 
+  // Si color est défini en tant que border-XXX, on le convertit en border-t-XXX
+  // pour éviter que twMerge n'écrase trackColor (border-gray-200).
+  const activeColorClass = color.startsWith("border-") && !color.startsWith("border-t-")
+    ? color.replace("border-", "border-t-")
+    : color
+
+
   return (
     <div className="inline-flex flex-col items-center gap-2">
       <div
@@ -31,8 +38,8 @@ export function Spinner({
           sizeStyles[size],
           thickness,
           trackColor,
-          color,
-          "border-t-transparent rounded-full animate-spin",
+          activeColorClass,
+          "rounded-full animate-spin",
         )}
         role="status"
         aria-label={label ?? "Chargement..."}
@@ -41,3 +48,4 @@ export function Spinner({
     </div>
   )
 }
+

@@ -10,6 +10,7 @@ node_modules
 !.yarn/plugins
 !.yarn/releases
 !.yarn/versions
+.next/
 
 # testing
 /coverage
@@ -72,3 +73,5 @@ changes.py
 # docs (track only README.md)
 *.md
 !README.md
+*/dist/*
+dist/

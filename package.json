@@ -6,6 +6,7 @@
   "author": "Samuel YEVI",
   "license": "MIT",
   "workspaces": [
+    "apps/*",
     "packages/*"
   ],
   "scripts": {
