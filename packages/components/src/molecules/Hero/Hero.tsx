@@ -1,0 +1,102 @@
+import { cn } from "@premier-js/core"
+
+export interface HeroProps {
+  title: string
+  subtitle?: string
+  description?: string
+  badgeLabel?: string
+  ctaLabel?: string
+  ctaHref?: string
+  secondaryCtaLabel?: string
+  secondaryCtaHref?: string
+  imageSrc?: string
+  imageAlt?: string
+  align?: "left" | "center"
+  bgColor?: string
+  titleColor?: string
+  subtitleColor?: string
+  descriptionColor?: string
+}
+
+export function Hero({
+  title,
+  subtitle,
+  description,
+  badgeLabel,
+  ctaLabel,
+  ctaHref = "#",
+  secondaryCtaLabel,
+  secondaryCtaHref = "#",
+  imageSrc,
+  imageAlt = "",
+  align = "center",
+  bgColor = "var(--color-background)",
+  titleColor = "var(--color-text)",
+  subtitleColor = "var(--color-primary)",
+  descriptionColor = "var(--color-text-muted)",
+}: HeroProps) {
+  const isCenter = align === "center"
+
+  return (
+    <section className="py-20 px-6" style={{ backgroundColor: bgColor }}>
+      <div className={cn("max-w-6xl mx-auto", isCenter ? "text-center" : "text-left")}>
+        <div className={cn(isCenter ? "flex flex-col items-center" : "", "gap-6")}>
+          {badgeLabel && (
+            <span
+              className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium"
+              style={{ backgroundColor: "var(--color-primary)", color: "#ffffff", opacity: 0.9 }}
+            >
+              {badgeLabel}
+            </span>
+          )}
+
+          <h1 className="text-4xl md:text-6xl font-bold leading-tight tracking-tight" style={{ color: titleColor }}>
+            {title}
+          </h1>
+
+          {subtitle && (
+            <p className="text-xl md:text-2xl font-medium" style={{ color: subtitleColor }}>
+              {subtitle}
+            </p>
+          )}
+
+          {description && (
+            <p className="text-base md:text-lg max-w-2xl" style={{ color: descriptionColor }}>
+              {description}
+            </p>
+          )}
+
+          {(ctaLabel || secondaryCtaLabel) && (
+            <div className={cn("flex flex-wrap gap-3", isCenter ? "justify-center" : "", "mt-2")}>
+              {ctaLabel && (
+                <a href={ctaHref}>
+                  <button className="px-6 py-2 rounded-lg transition-all duration-200 bg-blue-600 text-white hover:bg-blue-700">
+                    {ctaLabel}
+                  </button>
+                </a>
+              )}
+              {secondaryCtaLabel && (
+                <a href={secondaryCtaHref}>
+                  <button className="px-6 py-2 rounded-lg transition-all duration-200 bg-white border border-gray-300 text-gray-800 hover:border-black hover:bg-gray-50">
+                    {secondaryCtaLabel}
+                  </button>
+                </a>
+              )}
+            </div>
+          )}
+
+          {imageSrc && (
+            <div className="mt-10 w-full max-w-4xl">
+              <img
+                src={imageSrc}
+                alt={imageAlt}
+                className="w-full rounded-2xl shadow-xl"
+                style={{ borderColor: "var(--color-border)", border: "1px solid" }}
+              />
+            </div>
+          )}
+        </div>
+      </div>
+    </section>
+  )
+}
