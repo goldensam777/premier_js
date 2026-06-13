@@ -96,6 +96,20 @@ void main() {
 }
 `;
 
+interface MetaBallsProps {
+  className?: string;
+  color?: string;
+  speed?: number;
+  enableMouseInteraction?: boolean;
+  hoverSmoothness?: number;
+  animationSize?: number;
+  ballCount?: number;
+  clumpFactor?: number;
+  cursorBallSize?: number;
+  cursorBallColor?: string;
+  enableTransparency?: boolean;
+}
+
 const MetaBalls = ({
   className = '',
   color = 'var(--gs-text)',
@@ -108,7 +122,7 @@ const MetaBalls = ({
   cursorBallSize = 3,
   cursorBallColor = 'var(--gs-text)',
   enableTransparency = true
-}: any) => {
+}: MetaBallsProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

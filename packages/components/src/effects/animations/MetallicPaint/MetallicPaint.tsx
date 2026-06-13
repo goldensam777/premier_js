@@ -256,6 +256,31 @@ function hexToRgb(hex: string): [number, number, number] {
     : [1, 1, 1];
 }
 
+export interface MetallicPaintProps {
+  imageSrc: string;
+  seed?: number;
+  scale?: number;
+  refraction?: number;
+  blur?: number;
+  liquid?: number;
+  speed?: number;
+  brightness?: number;
+  contrast?: number;
+  angle?: number;
+  fresnel?: number;
+  lightColor?: string;
+  darkColor?: string;
+  patternSharpness?: number;
+  waveAmplitude?: number;
+  noiseScale?: number;
+  chromaticSpread?: number;
+  mouseAnimation?: boolean;
+  distortion?: number;
+  contour?: number;
+  tintColor?: string;
+  className?: string;
+}
+
 export function MetallicPaint({
   imageSrc,
   seed = 42,
@@ -277,8 +302,9 @@ export function MetallicPaint({
   mouseAnimation = false,
   distortion = 1,
   contour = 0.2,
-  tintColor = '#feb3ff'
-}: any) {
+  tintColor = '#feb3ff',
+  className
+}: MetallicPaintProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const glRef = useRef<any>(null);
   const programRef = useRef<any>(null);
@@ -511,5 +537,5 @@ export function MetallicPaint({
     };
   }, [ready, textureReady]);
 
-  return <canvas ref={canvasRef} className="paint-container" />;
+  return <canvas ref={canvasRef} className={cn("paint-container", className)} />;
 }

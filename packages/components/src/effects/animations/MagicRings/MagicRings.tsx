@@ -64,6 +64,31 @@ void main() {
 }
 `;
 
+export interface MagicRingsProps {
+  color?: string;
+  colorTwo?: string;
+  speed?: number;
+  ringCount?: number;
+  attenuation?: number;
+  lineThickness?: number;
+  baseRadius?: number;
+  radiusStep?: number;
+  scaleRate?: number;
+  opacity?: number;
+  blur?: number;
+  noiseAmount?: number;
+  rotation?: number;
+  ringGap?: number;
+  fadeIn?: number;
+  fadeOut?: number;
+  followMouse?: boolean;
+  mouseInfluence?: number;
+  hoverScale?: number;
+  parallax?: number;
+  clickBurst?: boolean;
+  className?: string;
+}
+
 export function MagicRings({
   color = '#fc42ff',
   colorTwo = '#42fcff',
@@ -86,7 +111,8 @@ export function MagicRings({
   hoverScale = 1.2,
   parallax = 0.05,
   clickBurst = false,
-}) {
+  className
+}: MagicRingsProps) {
   const mountRef = useRef<any>(null);
   const propsRef = useRef<any>(null);
   const mouseRef = useRef([0, 0]);
@@ -237,5 +263,5 @@ export function MagicRings({
     };
   }, []);
 
-  return <div ref={mountRef} className="magic-rings-container" style={blur > 0 ? { filter: `blur(${blur}px)` } : undefined} />;
+  return <div ref={mountRef} className={cn("magic-rings-container", className)} style={blur > 0 ? { filter: `blur(${blur}px)` } : undefined} />;
 }

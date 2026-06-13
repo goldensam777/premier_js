@@ -1,4 +1,5 @@
 "use client";
+import { cn } from "@premier-js/core"
 import { useEffect, useRef } from 'react';
 import { Renderer, Transform, Vec3, Color, Polyline } from 'ogl';
 
@@ -14,6 +15,7 @@ type RibbonLine = {
 };
 
 interface RibbonsProps {
+  className?: string;
   colors?: string[];
   baseSpring?: number;
   baseFriction?: number;
@@ -40,7 +42,8 @@ export const Ribbons = ({
   enableFade = false,
   enableShaderEffect = false,
   effectAmplitude = 2,
-  backgroundColor = [0, 0, 0, 0]
+  backgroundColor = [0, 0, 0, 0],
+  className
 }: RibbonsProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -259,5 +262,5 @@ export const Ribbons = ({
     backgroundColor
   ]);
 
-  return <div ref={containerRef} className="ribbons-container" />;
+  return <div ref={containerRef} className={cn("ribbons-container", className)} />;
 };

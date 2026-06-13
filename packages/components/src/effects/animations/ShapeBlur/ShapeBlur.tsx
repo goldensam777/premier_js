@@ -262,5 +262,5 @@ export const ShapeBlur = ({
     };
   }, [variation, pixelRatioProp, shapeSize, roundness, borderSize, circleSize, circleEdge]);
 
-  return <div className={className} ref={mountRef} style={{ width: '100%', height: '100%' }} />;
+  return <div className={cn("shape-blur", className)} ref={mountRef} style={{ width: '100%', height: '100%' }} />;
 };

@@ -116,6 +116,38 @@ const useAnimationLoop = (trackRef: any, targetVelocity: any, seqWidth: any, seq
   }, [targetVelocity, seqWidth, seqHeight, isHovered, hoverSpeed, isVertical, trackRef]);
 };
 
+interface LogoItem {
+  src?: string;
+  srcSet?: string;
+  sizes?: string;
+  width?: number | string;
+  height?: number | string;
+  alt?: string;
+  title?: string;
+  href?: string;
+  ariaLabel?: string;
+  node?: React.ReactNode;
+  [key: string]: unknown;
+}
+
+interface LogoLoopProps {
+  logos?: LogoItem[];
+  speed?: number;
+  direction?: 'left' | 'right' | 'up' | 'down';
+  width?: string | number;
+  logoHeight?: number;
+  gap?: number;
+  pauseOnHover?: boolean;
+  hoverSpeed?: number;
+  fadeOut?: boolean;
+  fadeOutColor?: string;
+  scaleOnHover?: boolean;
+  renderItem?: (item: LogoItem, key: string | number) => React.ReactNode;
+  ariaLabel?: string;
+  className?: string;
+  style?: React.CSSProperties;
+}
+
 export const LogoLoop = memo(
   ({
     logos = [],
@@ -133,7 +165,7 @@ export const LogoLoop = memo(
     ariaLabel = 'Partner logos',
     className,
     style
-  }: any) => {
+  }: LogoLoopProps) => {
     const containerRef = useRef<HTMLDivElement>(null);
     const trackRef = useRef<any>(null);
     const seqRef = useRef<any>(null);

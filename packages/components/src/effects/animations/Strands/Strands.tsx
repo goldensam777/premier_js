@@ -183,6 +183,29 @@ const buildPalette = (colors: string[]) => {
   return padded;
 };
 
+export interface StrandsProps {
+  colors?: string[];
+  count?: number;
+  speed?: number;
+  amplitude?: number;
+  waviness?: number;
+  thickness?: number;
+  glow?: number;
+  taper?: number;
+  spread?: number;
+  hueShift?: number;
+  intensity?: number;
+  saturation?: number;
+  opacity?: number;
+  scale?: number;
+  glass?: boolean;
+  refraction?: number;
+  dispersion?: number;
+  glassSize?: number;
+  className?: string;
+  style?: React.CSSProperties;
+}
+
 export function Strands({
   colors = ['#FF4242', '#7C3AED', '#06B6D4', '#EAB308'],
   count = 3,
@@ -204,7 +227,7 @@ export function Strands({
   glassSize = 1,
   className = '',
   style
-}: any) {
+}: StrandsProps) {
   const propsRef = useRef<any>({});
   propsRef.current = {
     colors,
