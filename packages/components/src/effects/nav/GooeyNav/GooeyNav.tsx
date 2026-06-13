@@ -20,7 +20,7 @@ interface GooeyNavProps {
 }
 
 export function GooeyNav({
-  items,
+  items = [],
   animationTime = 600,
   particleCount = 15,
   particleDistances = [90, 10],

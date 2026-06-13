@@ -38,7 +38,7 @@ interface DecryptedTextProps extends HTMLMotionProps<'span'> {
 type Direction = 'forward' | 'reverse';
 
 function DecryptedText({
-  text,
+  text = "Premier.js",
   speed = 50,
   maxIterations = 10,
   sequential = false,
