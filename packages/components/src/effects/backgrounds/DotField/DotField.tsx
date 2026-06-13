@@ -1,3 +1,4 @@
+import { cn } from "@premier-js/core"
 import { useEffect, useRef, memo } from 'react';
 
 import './DotField.css';
@@ -18,28 +19,28 @@ const DotField = memo(({
   gradientTo = 'rgba(180, 151, 207, 0.25)',
   glowColor = '#120F17',
   ...rest
-}) => {
-  const canvasRef = useRef(null);
-  const svgRef = useRef(null);
-  const glowRef = useRef(null);
-  const dotsRef = useRef([]);
-  const mouseRef = useRef({ x: -9999, y: -9999, prevX: -9999, prevY: -9999, speed: 0 });
-  const rafRef = useRef(null);
-  const sizeRef = useRef({ w: 0, h: 0, offsetX: 0, offsetY: 0 });
+}: any) => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const svgRef = useRef<SVGSVGElement>(null);
+  const glowRef = useRef<any>(null);
+  const dotsRef = useRef<any>([]);
+  const mouseRef = useRef<any>({ x: -9999, y: -9999, prevX: -9999, prevY: -9999, speed: 0 });
+  const rafRef = useRef<any>(null);
+  const sizeRef = useRef<any>({ w: 0, h: 0, offsetX: 0, offsetY: 0 });
   const glowOpacity = useRef(0);
   const engagement = useRef(0);
-  const propsRef = useRef({});
+  const propsRef = useRef<any>({});
   propsRef.current = { dotRadius, dotSpacing, cursorRadius, cursorForce, bulgeOnly, bulgeStrength, sparkle, waveAmplitude, gradientFrom, gradientTo };
-  const rebuildRef = useRef(null);
+  const rebuildRef = useRef<any>(null);
   const glowIdRef = useRef(`dot-field-glow-${Math.random().toString(36).slice(2, 9)}`);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     const glowEl = glowRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext('2d', { alpha: true });
+    const ctx = canvas.getContext('2d', { alpha: true })!;
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    let resizeTimer;
+    let resizeTimer: any;
 
     function resize() {
       clearTimeout(resizeTimer);
@@ -47,14 +48,15 @@ const DotField = memo(({
     }
 
     function doResize() {
-      const rect = canvas.parentElement.getBoundingClientRect();
+      const cvs = canvas!;
+      const rect = cvs.parentElement!.getBoundingClientRect();
       const w = rect.width;
       const h = rect.height;
 
-      canvas.width = w * dpr;
-      canvas.height = h * dpr;
-      canvas.style.width = `${w}px`;
-      canvas.style.height = `${h}px`;
+      cvs.width = w * dpr;
+      cvs.height = h * dpr;
+      cvs.style.width = `${w}px`;
+      cvs.style.height = `${h}px`;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
       sizeRef.current = {
@@ -67,7 +69,7 @@ const DotField = memo(({
       buildDots(w, h);
     }
 
-    function buildDots(w, h) {
+    function buildDots(w: any, h: any) {
       const p = propsRef.current;
       const step = p.dotRadius + p.dotSpacing;
       const cols = Math.floor(w / step);
@@ -87,7 +89,7 @@ const DotField = memo(({
       dotsRef.current = dots;
     }
 
-    function onMouseMove(e) {
+    function onMouseMove(e: any) {
       const s = sizeRef.current;
       mouseRef.current.x = e.pageX - s.offsetX;
       mouseRef.current.y = e.pageY - s.offsetY;
@@ -271,4 +273,4 @@ const DotField = memo(({
 
 DotField.displayName = 'DotField';
 
-export default DotField;
+export { DotField };

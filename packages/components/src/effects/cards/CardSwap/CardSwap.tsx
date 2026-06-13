@@ -1,19 +1,29 @@
+import { cn } from "@premier-js/core"
 import React, { Children, cloneElement, forwardRef, isValidElement, useEffect, useMemo, useRef } from 'react';
 import gsap from 'gsap';
 import './CardSwap.css';
 
-export const Card = forwardRef(({ customClass, ...rest }, ref) => (
-  <div ref={ref} {...rest} className={`card ${customClass ?? ''} ${rest.className ?? ''}`.trim()} />
+type CardProps = React.HTMLAttributes<HTMLDivElement> & {
+  customClass?: string;
+};
+
+export const Card = forwardRef<HTMLDivElement, CardProps>(({ customClass, className, ...rest }, ref) => (
+  <div ref={ref} {...rest} className={`card ${customClass ?? ''} ${className ?? ''}`.trim()} />
 ));
 Card.displayName = 'Card';
 
-const makeSlot = (i, distX, distY, total) => ({
+export const makeSlot = (i: number, distX: number, distY: number, total: number) => ({
   x: i * distX,
   y: -i * distY,
   z: -i * distX * 1.5,
   zIndex: total - i
 });
-const placeNow = (el, slot, skew) =>
+const placeNow = (
+  el: HTMLElement | null,
+  slot: { x: number; y: number; z: number; zIndex: number },
+  skew: number
+) =>
+  el &&
   gsap.set(el, {
     x: slot.x,
     y: slot.y,
@@ -37,7 +47,7 @@ const CardSwap = ({
   skewAmount = 6,
   easing = 'elastic',
   children
-}) => {
+}: any) => {
   const config =
     easing === 'elastic'
       ? {
@@ -59,16 +69,16 @@ const CardSwap = ({
 
   const childArr = useMemo(() => Children.toArray(children), [children]);
   const refs = useMemo(
-    () => childArr.map(() => React.createRef()),
+    () => childArr.map(() => React.createRef<HTMLDivElement>()),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [childArr.length]
   );
 
   const order = useRef(Array.from({ length: childArr.length }, (_, i) => i));
 
-  const tlRef = useRef(null);
-  const intervalRef = useRef();
-  const container = useRef(null);
+  const tlRef = useRef<gsap.core.Timeline | null>(null);
+  const intervalRef = useRef<number | null>(null);
+  const container = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const total = refs.length;
@@ -89,7 +99,7 @@ const CardSwap = ({
       });
 
       tl.addLabel('promote', `-=${config.durDrop * config.promoteOverlap}`);
-      rest.forEach((idx, i) => {
+      rest.forEach((idx: number, i: number) => {
         const el = refs[idx].current;
         const slot = makeSlot(i, cardDistance, verticalDistance, refs.length);
         tl.set(el, { zIndex: slot.zIndex }, 'promote');
@@ -137,9 +147,10 @@ const CardSwap = ({
 
     if (pauseOnHover) {
       const node = container.current;
+      if (!node) return () => {};
       const pause = () => {
         tlRef.current?.pause();
-        clearInterval(intervalRef.current);
+          if (intervalRef.current != null) clearInterval(intervalRef.current);
       };
       const resume = () => {
         tlRef.current?.play();
@@ -150,21 +161,23 @@ const CardSwap = ({
       return () => {
         node.removeEventListener('mouseenter', pause);
         node.removeEventListener('mouseleave', resume);
-        clearInterval(intervalRef.current);
+        if (intervalRef.current != null) clearInterval(intervalRef.current);
       };
     }
-    return () => clearInterval(intervalRef.current);
+    return () => {
+      if (intervalRef.current != null) clearInterval(intervalRef.current);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cardDistance, verticalDistance, delay, pauseOnHover, skewAmount, easing]);
 
-  const rendered = childArr.map((child, i) =>
+  const rendered = childArr.map((child: any, i: number) =>
     isValidElement(child)
-      ? cloneElement(child, {
+      ? cloneElement(child as React.ReactElement<any>, {
           key: i,
           ref: refs[i],
-          style: { width, height, ...(child.props.style ?? {}) },
-          onClick: e => {
-            child.props.onClick?.(e);
+          style: { width, height, ...((child.props as any).style ?? {}) },
+          onClick: (e: React.MouseEvent) => {
+            (child.props as any).onClick?.(e);
             onCardClick?.(i);
           }
         })
@@ -178,4 +191,4 @@ const CardSwap = ({
   );
 };
 
-export default CardSwap;
+export { CardSwap };

@@ -27,3 +27,5 @@ export { LogoLoop }       from "./animations/LogoLoop/LogoLoop"
 export { ScrollStack }    from "./animations/ScrollStack/ScrollStack"
 
 export { GooeyNav }       from "./nav/GooeyNav/GooeyNav"
+
+export { DecryptedText }  from "./text-animations/DecryptedText/DecryptedText"

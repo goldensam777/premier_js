@@ -1,5 +1,6 @@
 'use client';
 
+import { cn } from "@premier-js/core"
 import { useEffect, useRef, useState, useCallback } from 'react';
 import './MetallicPaint.css';
 
@@ -142,7 +143,7 @@ void main(){
   oC=vec4(col*vs,vs);
 }`;
 
-function processImage(img) {
+function processImage(img: HTMLImageElement): ImageData {
   const MAX_SIZE = 1000;
   const MIN_SIZE = 500;
   let width = img.naturalWidth || img.width;
@@ -169,6 +170,9 @@ function processImage(img) {
   canvas.width = width;
   canvas.height = height;
   const ctx = canvas.getContext('2d');
+  if (!ctx) {
+    throw new Error('Unable to acquire 2D context for image processing.');
+  }
   ctx.drawImage(img, 0, 0, width, height);
 
   const imageData = ctx.getImageData(0, 0, width, height);
@@ -245,14 +249,14 @@ function processImage(img) {
   return outData;
 }
 
-function hexToRgb(hex) {
+function hexToRgb(hex: string): [number, number, number] {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
   return result
     ? [parseInt(result[1], 16) / 255, parseInt(result[2], 16) / 255, parseInt(result[3], 16) / 255]
     : [1, 1, 1];
 }
 
-export default function MetallicPaint({
+export function MetallicPaint({
   imageSrc,
   seed = 42,
   scale = 4,
@@ -264,7 +268,7 @@ export default function MetallicPaint({
   contrast = 0.5,
   angle = 0,
   fresnel = 1,
-  lightColor = '#ffffff',
+  lightColor = 'var(--gs-text)',
   darkColor = '#000000',
   patternSharpness = 1,
   waveAmplitude = 1,
@@ -274,16 +278,16 @@ export default function MetallicPaint({
   distortion = 1,
   contour = 0.2,
   tintColor = '#feb3ff'
-}) {
-  const canvasRef = useRef(null);
-  const glRef = useRef(null);
-  const programRef = useRef(null);
-  const uniformsRef = useRef({});
-  const textureRef = useRef(null);
+}: any) {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const glRef = useRef<any>(null);
+  const programRef = useRef<any>(null);
+  const uniformsRef = useRef<any>({});
+  const textureRef = useRef<any>(null);
   const animTimeRef = useRef(0);
   const lastTimeRef = useRef(0);
-  const rafRef = useRef(null);
-  const imgDataRef = useRef(null);
+  const rafRef = useRef<any>(null);
+  const imgDataRef = useRef<any>(null);
   const speedRef = useRef(speed);
   const mouseRef = useRef({ x: 0.5, y: 0.5, targetX: 0.5, targetY: 0.5 });
   const mouseAnimRef = useRef(mouseAnimation);
@@ -302,11 +306,12 @@ export default function MetallicPaint({
     const canvas = canvasRef.current;
     if (!canvas) return false;
 
-    const gl = canvas.getContext('webgl2', { antialias: true, alpha: true });
+    const gl = canvas.getContext('webgl2', { antialias: true, alpha: true }) as WebGL2RenderingContext | null;
     if (!gl) return false;
 
-    const compile = (src, type) => {
+    const compile = (src: string, type: number): WebGLShader | null => {
       const s = gl.createShader(type);
+      if (!s) return null;
       gl.shaderSource(s, src);
       gl.compileShader(s);
       if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) {
@@ -321,6 +326,7 @@ export default function MetallicPaint({
     if (!vs || !fs) return false;
 
     const prog = gl.createProgram();
+    if (!prog) return false;
     gl.attachShader(prog, vs);
     gl.attachShader(prog, fs);
     gl.linkProgram(prog);
@@ -329,7 +335,7 @@ export default function MetallicPaint({
       return false;
     }
 
-    const uniforms = {};
+    const uniforms: Record<string, WebGLUniformLocation | null> = {};
     const count = gl.getProgramParameter(prog, gl.ACTIVE_UNIFORMS);
     for (let i = 0; i < count; i++) {
       const info = gl.getActiveUniform(prog, i);
@@ -353,7 +359,7 @@ export default function MetallicPaint({
     return true;
   }, []);
 
-  const uploadTexture = useCallback(imgData => {
+  const uploadTexture = useCallback((imgData: ImageData | null) => {
     const gl = glRef.current;
     const uniforms = uniformsRef.current;
     if (!gl || !imgData) return;
@@ -382,10 +388,11 @@ export default function MetallicPaint({
     if (!initGL()) return;
 
     const canvas = canvasRef.current;
+    if (!canvas) return;
     const gl = glRef.current;
     const side = 1000 * devicePixelRatio;
-    canvas.width = side;
-    canvas.height = side;
+    canvas!.width = side;
+    canvas!.height = side;
     gl.viewport(0, 0, side, side);
 
     setReady(true);
@@ -468,8 +475,9 @@ export default function MetallicPaint({
     const u = uniformsRef.current;
     const canvas = canvasRef.current;
     const mouse = mouseRef.current;
+    if (!gl || !canvas) return;
 
-    const handleMouseMove = e => {
+    const handleMouseMove = (e: MouseEvent) => {
       const rect = canvas.getBoundingClientRect();
       mouse.targetX = (e.clientX - rect.left) / rect.width;
       mouse.targetY = (e.clientY - rect.top) / rect.height;
@@ -477,7 +485,7 @@ export default function MetallicPaint({
 
     canvas.addEventListener('mousemove', handleMouseMove);
 
-    const render = time => {
+    const render = (time: number) => {
       const delta = time - lastTimeRef.current;
       lastTimeRef.current = time;
 

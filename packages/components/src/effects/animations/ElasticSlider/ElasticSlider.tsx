@@ -1,3 +1,4 @@
+import { cn } from "@premier-js/core"
 import { animate, motion, useMotionValue, useMotionValueEvent, useTransform } from 'motion/react';
 import { useEffect, useRef, useState } from 'react';
 import { Icon } from '@chakra-ui/react';
@@ -7,7 +8,7 @@ import './ElasticSlider.css';
 
 const MAX_OVERFLOW = 50;
 
-export default function ElasticSlider({
+export function ElasticSlider({
   defaultValue = 50,
   startingValue = 0,
   maxValue = 100,
@@ -18,7 +19,7 @@ export default function ElasticSlider({
   rightIcon = <Icon as={RiVolumeUpFill} />
 }) {
   return (
-    <div className={`slider-container ${className}`}>
+    <div className={cn("slider-container", className)}>
       <Slider
         defaultValue={defaultValue}
         startingValue={startingValue}
@@ -32,9 +33,9 @@ export default function ElasticSlider({
   );
 }
 
-function Slider({ defaultValue, startingValue, maxValue, isStepped, stepSize, leftIcon, rightIcon }) {
+function Slider({ defaultValue, startingValue, maxValue, isStepped, stepSize, leftIcon, rightIcon }: any) {
   const [value, setValue] = useState(defaultValue);
-  const sliderRef = useRef(null);
+  const sliderRef = useRef<any>(null);
   const [region, setRegion] = useState('middle');
   const clientX = useMotionValue(0);
   const overflow = useMotionValue(0);
@@ -46,9 +47,8 @@ function Slider({ defaultValue, startingValue, maxValue, isStepped, stepSize, le
 
   useMotionValueEvent(clientX, 'change', latest => {
     if (sliderRef.current) {
-      const { left, right } = sliderRef.current.getBoundingClientRect();
-      let newValue;
-
+      const { left, right } = sliderRef.current!.getBoundingClientRect();
+      let newValue: any;
       if (latest < left) {
         setRegion('left');
         newValue = left - latest;
@@ -64,9 +64,9 @@ function Slider({ defaultValue, startingValue, maxValue, isStepped, stepSize, le
     }
   });
 
-  const handlePointerMove = e => {
+  const handlePointerMove = (e: any) => {
     if (e.buttons > 0 && sliderRef.current) {
-      const { left, width } = sliderRef.current.getBoundingClientRect();
+      const { left, width } = sliderRef.current!.getBoundingClientRect();
       let newValue = startingValue + ((e.clientX - left) / width) * (maxValue - startingValue);
 
       if (isStepped) {
@@ -79,7 +79,7 @@ function Slider({ defaultValue, startingValue, maxValue, isStepped, stepSize, le
     }
   };
 
-  const handlePointerDown = e => {
+  const handlePointerDown = (e: any) => {
     handlePointerMove(e);
     e.currentTarget.setPointerCapture(e.pointerId);
   };
@@ -133,14 +133,14 @@ function Slider({ defaultValue, startingValue, maxValue, isStepped, stepSize, le
             style={{
               scaleX: useTransform(() => {
                 if (sliderRef.current) {
-                  const { width } = sliderRef.current.getBoundingClientRect();
+                  const { width } = sliderRef.current!.getBoundingClientRect();
                   return 1 + overflow.get() / width;
                 }
               }),
               scaleY: useTransform(overflow, [0, MAX_OVERFLOW], [1, 0.8]),
               transformOrigin: useTransform(() => {
                 if (sliderRef.current) {
-                  const { left, width } = sliderRef.current.getBoundingClientRect();
+                  const { left, width } = sliderRef.current!.getBoundingClientRect();
                   return clientX.get() < left + width / 2 ? 'right' : 'left';
                 }
               }),
@@ -173,7 +173,7 @@ function Slider({ defaultValue, startingValue, maxValue, isStepped, stepSize, le
   );
 }
 
-function decay(value, max) {
+function decay(value: any, max: any) {
   if (max === 0) {
     return 0;
   }

@@ -1,9 +1,19 @@
+import { cn } from "@premier-js/core"
 import { useEffect, useRef } from 'react';
 import { Renderer, Transform, Vec3, Color, Polyline } from 'ogl';
 
 import './Ribbons.css';
 
-const Ribbons = ({
+type RibbonLine = {
+  spring: number;
+  friction: number;
+  mouseVelocity: Vec3;
+  mouseOffset: Vec3;
+  points: Vec3[];
+  polyline: Polyline;
+};
+
+export const Ribbons = ({
   colors = ['#FC8EAC'],
   baseSpring = 0.03,
   baseFriction = 0.9,
@@ -16,12 +26,12 @@ const Ribbons = ({
   enableShaderEffect = false,
   effectAmplitude = 2,
   backgroundColor = [0, 0, 0, 0]
-}) => {
-  const containerRef = useRef(null);
+}: any) => {
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
+    const containerEl = containerRef.current;
+    if (!containerEl) return;
 
     const renderer = new Renderer({ dpr: window.devicePixelRatio || 2, alpha: true });
     const gl = renderer.gl;
@@ -31,15 +41,15 @@ const Ribbons = ({
       gl.clearColor(0, 0, 0, 0);
     }
 
-    gl.canvas.style.position = 'absolute';
-    gl.canvas.style.top = '0';
-    gl.canvas.style.left = '0';
-    gl.canvas.style.width = '100%';
-    gl.canvas.style.height = '100%';
-    container.appendChild(gl.canvas);
+    gl.canvas!.style.position = 'absolute';
+    gl.canvas!.style.top = '0';
+    gl.canvas!.style.left = '0';
+    gl.canvas!.style.width = '100%';
+    gl.canvas!.style.height = '100%';
+    containerEl.appendChild(gl.canvas);
 
     const scene = new Transform();
-    const lines = [];
+    const lines: RibbonLine[] = [];
 
     const vertex = `
       precision highp float;
@@ -102,15 +112,15 @@ const Ribbons = ({
     `;
 
     function resize() {
-      const width = container.clientWidth;
-      const height = container.clientHeight;
+      const width = containerEl!.clientWidth;
+      const height = containerEl!.clientHeight;
       renderer.setSize(width, height);
       lines.forEach(line => line.polyline.resize());
     }
     window.addEventListener('resize', resize);
 
     const center = (colors.length - 1) / 2;
-    colors.forEach((color, index) => {
+    colors.forEach((color: string, index: number) => {
       const spring = baseSpring + (Math.random() - 0.5) * 0.05;
       const friction = baseFriction + (Math.random() - 0.5) * 0.05;
       const thickness = baseThickness + (Math.random() - 0.5) * 3;
@@ -125,10 +135,10 @@ const Ribbons = ({
         friction,
         mouseVelocity: new Vec3(),
         mouseOffset
-      };
+      } as RibbonLine;
 
       const count = pointCount;
-      const points = [];
+      const points: Vec3[] = [];
       for (let i = 0; i < count; i++) {
         points.push(new Vec3());
       }
@@ -155,26 +165,28 @@ const Ribbons = ({
     resize();
 
     const mouse = new Vec3();
-    function updateMouse(e) {
-      let x, y;
-      const rect = container.getBoundingClientRect();
-      if (e.changedTouches && e.changedTouches.length) {
+    function updateMouse(e: MouseEvent | TouchEvent) {
+      let x = 0;
+      let y = 0;
+      const rect = containerEl!.getBoundingClientRect();
+      if ('changedTouches' in e && e.changedTouches.length) {
         x = e.changedTouches[0].clientX - rect.left;
         y = e.changedTouches[0].clientY - rect.top;
       } else {
-        x = e.clientX - rect.left;
-        y = e.clientY - rect.top;
+        const mouseEvent = e as MouseEvent;
+        x = mouseEvent.clientX - rect.left;
+        y = mouseEvent.clientY - rect.top;
       }
-      const width = container.clientWidth;
-      const height = container.clientHeight;
+      const width = containerEl!.clientWidth;
+      const height = containerEl!.clientHeight;
       mouse.set((x / width) * 2 - 1, (y / height) * -2 + 1, 0);
     }
-    container.addEventListener('mousemove', updateMouse);
-    container.addEventListener('touchstart', updateMouse);
-    container.addEventListener('touchmove', updateMouse);
+    containerEl.addEventListener('mousemove', updateMouse);
+    containerEl.addEventListener('touchstart', updateMouse);
+    containerEl.addEventListener('touchmove', updateMouse);
 
     const tmp = new Vec3();
-    let frameId;
+    let frameId: number | undefined;
     let lastTime = performance.now();
     function update() {
       frameId = requestAnimationFrame(update);
@@ -196,8 +208,9 @@ const Ribbons = ({
             line.points[i].lerp(line.points[i - 1], 0.9);
           }
         }
-        if (line.polyline.mesh.program.uniforms.uTime) {
-          line.polyline.mesh.program.uniforms.uTime.value = currentTime * 0.001;
+        const uniforms = line.polyline.mesh.program.uniforms as Record<string, { value: number }>;
+        if (uniforms.uTime) {
+          uniforms.uTime.value = currentTime * 0.001;
         }
         line.polyline.updateGeometry();
       });
@@ -208,12 +221,12 @@ const Ribbons = ({
 
     return () => {
       window.removeEventListener('resize', resize);
-      container.removeEventListener('mousemove', updateMouse);
-      container.removeEventListener('touchstart', updateMouse);
-      container.removeEventListener('touchmove', updateMouse);
-      cancelAnimationFrame(frameId);
-      if (gl.canvas && gl.canvas.parentNode === container) {
-        container.removeChild(gl.canvas);
+      containerEl.removeEventListener('mousemove', updateMouse);
+      containerEl.removeEventListener('touchstart', updateMouse);
+      containerEl.removeEventListener('touchmove', updateMouse);
+      if (frameId != null) cancelAnimationFrame(frameId);
+      if (gl.canvas && gl.canvas.parentNode === containerEl) {
+        containerEl.removeChild(gl.canvas);
       }
     };
   }, [
@@ -233,5 +246,3 @@ const Ribbons = ({
 
   return <div ref={containerRef} className="ribbons-container" />;
 };
-
-export default Ribbons;

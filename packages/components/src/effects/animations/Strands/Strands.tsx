@@ -1,3 +1,4 @@
+import { cn } from "@premier-js/core"
 import { Renderer, Program, Mesh, Color, Triangle, RenderTarget } from 'ogl';
 import { useEffect, useRef } from 'react';
 
@@ -171,9 +172,9 @@ void main() {
 }
 `;
 
-const buildPalette = colors => {
-  const filled = colors && colors.length ? colors : ['#ffffff'];
-  const padded = [];
+const buildPalette = (colors: string[]) => {
+  const filled = colors && colors.length ? colors : ['var(--gs-text)'];
+  const padded: [number, number, number][] = [];
   for (let i = 0; i < MAX_COLORS; i++) {
     const hex = filled[i] ?? filled[filled.length - 1];
     const c = new Color(hex);
@@ -182,7 +183,7 @@ const buildPalette = colors => {
   return padded;
 };
 
-export default function Strands({
+export function Strands({
   colors = ['#FF4242', '#7C3AED', '#06B6D4', '#EAB308'],
   count = 3,
   speed = 0.5,
@@ -203,8 +204,8 @@ export default function Strands({
   glassSize = 1,
   className = '',
   style
-}) {
-  const propsRef = useRef({});
+}: any) {
+  const propsRef = useRef<any>({});
   propsRef.current = {
     colors,
     count,
@@ -226,7 +227,7 @@ export default function Strands({
     glassSize
   };
 
-  const ctnDom = useRef(null);
+  const ctnDom = useRef<any>(null);
 
   useEffect(() => {
     const ctn = ctnDom.current;
@@ -241,7 +242,7 @@ export default function Strands({
     gl.clearColor(0, 0, 0, 0);
     gl.enable(gl.BLEND);
     gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
-    gl.canvas.style.backgroundColor = 'transparent';
+    gl.canvas!.style.backgroundColor = 'transparent';
 
     const geometry = new Triangle(gl);
     if (geometry.attributes.uv) {
@@ -254,9 +255,9 @@ export default function Strands({
       uniforms: {
         uTime: { value: 0 },
         uResolution: { value: [ctn.offsetWidth, ctn.offsetHeight] },
-        uColors: { value: buildPalette(propsRef.current.colors) },
-        uColorCount: { value: Math.min(propsRef.current.colors.length, MAX_COLORS) },
-        uStrandCount: { value: Math.min(propsRef.current.count, MAX_STRANDS) },
+        uColors: { value: buildPalette((propsRef.current as any).colors) },
+        uColorCount: { value: Math.min((propsRef.current as any).colors.length, MAX_COLORS) },
+        uStrandCount: { value: Math.min((propsRef.current as any).count, MAX_STRANDS) },
         uSpeed: { value: speed },
         uAmplitude: { value: amplitude },
         uWaviness: { value: waviness },
@@ -307,7 +308,7 @@ export default function Strands({
     resize();
 
     let animateId = 0;
-    const update = t => {
+    const update = (t: number) => {
       animateId = requestAnimationFrame(update);
       const current = propsRef.current;
       program.uniforms.uTime.value = t * 0.001;
@@ -351,5 +352,5 @@ export default function Strands({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return <div ref={ctnDom} className={`strands-container ${className}`} style={style} />;
+  return <div ref={ctnDom} className={cn("strands-container", className)} style={style} />;
 }

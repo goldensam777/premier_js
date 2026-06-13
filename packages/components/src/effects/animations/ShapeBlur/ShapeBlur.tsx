@@ -1,5 +1,17 @@
+import { cn } from "@premier-js/core"
 import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
+
+type ShapeBlurProps = {
+  className?: string;
+  variation?: number;
+  pixelRatioProp?: number;
+  shapeSize?: number;
+  roundness?: number;
+  borderSize?: number;
+  circleSize?: number;
+  circleEdge?: number;
+};
 
 const vertexShader = /* glsl */ `
 varying vec2 v_texcoord;
@@ -125,7 +137,7 @@ void main() {
 }
 `;
 
-const ShapeBlur = ({
+export const ShapeBlur = ({
   className = '',
   variation = 0,
   pixelRatioProp = 2,
@@ -134,17 +146,17 @@ const ShapeBlur = ({
   borderSize = 0.05,
   circleSize = 0.3,
   circleEdge = 0.5
-}) => {
-  const mountRef = useRef();
+}: ShapeBlurProps) => {
+  const mountRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const mount = mountRef.current;
     if (!mount) return;
 
     let active = true;
-    let animationFrameId;
-    let time = 0,
-      lastTime = 0;
+    let animationFrameId: number | undefined;
+    let time = 0;
+    let lastTime = 0;
 
     const vMouse = new THREE.Vector2();
     const vMouseDamp = new THREE.Vector2();
@@ -182,7 +194,7 @@ const ShapeBlur = ({
     const quad = new THREE.Mesh(geo, material);
     scene.add(quad);
 
-    const onPointerMove = e => {
+    const onPointerMove = (e: MouseEvent) => {
       const rect = mount.getBoundingClientRect();
       vMouse.set(e.clientX - rect.left, e.clientY - rect.top);
     };
@@ -225,7 +237,7 @@ const ShapeBlur = ({
       const dt = time - lastTime;
       lastTime = time;
 
-      ['x', 'y'].forEach(k => {
+      (['x', 'y'] as const).forEach(k => {
         vMouseDamp[k] = THREE.MathUtils.damp(vMouseDamp[k], vMouse[k], 8, dt);
       });
 
@@ -237,7 +249,7 @@ const ShapeBlur = ({
     return () => {
       active = false;
 
-      cancelAnimationFrame(animationFrameId);
+      if (animationFrameId != null) cancelAnimationFrame(animationFrameId);
       window.removeEventListener('resize', resize);
       ro.disconnect();
       document.removeEventListener('mousemove', onPointerMove);
@@ -252,5 +264,3 @@ const ShapeBlur = ({
 
   return <div className={className} ref={mountRef} style={{ width: '100%', height: '100%' }} />;
 };
-
-export default ShapeBlur;

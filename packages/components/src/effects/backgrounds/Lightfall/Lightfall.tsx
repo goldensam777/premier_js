@@ -1,23 +1,24 @@
+import { cn } from "@premier-js/core"
 import { useEffect, useRef } from 'react';
 import { Renderer, Program, Mesh, Triangle } from 'ogl';
 import './Lightfall.css';
 
 const MAX_COLORS = 8;
 
-const hexToRGB = hex => {
+const hexToRGB = (hex: string): [number, number, number] => {
   const c = hex.replace('#', '').padEnd(6, '0');
   const r = parseInt(c.slice(0, 2), 16) / 255;
   const g = parseInt(c.slice(2, 4), 16) / 255;
   const b = parseInt(c.slice(4, 6), 16) / 255;
-  return [r, g, b];
+  return [r, g, b] as [number, number, number];
 };
 
-const prepColors = input => {
+const prepColors = (input: string[]) => {
   const base = (input && input.length ? input : ['#A6C8FF', '#5227FF', '#FF9FFC']).slice(0, MAX_COLORS);
   const count = base.length;
-  const arr = [];
+  const arr: [number, number, number][] = [];
   for (let i = 0; i < MAX_COLORS; i++) arr.push(hexToRGB(base[Math.min(i, base.length - 1)]));
-  const avg = [0, 0, 0];
+  const avg: [number, number, number] = [0, 0, 0];
   for (let i = 0; i < count; i++) {
     avg[0] += arr[i][0];
     avg[1] += arr[i][1];
@@ -166,7 +167,7 @@ void main() {
 }
 `;
 
-const Lightfall = ({
+export const Lightfall = ({
   className,
   dpr,
   paused = false,
@@ -187,13 +188,13 @@ const Lightfall = ({
   mouseRadius = 1,
   mouseDampening = 0.15,
   mixBlendMode
-}) => {
-  const containerRef = useRef(null);
-  const rafRef = useRef(null);
-  const programRef = useRef(null);
-  const meshRef = useRef(null);
-  const geometryRef = useRef(null);
-  const rendererRef = useRef(null);
+}: any) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const rafRef = useRef<any>(null);
+  const programRef = useRef<any>(null);
+  const meshRef = useRef<any>(null);
+  const geometryRef = useRef<any>(null);
+  const rendererRef = useRef<any>(null);
   const mouseTargetRef = useRef([0, 0]);
   const lastTimeRef = useRef(0);
 
@@ -208,11 +209,11 @@ const Lightfall = ({
     });
     rendererRef.current = renderer;
     const gl = renderer.gl;
-    const canvas = gl.canvas;
+    const canvas = gl.canvas as HTMLCanvasElement;
 
-    canvas.style.width = '100%';
-    canvas.style.height = '100%';
-    canvas.style.display = 'block';
+    canvas!.style.width = '100%';
+    canvas!.style.height = '100%';
+    canvas!.style.display = 'block';
     container.appendChild(canvas);
 
     const { arr, count, avg } = prepColors(colors);
@@ -265,7 +266,7 @@ const Lightfall = ({
     const ro = new ResizeObserver(resize);
     ro.observe(container);
 
-    const onPointerMove = e => {
+    const onPointerMove = (e: PointerEvent) => {
       const rect = canvas.getBoundingClientRect();
       const scale = renderer.dpr || 1;
       const x = (e.clientX - rect.left) * scale;
@@ -279,7 +280,7 @@ const Lightfall = ({
       canvas.addEventListener('pointermove', onPointerMove);
     }
 
-    const loop = t => {
+    const loop = (t: number) => {
       rafRef.current = requestAnimationFrame(loop);
       uniforms.iTime.value = t * 0.001;
       if (mouseDampening > 0) {
@@ -310,10 +311,10 @@ const Lightfall = ({
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
       if (mouseInteraction) canvas.removeEventListener('pointermove', onPointerMove);
       ro.disconnect();
-      if (canvas.parentElement === container) {
+      if (canvas.parentElement! === container) {
         container.removeChild(canvas);
       }
-      const callIfFn = (obj, key) => {
+      const callIfFn = (obj: Record<string, unknown> | null, key: string) => {
         if (obj && typeof obj[key] === 'function') {
           obj[key].call(obj);
         }
@@ -351,12 +352,10 @@ const Lightfall = ({
   return (
     <div
       ref={containerRef}
-      className={`lightfall-container ${className ?? ''}`}
+      className={cn("lightfall-container", className ?? '')}
       style={{
         ...(mixBlendMode && { mixBlendMode })
       }}
     />
   );
 };
-
-export default Lightfall;

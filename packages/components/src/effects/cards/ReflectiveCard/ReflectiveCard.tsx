@@ -1,8 +1,9 @@
-import { useEffect, useRef } from 'react';
+import { cn } from "@premier-js/core"
+import { useEffect, useRef, type CSSProperties } from 'react';
 import './ReflectiveCard.css';
 import { Fingerprint, Activity, Lock } from 'lucide-react';
 
-const ReflectiveCard = ({
+export const ReflectiveCard = ({
   blurStrength = 12,
   color = 'white',
   metalness = 1,
@@ -15,11 +16,24 @@ const ReflectiveCard = ({
   glassDistortion = 0,
   className = '',
   style = {}
+}: {
+  blurStrength?: number;
+  color?: string;
+  metalness?: number;
+  roughness?: number;
+  overlayColor?: string;
+  displacementStrength?: number;
+  noiseScale?: number;
+  specularConstant?: number;
+  grayscale?: number;
+  glassDistortion?: number;
+  className?: string;
+  style?: CSSProperties;
 }) => {
-  const videoRef = useRef(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    let stream = null;
+    let stream: MediaStream | null = null;
 
     const startWebcam = async () => {
       try {
@@ -43,7 +57,7 @@ const ReflectiveCard = ({
 
     return () => {
       if (stream) {
-        stream.getTracks().forEach(track => track.stop());
+        stream.getTracks().forEach((track: MediaStreamTrack) => track.stop());
       }
     };
   }, []);
@@ -51,7 +65,7 @@ const ReflectiveCard = ({
   const baseFrequency = 0.03 / Math.max(0.1, noiseScale);
   const saturation = 1 - Math.max(0, Math.min(1, grayscale));
 
-  const cssVariables = {
+  const cssVariables: CSSProperties & Record<string, string | number> = {
     '--blur-strength': `${blurStrength}px`,
     '--metalness': metalness,
     '--roughness': roughness,
@@ -61,7 +75,7 @@ const ReflectiveCard = ({
   };
 
   return (
-    <div className={`reflective-card-container ${className}`} style={{ ...style, ...cssVariables }}>
+    <div className={cn("reflective-card-container", className)} style={{ ...style, ...cssVariables }}>
       <svg className="reflective-svg-filters" aria-hidden="true">
         <defs>
           <filter id="metallic-displacement" x="-20%" y="-20%" width="140%" height="140%">
@@ -80,7 +94,7 @@ const ReflectiveCard = ({
               surfaceScale={displacementStrength}
               specularConstant={specularConstant}
               specularExponent="20"
-              lightingColor="#ffffff"
+              lightingColor="var(--gs-text)"
               result="light"
             >
               <fePointLight x="0" y="0" z="300" />
@@ -145,5 +159,3 @@ const ReflectiveCard = ({
     </div>
   );
 };
-
-export default ReflectiveCard;

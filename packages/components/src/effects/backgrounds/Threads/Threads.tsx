@@ -1,3 +1,4 @@
+import { cn } from "@premier-js/core"
 import { useEffect, useRef } from 'react';
 import { Renderer, Program, Mesh, Triangle, Color } from 'ogl';
 
@@ -120,9 +121,9 @@ void main() {
 }
 `;
 
-const Threads = ({ color = [1, 1, 1], amplitude = 1, distance = 0, enableMouseInteraction = false, ...rest }) => {
-  const containerRef = useRef(null);
-  const animationFrameId = useRef();
+const Threads = ({ color = [1, 1, 1], amplitude = 1, distance = 0, enableMouseInteraction = false, ...rest }: any) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const animationFrameId = useRef<number | null>(null);
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -166,7 +167,7 @@ const Threads = ({ color = [1, 1, 1], amplitude = 1, distance = 0, enableMouseIn
     let currentMouse = [0.5, 0.5];
     let targetMouse = [0.5, 0.5];
 
-    function handleMouseMove(e) {
+    function handleMouseMove(e: any) {
       const rect = container.getBoundingClientRect();
       const x = (e.clientX - rect.left) / rect.width;
       const y = 1.0 - (e.clientY - rect.top) / rect.height;
@@ -180,7 +181,7 @@ const Threads = ({ color = [1, 1, 1], amplitude = 1, distance = 0, enableMouseIn
       container.addEventListener('mouseleave', handleMouseLeave);
     }
 
-    function update(t) {
+    function update(t: any) {
       if (enableMouseInteraction) {
         const smoothing = 0.05;
         currentMouse[0] += smoothing * (targetMouse[0] - currentMouse[0]);
@@ -214,4 +215,5 @@ const Threads = ({ color = [1, 1, 1], amplitude = 1, distance = 0, enableMouseIn
   return <div ref={containerRef} className="threads-container" {...rest} />;
 };
 
-export default Threads;
+
+export { Threads }

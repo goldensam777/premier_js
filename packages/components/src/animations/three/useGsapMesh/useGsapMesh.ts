@@ -27,7 +27,7 @@ export function useGsapMesh(options: GsapMeshOptions) {
       }
     )
 
-    return () => { gsap.killTweensOf(meshRef.current?.position) }
+    return () => { if (meshRef.current) gsap.killTweensOf(meshRef.current.position) }
   }, [])
 
   return meshRef

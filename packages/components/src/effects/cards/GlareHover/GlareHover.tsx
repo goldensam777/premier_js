@@ -1,22 +1,40 @@
+import { cn } from "@premier-js/core"
 import './GlareHover.css';
 
-const GlareHover = ({
+interface GlareHoverProps {
+  children: React.ReactNode
+  width?: string
+  height?: string
+  background?: string
+  borderRadius?: string
+  borderColor?: string
+  glareColor?: string
+  glareOpacity?: number
+  glareAngle?: number
+  glareSize?: number
+  transitionDuration?: number
+  playOnce?: boolean
+  className?: string
+  style?: React.CSSProperties
+}
+
+export function GlareHover({
   width = '500px',
   height = '500px',
-  background = '#000',
+  background = 'var(--gs-bg)',
   borderRadius = '10px',
-  borderColor = '#333',
+  borderColor = 'var(--gs-border)',
   children,
-  glareColor = '#ffffff',
+  glareColor = 'var(--gs-text)',
   glareOpacity = 0.5,
   glareAngle = -45,
   glareSize = 250,
   transitionDuration = 650,
   playOnce = false,
-  className = '',
+  className,
   style = {}
-}) => {
-  const hex = glareColor.replace('#', '');
+}: GlareHoverProps) {
+  const hex = typeof glareColor === 'string' ? glareColor.replace('#', '') : '';
   let rgba = glareColor;
   if (/^[0-9A-Fa-f]{6}$/.test(hex)) {
     const r = parseInt(hex.slice(0, 2), 16);
@@ -44,12 +62,10 @@ const GlareHover = ({
 
   return (
     <div
-      className={`glare-hover ${playOnce ? 'glare-hover--play-once' : ''} ${className}`}
+      className={cn("glare-hover", playOnce && "glare-hover--play-once", className)}
       style={{ ...vars, ...style }}
     >
       {children}
     </div>
   );
-};
-
-export default GlareHover;
+}

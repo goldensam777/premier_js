@@ -1,3 +1,4 @@
+import { cn } from "@premier-js/core"
 import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 
@@ -63,7 +64,7 @@ void main() {
 }
 `;
 
-export default function MagicRings({
+export function MagicRings({
   color = '#fc42ff',
   colorTwo = '#42fcff',
   speed = 1,
@@ -86,8 +87,8 @@ export default function MagicRings({
   parallax = 0.05,
   clickBurst = false,
 }) {
-  const mountRef = useRef(null);
-  const propsRef = useRef(null);
+  const mountRef = useRef<any>(null);
+  const propsRef = useRef<any>(null);
   const mouseRef = useRef([0, 0]);
   const smoothMouseRef = useRef([0, 0]);
   const hoverAmountRef = useRef(0);
@@ -167,7 +168,7 @@ export default function MagicRings({
     const ro = new ResizeObserver(resize);
     ro.observe(mount);
 
-    const onMouseMove = (e) => {
+    const onMouseMove = (e: any) => {
       const rect = mount.getBoundingClientRect();
       mouseRef.current[0] = (e.clientX - rect.left) / rect.width - 0.5;
       mouseRef.current[1] = -((e.clientY - rect.top) / rect.height - 0.5);
@@ -185,8 +186,8 @@ export default function MagicRings({
     mount.addEventListener('mouseleave', onMouseLeave);
     mount.addEventListener('click', onClick);
 
-    let frameId;
-    const animate = (t) => {
+    let frameId: any;
+    const animate = (t: any) => {
       frameId = requestAnimationFrame(animate);
       const p = propsRef.current;
 

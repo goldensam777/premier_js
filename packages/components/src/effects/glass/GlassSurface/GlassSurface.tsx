@@ -1,8 +1,32 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import { cn } from "@premier-js/core"
 import { useEffect, useState, useRef, useId } from 'react';
 import './GlassSurface.css';
 
-const GlassSurface = ({
+interface GlassSurfaceProps {
+  children: React.ReactNode
+  width?: number
+  height?: number
+  borderRadius?: number
+  borderWidth?: number
+  brightness?: number
+  opacity?: number
+  blur?: number
+  displace?: number
+  backgroundOpacity?: number
+  saturation?: number
+  distortionScale?: number
+  redOffset?: number
+  greenOffset?: number
+  blueOffset?: number
+  xChannel?: string
+  yChannel?: string
+  mixBlendMode?: string
+  className?: string
+  style?: React.CSSProperties
+}
+
+export function GlassSurface({
   children,
   width = 200,
   height = 80,
@@ -21,9 +45,9 @@ const GlassSurface = ({
   xChannel = 'R',
   yChannel = 'G',
   mixBlendMode = 'difference',
-  className = '',
+  className,
   style = {}
-}) => {
+}: GlassSurfaceProps) {
   const uniqueId = useId().replace(/:/g, '-');
   const filterId = `glass-filter-${uniqueId}`;
   const redGradId = `red-grad-${uniqueId}`;
@@ -31,12 +55,12 @@ const GlassSurface = ({
 
   const [svgSupported, setSvgSupported] = useState(false);
 
-  const containerRef = useRef(null);
-  const feImageRef = useRef(null);
-  const redChannelRef = useRef(null);
-  const greenChannelRef = useRef(null);
-  const blueChannelRef = useRef(null);
-  const gaussianBlurRef = useRef(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const feImageRef = useRef<any>(null);
+  const redChannelRef = useRef<any>(null);
+  const greenChannelRef = useRef<any>(null);
+  const blueChannelRef = useRef<any>(null);
+  const gaussianBlurRef = useRef<any>(null);
 
   const generateDisplacementMap = () => {
     const rect = containerRef.current?.getBoundingClientRect();
@@ -76,7 +100,7 @@ const GlassSurface = ({
       { ref: redChannelRef, offset: redOffset },
       { ref: greenChannelRef, offset: greenOffset },
       { ref: blueChannelRef, offset: blueOffset }
-    ].forEach(({ ref, offset }) => {
+    ].forEach(({ ref, offset }: any) => {
       if (ref.current) {
         ref.current.setAttribute('scale', (distortionScale + offset).toString());
         ref.current.setAttribute('xChannelSelector', xChannel);
@@ -170,7 +194,7 @@ const GlassSurface = ({
   return (
     <div
       ref={containerRef}
-      className={`glass-surface ${svgSupported ? 'glass-surface--svg' : 'glass-surface--fallback'} ${className}`}
+      className={cn("glass-surface", svgSupported ? 'glass-surface--svg' : 'glass-surface--fallback', className)}
       style={containerStyle}
     >
       <svg className="glass-surface__filter" xmlns="http://www.w3.org/2000/svg">
@@ -229,4 +253,4 @@ const GlassSurface = ({
   );
 };
 
-export default GlassSurface;
+

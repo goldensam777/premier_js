@@ -1,4 +1,5 @@
 /* eslint-disable react/no-unknown-property */
+import { cn } from "@premier-js/core"
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { useMemo, useRef } from 'react';
 import * as THREE from 'three';
@@ -19,8 +20,8 @@ const AntigravityInner = ({
   pulseSpeed = 3,
   particleShape = 'capsule',
   fieldStrength = 10
-}) => {
-  const meshRef = useRef(null);
+}: any) => {
+  const meshRef = useRef<any>(null);
   const { viewport } = useThree();
   const dummy = useMemo(() => new THREE.Object3D(), []);
 
@@ -100,7 +101,7 @@ const AntigravityInner = ({
 
     const globalRotation = state.clock.getElapsedTime() * rotationSpeed;
 
-    particles.forEach((particle, i) => {
+    particles.forEach((particle: any, i: any) => {
       let { t, speed, mx, my, mz, cz, randomRadiusOffset } = particle;
 
       t = particle.t += speed / 2;
@@ -168,7 +169,7 @@ const AntigravityInner = ({
   );
 };
 
-const Antigravity = props => {
+const Antigravity = (props: any) => {
   return (
     <Canvas camera={{ position: [0, 0, 50], fov: 35 }}>
       <AntigravityInner {...props} />
@@ -176,4 +177,4 @@ const Antigravity = props => {
   );
 };
 
-export default Antigravity;
+export { Antigravity };
