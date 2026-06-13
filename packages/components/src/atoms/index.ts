@@ -58,5 +58,29 @@ export type { TabsProps, TabItem } from "./Tabs"
 export { Stepper } from "./Stepper"
 export type { StepperProps, StepItem } from "./Stepper"
 
+export { Checkbox } from "./Checkbox"
+export type { CheckboxProps } from "./Checkbox"
+
 export { ColorPicker } from "./ColorPicker"
 export type { ColorPickerProps } from "./ColorPicker"
+
+export { Icon } from "./Icon"
+export type { IconProps, IconName } from "./Icon"
+
+export { Label } from "./Label"
+export type { LabelProps } from "./Label"
+
+export { Radio } from "./Radio"
+export type { RadioProps, RadioOption } from "./Radio"
+
+export { ScrollArea } from "./ScrollArea"
+export type { ScrollAreaProps } from "./ScrollArea"
+
+export { Separator } from "./Separator"
+export type { SeparatorProps } from "./Separator"
+
+export { Skeleton } from "./Skeleton"
+export type { SkeletonProps } from "./Skeleton"
+
+export { Switch } from "./Switch"
+export type { SwitchProps } from "./Switch"
