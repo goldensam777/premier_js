@@ -45,7 +45,7 @@
   margin: 0;
   position: relative;
   z-index: 3;
-  color: white;
+  color: var(--gs-text);
   text-shadow: 0 1px 1px hsl(205deg 30% 10% / 0.2);
 }
 
@@ -58,7 +58,7 @@
     color 0.3s ease,
     box-shadow 0.3s ease;
   box-shadow: 0 0 0.5px 1.5px transparent;
-  color: white;
+  color: var(--gs-text);
 }
 
 .gooey-nav-container nav ul li a {
@@ -83,7 +83,7 @@
 }
 
 .gooey-nav-container nav ul li.active {
-  color: black;
+  color: var(--gs-bg);
   text-shadow: none;
 }
 
@@ -106,12 +106,12 @@
 }
 
 .gooey-nav-container .effect.text {
-  color: white;
+  color: var(--gs-text);
   transition: color 0.3s ease;
 }
 
 .gooey-nav-container .effect.text.active {
-  color: black;
+  color: var(--gs-bg);
 }
 
 .gooey-nav-container .effect.filter {
