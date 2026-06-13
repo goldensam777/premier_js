@@ -167,6 +167,29 @@ void main() {
 }
 `;
 
+export interface LightfallProps {
+  className?: string;
+  dpr?: number;
+  paused?: boolean;
+  colors?: string[];
+  backgroundColor?: string;
+  speed?: number;
+  streakCount?: number;
+  streakWidth?: number;
+  streakLength?: number;
+  glow?: number;
+  density?: number;
+  twinkle?: number;
+  zoom?: number;
+  backgroundGlow?: number;
+  opacity?: number;
+  mouseInteraction?: boolean;
+  mouseStrength?: number;
+  mouseRadius?: number;
+  mouseDampening?: number;
+  mixBlendMode?: React.CSSProperties['mixBlendMode'];
+}
+
 export const Lightfall = ({
   className,
   dpr,
@@ -188,7 +211,7 @@ export const Lightfall = ({
   mouseRadius = 1,
   mouseDampening = 0.15,
   mixBlendMode
-}: any) => {
+}: LightfallProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const rafRef = useRef<any>(null);
   const programRef = useRef<any>(null);

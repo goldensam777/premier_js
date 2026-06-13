@@ -4,6 +4,28 @@ import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import './LiquidEther.css';
 
+export interface LiquidEtherProps {
+  mouseForce?: number;
+  cursorSize?: number;
+  isViscous?: boolean;
+  viscous?: number;
+  iterationsViscous?: number;
+  iterationsPoisson?: number;
+  dt?: number;
+  BFECC?: boolean;
+  resolution?: number;
+  isBounce?: boolean;
+  colors?: string[];
+  style?: React.CSSProperties;
+  className?: string;
+  autoDemo?: boolean;
+  autoSpeed?: number;
+  autoIntensity?: number;
+  takeoverDuration?: number;
+  autoResumeDelay?: number;
+  autoRampDuration?: number;
+}
+
 export function LiquidEther({
   mouseForce = 20,
   cursorSize = 100,
@@ -24,7 +46,7 @@ export function LiquidEther({
   takeoverDuration = 0.25,
   autoResumeDelay = 1000,
   autoRampDuration = 0.6
-}) {
+}: LiquidEtherProps) {
   const mountRef = useRef<any>(null);
   const webglRef = useRef<any>(null);
   const resizeObserverRef = useRef<any>(null);

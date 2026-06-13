@@ -121,7 +121,14 @@ void main() {
 }
 `;
 
-const Threads = ({ color = [1, 1, 1], amplitude = 1, distance = 0, enableMouseInteraction = false, ...rest }: any) => {
+export interface ThreadsProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'color'> {
+  color?: [number, number, number];
+  amplitude?: number;
+  distance?: number;
+  enableMouseInteraction?: boolean;
+}
+
+const Threads = ({ color = [1, 1, 1], amplitude = 1, distance = 0, enableMouseInteraction = false, className, ...rest }: ThreadsProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const animationFrameId = useRef<number | null>(null);
 
@@ -212,7 +219,7 @@ const Threads = ({ color = [1, 1, 1], amplitude = 1, distance = 0, enableMouseIn
     };
   }, [color, amplitude, distance, enableMouseInteraction]);
 
-  return <div ref={containerRef} className="threads-container" {...rest} />;
+  return <div ref={containerRef} className={cn("threads-container", className)} {...rest} />;
 };
 
 

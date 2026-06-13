@@ -1,4 +1,5 @@
 "use client";
+import { cn } from "@premier-js/core"
 import { useEffect, useRef } from 'react';
 import { Renderer, Program, Mesh, Triangle } from 'ogl';
 
@@ -394,7 +395,7 @@ export const Ferrofluid: React.FC<FerrofluidProps> = ({
   return (
     <div
       ref={containerRef}
-      className={`w-full h-full overflow-hidden relative ${className ?? ''}`}
+      className={cn("w-full h-full overflow-hidden relative", className)}
       style={{
         ...(mixBlendMode && { mixBlendMode: mixBlendMode as React.CSSProperties['mixBlendMode'] })
       }}

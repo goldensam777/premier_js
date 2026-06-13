@@ -5,6 +5,23 @@ import './DotField.css';
 
 const TWO_PI = Math.PI * 2;
 
+export interface DotFieldProps {
+  dotRadius?: number;
+  dotSpacing?: number;
+  cursorRadius?: number;
+  cursorForce?: number;
+  bulgeOnly?: boolean;
+  bulgeStrength?: number;
+  glowRadius?: number;
+  sparkle?: boolean;
+  waveAmplitude?: number;
+  gradientFrom?: string;
+  gradientTo?: string;
+  glowColor?: string;
+  className?: string;
+  [key: string]: unknown;
+}
+
 const DotField = memo(({
   dotRadius = 3,
   dotSpacing = 14,
@@ -19,7 +36,7 @@ const DotField = memo(({
   gradientTo = 'rgba(180, 151, 207, 0.25)',
   glowColor = '#120F17',
   ...rest
-}: any) => {
+}: DotFieldProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const svgRef = useRef<SVGSVGElement>(null);
   const glowRef = useRef<any>(null);
@@ -231,8 +248,10 @@ const DotField = memo(({
     rebuildRef.current?.();
   }, [dotRadius, dotSpacing]);
 
+  const { className: _cn, ...restProps } = rest as DotFieldProps;
+
   return (
-    <div className="dot-field-container" {...rest}>
+    <div className={cn("dot-field-container", _cn)} {...restProps}>
       <canvas
         ref={canvasRef}
         style={{
