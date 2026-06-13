@@ -43,7 +43,7 @@ export function SequenceTimeline({
         : {}
     )
 
-    steps.forEach(({ target, from, to, at }) => {
+    steps?.forEach(({ target, from, to, at }) => {
       tl.fromTo(target, from, to, at)
     })
 
