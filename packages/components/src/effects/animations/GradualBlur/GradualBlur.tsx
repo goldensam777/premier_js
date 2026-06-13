@@ -23,7 +23,8 @@ type GradualBlurConfig = {
   target: 'parent' | 'page';
   className: string;
   style: React.CSSProperties;
-  [key: string]: unknown;
+  hoverIntensity?: number;
+  onAnimationComplete?: () => void;
 };
 
 type GradualBlurProps = Partial<Omit<GradualBlurConfig, 'position' | 'curve' | 'target' | 'style'>> & {
@@ -96,19 +97,19 @@ const debounce = <T extends (...args: any[]) => void>(fn: T, wait: number) => {
   };
 };
 
-const useResponsiveDimension = (responsive: boolean, config: GradualBlurConfig, key: string) => {
-  const [value, setValue] = useState(config[key]);
+const useResponsiveDimension = (responsive: boolean, config: GradualBlurConfig, key: 'height' | 'width'): string | undefined => {
+  const [value, setValue] = useState<string | undefined>(config[key]);
   useEffect(() => {
     if (!responsive) return;
     const calc = () => {
       const w = window.innerWidth;
-      let v = config[key];
-      if (w <= 480 && config[`mobile${key[0].toUpperCase() + key.slice(1)}`])
-        v = config[`mobile${key[0].toUpperCase() + key.slice(1)}`];
-      else if (w <= 768 && config[`tablet${key[0].toUpperCase() + key.slice(1)}`])
-        v = config[`tablet${key[0].toUpperCase() + key.slice(1)}`];
-      else if (w <= 1024 && config[`desktop${key[0].toUpperCase() + key.slice(1)}`])
-        v = config[`desktop${key[0].toUpperCase() + key.slice(1)}`];
+      let v: string | undefined = config[key];
+      if (w <= 480 && config[`mobile${key[0].toUpperCase() + key.slice(1)}` as keyof GradualBlurConfig])
+        v = config[`mobile${key[0].toUpperCase() + key.slice(1)}` as keyof GradualBlurConfig] as string;
+      else if (w <= 768 && config[`tablet${key[0].toUpperCase() + key.slice(1)}` as keyof GradualBlurConfig])
+        v = config[`tablet${key[0].toUpperCase() + key.slice(1)}` as keyof GradualBlurConfig] as string;
+      else if (w <= 1024 && config[`desktop${key[0].toUpperCase() + key.slice(1)}` as keyof GradualBlurConfig])
+        v = config[`desktop${key[0].toUpperCase() + key.slice(1)}` as keyof GradualBlurConfig] as string;
       setValue(v);
     };
     const debounced = debounce(calc, 100);
@@ -263,7 +264,7 @@ function GradualBlur(props: GradualBlurProps) {
   );
 }
 
-const GradualBlurMemo = React.memo(GradualBlur) as typeof GradualBlur & {
+const GradualBlurMemo = React.memo(GradualBlur) as unknown as typeof GradualBlur & {
   displayName: string;
   PRESETS: typeof PRESETS;
   CURVE_FUNCTIONS: typeof CURVE_FUNCTIONS;

@@ -1,5 +1,6 @@
 "use client";
 /* eslint-disable react/no-unknown-property */
+import { cn } from "@premier-js/core"
 import * as THREE from 'three';
 import { useRef, useState, useEffect, memo, type ReactNode } from 'react';
 import { Canvas, createPortal, useFrame, useThree } from '@react-three/fiber';
@@ -30,17 +31,21 @@ type ModeProps = Record<string, unknown> & {
   chromaticAberration?: number;
 };
 
-export function FluidGlass({
-  mode = 'lens',
-  lensProps = {},
-  barProps = {},
-  cubeProps = {}
-}: {
+export interface FluidGlassProps {
   mode?: 'lens' | 'bar' | 'cube';
   lensProps?: ModeProps;
   barProps?: ModeProps;
   cubeProps?: ModeProps;
-}) {
+  className?: string;
+}
+
+export function FluidGlass({
+  mode = 'lens',
+  lensProps = {},
+  barProps = {},
+  cubeProps = {},
+  className
+}: FluidGlassProps) {
   const Wrapper = mode === 'bar' ? Bar : mode === 'cube' ? Cube : Lens;
   const rawOverrides = mode === 'bar' ? barProps : mode === 'cube' ? cubeProps : lensProps;
 
@@ -54,7 +59,11 @@ export function FluidGlass({
   } = rawOverrides;
 
   return (
-    <Canvas camera={{ position: [0, 0, 20], fov: 15 }} gl={{ alpha: true }}>
+    <Canvas
+      className={cn(className)}
+      camera={{ position: [0, 0, 20], fov: 15 }}
+      gl={{ alpha: true }}
+    >
       <ScrollControls damping={0.2} pages={3} distance={0.4}>
         {mode === 'bar' && <NavItems items={navItems} />}
         <Wrapper modeProps={modeProps}>
@@ -68,6 +77,8 @@ export function FluidGlass({
     </Canvas>
   );
 }
+
+type MeshRestProps = Record<string, unknown>;
 
 const ModeWrapper = memo(function ModeWrapper({
   children,
@@ -84,10 +95,9 @@ const ModeWrapper = memo(function ModeWrapper({
   lockToBottom?: boolean;
   followPointer?: boolean;
   modeProps?: ModeProps;
-  [key: string]: any;
-}) {
+} & MeshRestProps) {
   const ref = useRef<THREE.Mesh>(null);
-  const { nodes } = useGLTF(glb) as any;
+  const { nodes } = useGLTF(glb) as unknown as { nodes: Record<string, THREE.Object3D & { geometry?: THREE.BufferGeometry }> };
   const buffer = useFBO();
   const { viewport: vp } = useThree();
   const [scene] = useState(() => new THREE.Scene());
@@ -148,15 +158,15 @@ const ModeWrapper = memo(function ModeWrapper({
   );
 });
 
-function Lens({ modeProps, ...p }: any) {
+function Lens({ modeProps, ...p }: { modeProps?: ModeProps; [key: string]: unknown }) {
   return <ModeWrapper glb="/assets/3d/lens.glb" geometryKey="Cylinder" followPointer modeProps={modeProps} {...p} />;
 }
 
-function Cube({ modeProps, ...p }: any) {
+function Cube({ modeProps, ...p }: { modeProps?: ModeProps; [key: string]: unknown }) {
   return <ModeWrapper glb="/assets/3d/cube.glb" geometryKey="Cube" followPointer modeProps={modeProps} {...p} />;
 }
 
-function Bar({ modeProps = {}, ...p }: any) {
+function Bar({ modeProps = {}, ...p }: { modeProps?: ModeProps; [key: string]: unknown }) {
   const defaultMat = {
     transmission: 1,
     roughness: 0,
@@ -229,7 +239,7 @@ function NavItems({ items }: { items: NavItem[] }) {
           color="white"
           anchorX="center"
           anchorY="middle"
-          depthWrite={false}
+          {...{ depthWrite: false } as any}
           outlineWidth={0}
           outlineBlur="20%"
           outlineColor="#000000"
@@ -250,6 +260,8 @@ function NavItems({ items }: { items: NavItem[] }) {
   );
 }
 
+type ImageMaterial = THREE.Material & { zoom: number };
+
 function Images() {
   const group = useRef<THREE.Group>(null!);
   const data = useScroll();
@@ -258,11 +270,11 @@ function Images() {
   useFrame(() => {
     if (!group.current) return;
     const c = group.current.children as unknown as THREE.Mesh[];
-    c[0].material.zoom = 1 + data.range(0, 1 / 3) / 3;
-    c[1].material.zoom = 1 + data.range(0, 1 / 3) / 3;
-    c[2].material.zoom = 1 + data.range(1.15 / 3, 1 / 3) / 2;
-    c[3].material.zoom = 1 + data.range(1.15 / 3, 1 / 3) / 2;
-    c[4].material.zoom = 1 + data.range(1.15 / 3, 1 / 3) / 2;
+    (c[0].material as ImageMaterial).zoom = 1 + data.range(0, 1 / 3) / 3;
+    (c[1].material as ImageMaterial).zoom = 1 + data.range(0, 1 / 3) / 3;
+    (c[2].material as ImageMaterial).zoom = 1 + data.range(1.15 / 3, 1 / 3) / 2;
+    (c[3].material as ImageMaterial).zoom = 1 + data.range(1.15 / 3, 1 / 3) / 2;
+    (c[4].material as ImageMaterial).zoom = 1 + data.range(1.15 / 3, 1 / 3) / 2;
   });
 
   return (
