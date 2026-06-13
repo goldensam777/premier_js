@@ -66,3 +66,4 @@ env.bak
 .env.ci
 fixes.pyfixes.py
 changes.py
+.backup
