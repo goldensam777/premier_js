@@ -1,0 +1,49 @@
+/* Premier.js — Design Tokens
+
+:root {
+
+  /* ── Fond ────────────────────────────────── */
+  --gs-bg:             #ffffff;
+  --gs-bg-subtle:      #f7f7f7;
+  --gs-surface:        #f0f0f0;
+
+  /* ── Bordures ────────────────────────────── */
+  --gs-border:         rgba(0, 0, 0, 0.12);
+  --gs-border-subtle:  rgba(0, 0, 0, 0.06);
+
+  /* ── Texte ───────────────────────────────── */
+  --gs-text:           #171717;
+  --gs-text-muted:     #6b6b6b;
+  --gs-text-subtle:    #a3a3a3;
+
+  /* ── Accents ─────────────────────────────── */
+  --gs-primary:        #2563eb;
+  --gs-success:        #16a34a;
+  --gs-success-muted:  #bbf7d0;
+
+  /* ── Thème ───────────────────────────────── */
+  --gs-blur:           0px;
+  --gs-glow:           transparent;
+  --gs-radius:         8px;
+
+}
+
+/* ── Dark mode ───────────────────────────────── */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --gs-bg:             #0a0a0a;
+    --gs-bg-subtle:      #141414;
+    --gs-surface:        #1e1e1e;
+
+    --gs-border:         rgba(255, 255, 255, 0.10);
+    --gs-border-subtle:  rgba(255, 255, 255, 0.05);
+
+    --gs-text:           #ededed;
+    --gs-text-muted:     #a3a3a3;
+    --gs-text-subtle:    #6b6b6b;
+
+    --gs-primary:        #3b82f6;
+    --gs-success:        #22c55e;
+    --gs-success-muted:  #14532d;
+  }
+}
