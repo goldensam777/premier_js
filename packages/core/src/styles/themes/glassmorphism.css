@@ -1,0 +1,47 @@
+/* Premier.js — Thème Glassmorphism
+   Active le rendu verre dépoli sur tous les éléments --gs-surface.
+   Usage : ajouter la classe .theme-glass sur <html> ou <body> */
+
+.theme-glass {
+
+  /* ── Fond ────────────────────────────────── */
+  --gs-bg:             rgba(255, 255, 255, 0.04);
+  --gs-bg-subtle:      rgba(255, 255, 255, 0.08);
+  --gs-surface:        rgba(255, 255, 255, 0.10);
+
+  /* ── Bordures ────────────────────────────── */
+  --gs-border:         rgba(255, 255, 255, 0.15);
+  --gs-border-subtle:  rgba(255, 255, 255, 0.07);
+
+  /* ── Thème ───────────────────────────────── */
+  --gs-blur:           20px;
+  --gs-glow:           transparent;
+  --gs-radius:         16px;
+
+}
+
+/* ── Classe utilitaire verre ─────────────────── */
+.gs-glass {
+  background:     var(--gs-surface);
+  border:         1px solid var(--gs-border);
+  border-radius:  var(--gs-radius);
+  backdrop-filter: blur(var(--gs-blur));
+  -webkit-backdrop-filter: blur(var(--gs-blur));
+}
+
+/* ── Variantes d'intensité ───────────────────── */
+.gs-glass-subtle {
+  background:      rgba(255, 255, 255, 0.05);
+  border:          1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius:   var(--gs-radius);
+}
+
+.gs-glass-heavy {
+  background:      rgba(255, 255, 255, 0.18);
+  border:          1px solid rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  border-radius:   var(--gs-radius);
+}
