@@ -1,0 +1,8 @@
+/* Premier.js — Styles
+   Importer ce fichier dans le projet cible. */
+
+@import "./tokens/variables.css";
+@import "./themes/glassmorphism.css";
+@import "./themes/minimal.css";
+@import "./themes/dark-neon.css";
+@import "./themes/brutalism.css";

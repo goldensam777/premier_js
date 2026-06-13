@@ -1,0 +1,99 @@
+/* Premier.js — Thème Brutalism
+   Raw, bold, sans compromis. Contrastes durs, typographie agressive.
+   Usage : ajouter la classe .theme-brutalism sur <html> ou <body> */
+
+.theme-brutalism {
+
+  /* ── Fond ────────────────────────────────── */
+  --gs-bg:             #f5f0e8;
+  --gs-bg-subtle:      #ebe5d5;
+  --gs-surface:        #ffffff;
+
+  /* ── Bordures ────────────────────────────── */
+  --gs-border:         #000000;
+  --gs-border-subtle:  #000000;
+
+  /* ── Texte ───────────────────────────────── */
+  --gs-text:           #000000;
+  --gs-text-muted:     #111111;
+  --gs-text-subtle:    #333333;
+
+  /* ── Accents ─────────────────────────────── */
+  --gs-primary:        #ff0000;
+  --gs-secondary:      #0000ff;
+  --gs-accent:         #ffff00;
+
+  /* ── Thème ───────────────────────────────── */
+  --gs-blur:           0px;
+  --gs-glow:           transparent;
+  --gs-radius:         0px;
+  --gs-border-width:   3px;
+  --gs-shadow-offset:  4px;
+
+}
+
+/* ── Carte brutale ───────────────────────────── */
+.gs-brutal-card {
+  background:    var(--gs-surface);
+  border:        var(--gs-border-width) solid var(--gs-border);
+  border-radius: var(--gs-radius);
+  box-shadow:    var(--gs-shadow-offset) var(--gs-shadow-offset) 0px var(--gs-border);
+  padding:       24px;
+}
+
+/* ── Bouton brutal ───────────────────────────── */
+.gs-brutal-button {
+  background:     var(--gs-primary);
+  color:          #000000;
+  border:         var(--gs-border-width) solid var(--gs-border);
+  border-radius:  var(--gs-radius);
+  box-shadow:     var(--gs-shadow-offset) var(--gs-shadow-offset) 0px var(--gs-border);
+  font-weight:    900;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding:        12px 24px;
+  cursor:         pointer;
+  transition:     box-shadow 0.1s, transform 0.1s;
+}
+
+.gs-brutal-button:hover {
+  box-shadow:  2px 2px 0px var(--gs-border);
+  transform:   translate(2px, 2px);
+}
+
+.gs-brutal-button:active {
+  box-shadow: none;
+  transform:  translate(4px, 4px);
+}
+
+/* ── Texte barré ─────────────────────────────── */
+.gs-strike {
+  text-decoration:       line-through;
+  text-decoration-color: var(--gs-primary);
+  text-decoration-thickness: 3px;
+}
+
+/* ── Grid brutal ─────────────────────────────── */
+.gs-brutal-grid {
+  display:     grid;
+  gap:         0;
+  border:      var(--gs-border-width) solid var(--gs-border);
+}
+
+.gs-brutal-grid > * {
+  border:   var(--gs-border-width) solid var(--gs-border);
+  padding:  16px;
+}
+
+/* ── Stamp ───────────────────────────────────── */
+.gs-stamp {
+  display:        inline-block;
+  border:         var(--gs-border-width) solid var(--gs-border);
+  border-radius:  var(--gs-radius);
+  padding:        4px 10px;
+  font-weight:    900;
+  text-transform: uppercase;
+  font-size:      11px;
+  letter-spacing: 0.1em;
+  transform:      rotate(-2deg);
+}
