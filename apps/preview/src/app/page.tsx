@@ -24,9 +24,9 @@ export default function Home() {
           ))}
         </div>
         <div className="mt-8">
-          <Badge>30 atomes</Badge>
+          <Badge>29 atomes</Badge>
           <span className="mx-2" />
-          <Badge>72 molécules</Badge>
+          <Badge>64 molécules</Badge>
         </div>
       </section>
     </main>
