@@ -1,0 +1,114 @@
+{
+  "modern-blog": {
+    "organism": "SiteBlog",
+    "pages": ["BlogListPage", "BlogPostPage"],
+    "components": [
+      "Navbar", "FeaturedPost", "PostGrid", "PostCard",
+      "AuthorCard", "TOC", "TagCloud", "Newsletter",
+      "Pagination", "Footer"
+    ],
+    "axes": {
+      "rendering": "Visual",
+      "aesthetic": "Glassmorphism",
+      "layout": "MagazineGrid",
+      "animation": "Subtle"
+    }
+  },
+
+  "saas-landing": {
+    "organism": "SiteSaas",
+    "pages": ["SaasPage", "DashboardPage", "DocPage"],
+    "components": [
+      "Navbar", "HeroWithDemo", "SocialProofBar", "FeaturesGrid",
+      "PricingTable", "Testimonials", "ComparisonTable",
+      "FAQ", "CTABanner", "Footer",
+      "Sidebar", "StatsCards", "DataTable", "DashboardChart",
+      "DocSidebar", "Breadcrumbs", "TOC"
+    ],
+    "axes": {
+      "rendering": "Visual",
+      "aesthetic": "Minimal",
+      "layout": "SidebarContent",
+      "animation": "Rich"
+    }
+  },
+
+  "research-lab": {
+    "organism": "SiteResearchLab",
+    "pages": ["ResearchPage", "BlogPostPage"],
+    "components": [
+      "Navbar", "AbstractHero", "PaperViewer", "FormulaBlock",
+      "KnowledgeGraph", "StateSpaceViewer", "CitationBlock",
+      "NotebookCanvas", "TOC", "AuthorCard", "Footer"
+    ],
+    "axes": {
+      "rendering": "Hybrid",
+      "aesthetic": "Glassmorphism",
+      "layout": "CenteredNarrow",
+      "animation": "Rich"
+    }
+  },
+
+  "portfolio": {
+    "organism": "SitePortfolio",
+    "pages": ["PortfolioPage", "LandingPage"],
+    "components": [
+      "Navbar", "Hero", "StatsCards", "ProjectsGrid",
+      "Timeline", "Testimonials", "ContactForm", "Footer"
+    ],
+    "axes": {
+      "rendering": "Hybrid",
+      "aesthetic": "DarkNeon",
+      "layout": "CenteredNarrow",
+      "animation": "Cinematic"
+    }
+  },
+
+  "dashboard": {
+    "organism": "SiteSaas",
+    "pages": ["DashboardPage"],
+    "components": [
+      "Sidebar", "StatsCards", "AreaChart", "DataTable",
+      "ActivityFeed", "StatCard", "MiniChart",
+      "DashboardStats", "DashboardChart"
+    ],
+    "axes": {
+      "rendering": "Visual",
+      "aesthetic": "Minimal",
+      "layout": "DashboardGrid",
+      "animation": "Subtle"
+    }
+  },
+
+  "chat-interface": {
+    "organism": "SiteChatApp",
+    "pages": ["ChatPage", "LandingPage"],
+    "components": [
+      "Navbar", "Hero", "CTABanner", "Footer",
+      "Sidebar", "ConversationList", "MessageBubble",
+      "InputBar", "StreamingIndicator", "TypingIndicator"
+    ],
+    "axes": {
+      "rendering": "Visual",
+      "aesthetic": "Minimal",
+      "layout": "SidebarContent",
+      "animation": "Subtle"
+    }
+  },
+
+  "vitrine": {
+    "organism": "SiteVitrine",
+    "pages": ["LandingPage", "PortfolioPage"],
+    "components": [
+      "Navbar", "Hero", "LogoCloud", "Features",
+      "Testimonials", "PricingTable", "FAQ",
+      "CTABanner", "ContactForm", "Footer"
+    ],
+    "axes": {
+      "rendering": "Visual",
+      "aesthetic": "Minimal",
+      "layout": "CenteredNarrow",
+      "animation": "Rich"
+    }
+  }
+}
