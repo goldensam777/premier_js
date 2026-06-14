@@ -1,11 +1,9 @@
-'use client'
-
 import { Navbar } from '@premier-js/components'
 
 const navItems = [
   { label: 'Accueil', href: '/' },
-  { label: 'Réalisations', href: '/work' },
   { label: 'Services', href: '/services' },
+  { label: 'Réalisations', href: '/work' },
   { label: 'À propos', href: '/about' },
 ]
 
