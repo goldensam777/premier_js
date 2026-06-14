@@ -11,12 +11,12 @@ export function Home() {
     <>
       <section style={{ height: '80vh', display: 'flex', alignItems: 'center', position: 'relative', overflow: 'hidden' }}>
         <Ferrofluid
-          colors={['#f3e8ff', '#e9d5ff', '#d8b4fe', '#c084fc']}
-          opacity={0.35}
-          speed={0.6}
-          scale={1.2}
-          turbulence={0.5}
-          fluidity={0.3}
+          colors={['#e9d5ff', '#d8b4fe', '#c084fc', '#a855f7']}
+          opacity={0.5}
+          speed={0.5}
+          scale={1.5}
+          turbulence={0.6}
+          fluidity={0.4}
           mouseInteraction={false}
         />
         <div className="container" style={{ position: 'relative', zIndex: 1 }}>

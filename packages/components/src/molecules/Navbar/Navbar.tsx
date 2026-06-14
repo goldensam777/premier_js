@@ -26,7 +26,7 @@ export function Navbar({ logo, links, cta, className }: NavbarProps) {
           "fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-4xl",
           "flex flex-row items-center justify-between px-6 py-3",
           "rounded-full border border-white/10",
-          "bg-black/50 backdrop-blur-xl shadow-xl",
+          "gs-glass backdrop-blur-xl shadow-xl",
           className,
         )}
       >
