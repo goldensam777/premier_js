@@ -9,27 +9,31 @@ const services = [
 export function Home() {
   return (
     <>
-      <section style={{ height: '80vh', display: 'flex', alignItems: 'center', position: 'relative', overflow: 'hidden' }}>
-        <Ferrofluid
-          colors={['#e9d5ff', '#d8b4fe', '#c084fc', '#a855f7']}
-          opacity={0.5}
-          speed={0.5}
-          scale={1.5}
-          turbulence={0.6}
-          fluidity={0.4}
-          mouseInteraction={false}
-        />
-        <div className="container" style={{ position: 'relative', zIndex: 1 }}>
-          <p className="section-label">Studio NOVA</p>
-          <h1 className="section-title" style={{ maxWidth: 720, fontSize: 'clamp(40px, 6vw, 72px)' }}>
-            Créons ensemble <span style={{ color: 'var(--accent)' }}>l&apos;exception</span>
-          </h1>
-          <p className="section-desc" style={{ fontSize: 18, maxWidth: 520, marginBottom: 40 }}>
-            Design, technologie et innovation au service des marques qui veulent se démarquer.
-          </p>
-          <div style={{ display: 'flex', gap: 16 }}>
-            <a href="/work" className="btn-primary">Voir nos réalisations</a>
-            <a href="/contact" className="btn-outline">Nous contacter</a>
+      <section style={{ height: '80vh', position: 'relative', overflow: 'hidden' }}>
+        <div style={{ position: 'absolute', inset: 0 }}>
+          <Ferrofluid
+            colors={['#d8b4fe', '#c084fc', '#a855f7', '#7c3aed']}
+            opacity={0.6}
+            speed={0.4}
+            scale={1.8}
+            turbulence={0.7}
+            fluidity={0.3}
+            mouseInteraction={false}
+          />
+        </div>
+        <div className="container" style={{ position: 'relative', zIndex: 1, height: '100%', display: 'flex', alignItems: 'center' }}>
+          <div>
+            <p className="section-label">Studio NOVA</p>
+            <h1 className="section-title" style={{ maxWidth: 720, fontSize: 'clamp(40px, 6vw, 72px)' }}>
+              Créons ensemble <span style={{ color: 'var(--accent)' }}>l&apos;exception</span>
+            </h1>
+            <p className="section-desc" style={{ fontSize: 18, maxWidth: 520, marginBottom: 40 }}>
+              Design, technologie et innovation au service des marques qui veulent se démarquer.
+            </p>
+            <div style={{ display: 'flex', gap: 16 }}>
+              <a href="/work" className="btn-primary">Voir nos réalisations</a>
+              <a href="/contact" className="btn-outline">Nous contacter</a>
+            </div>
           </div>
         </div>
       </section>
