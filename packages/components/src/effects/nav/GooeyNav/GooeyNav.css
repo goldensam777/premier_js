@@ -29,6 +29,8 @@
 
 .gooey-nav-container {
   position: relative;
+  isolation: isolate;
+  background: var(--gs-surface);
 }
 
 .gooey-nav-container nav {
@@ -46,7 +48,6 @@
   position: relative;
   z-index: 3;
   color: var(--gs-text);
-  text-shadow: 0 1px 1px hsl(205deg 30% 10% / 0.2);
 }
 
 .gooey-nav-container nav ul li {
@@ -55,9 +56,7 @@
   cursor: pointer;
   transition:
     background-color 0.3s ease,
-    color 0.3s ease,
-    box-shadow 0.3s ease;
-  box-shadow: 0 0 0.5px 1.5px transparent;
+    color 0.3s ease;
   color: var(--gs-text);
 }
 
@@ -67,7 +66,8 @@
 }
 
 .gooey-nav-container nav ul li:focus-within:has(:focus-visible) {
-  box-shadow: 0 0 0.5px 1.5px white;
+  outline: 1px solid white;
+  outline-offset: 2px;
 }
 
 .gooey-nav-container nav ul li::after {
@@ -122,7 +122,7 @@
 .gooey-nav-container .effect.filter::before {
   content: '';
   position: absolute;
-  inset: -75px;
+  inset: -20px;
   z-index: -2;
   background: black;
 }

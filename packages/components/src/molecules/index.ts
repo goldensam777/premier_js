@@ -130,6 +130,9 @@ export type { PaginationProps } from "./Pagination"
 export { PaperViewer } from "./PaperViewer"
 export type { PaperViewerProps } from "./PaperViewer"
 
+export { PillNav } from "./PillNav"
+export type { PillNavProps, PillNavItem } from "./PillNav"
+
 export { PostCard } from "./PostCard"
 export type { PostCardProps } from "./PostCard"
 
