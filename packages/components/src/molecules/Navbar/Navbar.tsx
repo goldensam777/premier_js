@@ -20,19 +20,18 @@ export function Navbar({ logo, links, cta, className }: NavbarProps) {
   const [menuOpen, setMenuOpen] = useState(false)
 
   return (
-    <div className="relative">
+    <>
       <nav
         className={cn(
-          "gs-glass flex flex-row items-center justify-between px-4 py-2",
+          "fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-4xl",
+          "flex flex-row items-center justify-between px-6 py-3",
+          "rounded-full border border-white/10",
+          "bg-black/50 backdrop-blur-xl shadow-xl",
           className,
         )}
       >
-        <div className="flex items-center">
-          {logo && (
-            <a href="/" className="flex-shrink-0">
-              {logo}
-            </a>
-          )}
+        <div className="flex items-center flex-shrink-0">
+          {logo && <a href="/">{logo}</a>}
         </div>
 
         <ul className="hidden md:flex items-center gap-6">
@@ -84,8 +83,9 @@ export function Navbar({ logo, links, cta, className }: NavbarProps) {
 
       {menuOpen && (
         <div
-          className="md:hidden flex flex-col gap-2 p-4 mt-2"
+          className="fixed md:hidden left-1/2 -translate-x-1/2 z-40 w-[90%] max-w-4xl flex flex-col gap-2 p-4 mt-2"
           style={{
+            top: "calc(6px + 3.5rem)",
             background: "var(--gs-surface)",
             border: "1px solid var(--gs-border)",
             borderRadius: "var(--gs-radius)",
@@ -120,6 +120,6 @@ export function Navbar({ logo, links, cta, className }: NavbarProps) {
           )}
         </div>
       )}
-    </div>
+    </>
   )
 }

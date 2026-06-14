@@ -213,7 +213,7 @@ button {
 }
 
 main {
-  padding-top: 80px;
+  padding-top: 100px;
 }
 
 @media (max-width: 768px) {
@@ -232,6 +232,6 @@ main {
   }
 
   main {
-    padding-top: 70px;
+    padding-top: 90px;
   }
 }
