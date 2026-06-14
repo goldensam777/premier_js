@@ -20,7 +20,7 @@ export function Navbar({ logo, links, cta, className }: NavbarProps) {
   const [menuOpen, setMenuOpen] = useState(false)
 
   return (
-    <>
+    <div className="relative">
       <nav
         className={cn(
           "gs-glass flex flex-row items-center justify-between px-4 py-2",
@@ -120,6 +120,6 @@ export function Navbar({ logo, links, cta, className }: NavbarProps) {
           )}
         </div>
       )}
-    </>
+    </div>
   )
 }
