@@ -1,7 +1,7 @@
 "use client"
 
 import { useRef, useMemo } from "react"
-import { useFrame } from "@react-three/fiber"
+import { Canvas, useFrame } from "@react-three/fiber"
 import * as THREE from "three"
 
 interface ParticleFieldProps {
@@ -11,7 +11,7 @@ interface ParticleFieldProps {
   spread?: number
 }
 
-export function ParticleField({
+function Scene({
   count  = 2000,
   color  = "#ffffff",
   size   = 0.015,
@@ -49,5 +49,17 @@ export function ParticleField({
         sizeAttenuation
       />
     </points>
+  )
+}
+
+export function ParticleField(props: ParticleFieldProps) {
+  return (
+    <Canvas
+      camera={{ position: [0, 0, 10], fov: 60 }}
+      gl={{ antialias: true, alpha: true }}
+      style={{ width: "100%", height: "100%" }}
+    >
+      <Scene {...props} />
+    </Canvas>
   )
 }

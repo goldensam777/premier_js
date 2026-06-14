@@ -6,7 +6,7 @@ export { LiquidEther }   from "./backgrounds/LiquidEther/LiquidEther"
 
 export { ReflectiveCard } from "./cards/ReflectiveCard/ReflectiveCard"
 export { GlareHover }     from "./cards/GlareHover/GlareHover"
-export { CardSwap }       from "./cards/CardSwap/CardSwap"
+export { CardSwap } from "./cards/CardSwap/CardSwap"
 
 export { FluidGlass }     from "./glass/FluidGlass/FluidGlass"
 export { GlassSurface }   from "./glass/GlassSurface/GlassSurface"
@@ -24,7 +24,7 @@ export { Antigravity }    from "./animations/Antigravity/Antigravity"
 export { ShapeBlur }      from "./animations/ShapeBlur/ShapeBlur"
 export { ElasticSlider }  from "./animations/ElasticSlider/ElasticSlider"
 export { LogoLoop }       from "./animations/LogoLoop/LogoLoop"
-export { ScrollStack }    from "./animations/ScrollStack/ScrollStack"
+export { ScrollStack, ScrollStackItem } from "./animations/ScrollStack/ScrollStack"
 
 export { GooeyNav }       from "./nav/GooeyNav/GooeyNav"
 
