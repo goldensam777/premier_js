@@ -1,4 +1,4 @@
-import { DotField, DecryptedText } from '@premier-js/components'
+import { Ferrofluid, DecryptedText } from '@premier-js/components'
 
 const services = [
   { num: '01', title: 'Design', desc: 'Interfaces, identités visuelles et expériences qui marquent.' },
@@ -10,7 +10,15 @@ export function Home() {
   return (
     <>
       <section style={{ height: '80vh', display: 'flex', alignItems: 'center', position: 'relative', overflow: 'hidden' }}>
-        <DotField dotRadius={1.5} dotSpacing={32} style={{ position: 'absolute', inset: 0, opacity: 0.5 }} />
+        <Ferrofluid
+          colors={['#f3e8ff', '#e9d5ff', '#d8b4fe', '#c084fc']}
+          opacity={0.35}
+          speed={0.6}
+          scale={1.2}
+          turbulence={0.5}
+          fluidity={0.3}
+          mouseInteraction={false}
+        />
         <div className="container" style={{ position: 'relative', zIndex: 1 }}>
           <p className="section-label">Studio NOVA</p>
           <h1 className="section-title" style={{ maxWidth: 720, fontSize: 'clamp(40px, 6vw, 72px)' }}>
