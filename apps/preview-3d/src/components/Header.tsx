@@ -1,6 +1,6 @@
 'use client'
 
-import { PillNav } from '@premier-js/components'
+import { Navbar } from '@premier-js/components'
 import { usePathname } from 'next/navigation'
 
 const navItems = [
@@ -8,26 +8,34 @@ const navItems = [
   { label: 'Réalisations', href: '/work' },
   { label: 'Services', href: '/services' },
   { label: 'À propos', href: '/about' },
-  { label: 'Contact', href: '/contact' },
 ]
 
 export function Header() {
   const pathname = usePathname()
-  const activeIndex = navItems.findIndex((item) => item.href === pathname)
 
   return (
     <header
       style={{
         position: 'fixed',
-        top: 24,
-        left: '50%',
-        transform: 'translateX(-50%)',
+        top: 0,
+        left: 0,
+        right: 0,
         zIndex: 50,
+        padding: '16px 24px',
       }}
     >
-      <PillNav
-        items={navItems}
-        defaultActive={activeIndex >= 0 ? activeIndex : 0}
+      <Navbar
+        logo={
+          <span style={{ fontWeight: 600, fontSize: 18, letterSpacing: '-0.02em', color: 'var(--gs-text)' }}>
+            Studio NOVA
+          </span>
+        }
+        links={navItems.map((item) => ({
+          ...item,
+          isActive: item.href === pathname,
+        }))}
+        cta={{ label: 'Contact', href: '/contact' }}
+        className="max-w-5xl mx-auto rounded-full"
       />
     </header>
   )
