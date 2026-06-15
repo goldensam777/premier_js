@@ -15,12 +15,20 @@ export interface NavbarProps {
   links: NavLink[]
   cta?: { label: string; href: string }
   className?: string
+  strategy?: "strict" | "adaptive" | "collapse"
 }
 
-export function Navbar({ logo, links, cta, className }: NavbarProps) {
+export function Navbar({ 
+  logo, 
+  links, 
+  cta, 
+  className,
+  strategy = "collapse"
+}: NavbarProps) {
   const [menuOpen, setMenuOpen] = useState(false)
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
   const [activeHash, setActiveHash] = useState("")
+  const [isCollapsed, setIsCollapsed] = useState(false)
 
   useEffect(() => {
     if (typeof window === "undefined") return
@@ -31,6 +39,59 @@ export function Navbar({ logo, links, cta, className }: NavbarProps) {
     handleHashChange()
     return () => window.removeEventListener("hashchange", handleHashChange)
   }, [])
+
+  useEffect(() => {
+    if (typeof window === "undefined") return
+
+    const checkOverflow = () => {
+      if (strategy === "strict") {
+        setIsCollapsed(false)
+        return
+      }
+
+      if (window.innerWidth < 768) {
+        setIsCollapsed(true)
+        return
+      }
+
+      if (strategy === "collapse") {
+        const totalCharLength = links.reduce((acc, link) => acc + link.label.length, 0)
+        const estimatedLinksWidth = totalCharLength * 7.5 + links.length * 32
+        const estimatedLogoWidth = logo ? 150 : 0
+        const estimatedCtaWidth = cta ? 120 : 0
+        const estimatedRequiredWidth = estimatedLogoWidth + estimatedLinksWidth + estimatedCtaWidth + 80
+
+        const availableWidth = window.innerWidth * 0.92
+        if (estimatedRequiredWidth > availableWidth) {
+          setIsCollapsed(true)
+          return
+        }
+      }
+
+      setIsCollapsed(false)
+    }
+
+    checkOverflow()
+    window.addEventListener("resize", checkOverflow)
+    return () => window.removeEventListener("resize", checkOverflow)
+  }, [links, logo, cta, strategy])
+
+  const totalCharLength = links.reduce((acc, l) => acc + l.label.length, 0)
+  const isAdaptive = strategy === "adaptive"
+
+  const gapClass = isAdaptive && totalCharLength > 50
+    ? "gap-3 md:gap-6"
+    : "gap-6 md:gap-12"
+
+  const linkPaddingClass = isAdaptive && totalCharLength > 50
+    ? "px-2.5 py-1"
+    : "px-4 py-1.5"
+
+  const linkFontSizeStyle = isAdaptive && totalCharLength > 65
+    ? { fontSize: "12px" }
+    : isAdaptive && totalCharLength > 45
+    ? { fontSize: "13px" }
+    : { fontSize: "14px" }
 
   return (
     <>
@@ -53,7 +114,8 @@ export function Navbar({ logo, links, cta, className }: NavbarProps) {
       <nav
         className={cn(
           "navbar-inner fixed top-6 left-1/2 -translate-x-1/2 z-50",
-          "flex flex-row items-center justify-between gap-6 md:gap-12 px-6 py-2.5",
+          "flex flex-row items-center justify-between px-6 py-2.5",
+          gapClass,
           "rounded-full border",
           "backdrop-blur-2xl shadow-xl transition-all duration-300",
           className,
@@ -71,7 +133,7 @@ export function Navbar({ logo, links, cta, className }: NavbarProps) {
 
         {/* Desktop Links (with sliding hover indicator) */}
         <ul 
-          className="hidden md:flex items-center gap-1"
+          className={cn("items-center gap-1", isCollapsed ? "hidden" : "hidden md:flex")}
           onMouseLeave={() => setHoveredIndex(null)}
         >
           {links.map((link, index) => {
@@ -79,13 +141,14 @@ export function Navbar({ logo, links, cta, className }: NavbarProps) {
             return (
               <li 
                 key={link.href} 
-                className="relative px-4 py-1.5 rounded-full cursor-pointer flex items-center justify-center"
+                className={cn("relative rounded-full cursor-pointer flex items-center justify-center", linkPaddingClass)}
                 onMouseEnter={() => setHoveredIndex(index)}
               >
                 <a
                   href={link.href}
-                  className="relative z-10 text-sm font-medium transition-colors duration-200 whitespace-nowrap"
+                  className="relative z-10 font-medium transition-colors duration-200 whitespace-nowrap"
                   style={{
+                    ...linkFontSizeStyle,
                     color: isActive || hoveredIndex === index 
                       ? "var(--gs-text)" 
                       : "var(--gs-text-muted)"
@@ -131,7 +194,7 @@ export function Navbar({ logo, links, cta, className }: NavbarProps) {
         </ul>
 
         {/* CTA Button Slot */}
-        <div className="hidden md:flex items-center">
+        <div className={cn("items-center", isCollapsed ? "hidden" : "hidden md:flex")}>
           {cta && (
             <a href={cta.href}>
               <Button
@@ -154,7 +217,7 @@ export function Navbar({ logo, links, cta, className }: NavbarProps) {
 
         {/* Hamburger Mobile Trigger */}
         <button
-          className="md:hidden p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+          className={cn("p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/5 transition-colors", isCollapsed ? "flex" : "hidden")}
           style={{ color: "var(--gs-text)" }}
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Menu"
@@ -177,7 +240,7 @@ export function Navbar({ logo, links, cta, className }: NavbarProps) {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -12, scale: 0.95 }}
             transition={{ type: "spring", stiffness: 400, damping: 28 }}
-            className="navbar-mobile-menu fixed md:hidden left-1/2 -translate-x-1/2 z-40 flex flex-col gap-2 p-5 mt-2 border"
+            className={cn("navbar-mobile-menu fixed left-1/2 -translate-x-1/2 z-40 flex flex-col gap-2 p-5 mt-2 border", isCollapsed ? "flex" : "hidden")}
             style={{
               top: "calc(6px + 3.75rem)",
               background: "color-mix(in srgb, var(--gs-surface) 92%, transparent)",
