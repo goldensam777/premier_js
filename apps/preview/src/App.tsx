@@ -8,12 +8,18 @@ import {
   DotField,
   MetaBalls,
   DecryptedText,
-  GlassSurface
+  GlassSurface,
+  // R3F Components
+  Canvas3D,
+  FloatingObject,
+  ParticleField,
+  BackgroundScene,
+  OrbitCamera
 } from "@premier-js/components"
 import "./App.css"
 
 function App() {
-  const [page, setPage] = useState<'classic' | 'pill' | 'gooey'>('classic')
+  const [page, setPage] = useState<'classic' | 'pill' | 'gooey' | 'three'>('classic')
 
   useEffect(() => {
     const handleHashChange = () => {
@@ -22,6 +28,8 @@ function App() {
         setPage('pill')
       } else if (hash === '#gooey') {
         setPage('gooey')
+      } else if (hash === '#three') {
+        setPage('three')
       } else {
         setPage('classic')
       }
@@ -34,7 +42,8 @@ function App() {
   const navItems = [
     { label: "Classic Pill (Navbar)", href: "#classic" },
     { label: "Sliding Tab (PillNav)", href: "#pill" },
-    { label: "Liquid Flow (GooeyNav)", href: "#gooey" }
+    { label: "Liquid Flow (GooeyNav)", href: "#gooey" },
+    { label: "Three.js 3D (R3F)", href: "#three" }
   ]
 
   const renderPageContent = () => {
@@ -245,6 +254,93 @@ function App() {
                   </a>
                   <a href="https://github.com/goldensam777/premier_js" className="btn btn-outline">
                     Code Source
+                  </a>
+                </div>
+              </div>
+            </section>
+          </div>
+        )
+      case 'three':
+        return (
+          <div className="page-three" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+            {/* Header / Nav */}
+            <div className="navbar-wrapper">
+              <Navbar
+                logo={
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span style={{ 
+                      width: '24px', 
+                      height: '24px', 
+                      borderRadius: '6px', 
+                      background: 'linear-gradient(135deg, #ec4899, #8b5cf6)',
+                      display: 'inline-block'
+                    }} />
+                    <span style={{ fontWeight: 800, color: 'var(--gs-text)', fontSize: '1.25rem', letterSpacing: '-0.02em' }}>
+                      R3F_3D
+                    </span>
+                  </div>
+                }
+                links={navItems}
+                cta={{ label: "Retour Accueil", href: "#classic" }}
+              />
+            </div>
+
+            {/* Hero 3D section */}
+            <section className="hero-section" style={{ flex: 1, display: 'flex', alignItems: 'center', position: 'relative', overflow: 'hidden' }}>
+              <div className="canvas-bg-wrapper">
+                <BackgroundScene overlay={false}>
+                  <color attach="background" args={['#0a0915']} />
+                  <pointLight position={[10, 10, 10]} intensity={1.5} />
+                  <directionalLight position={[-10, -10, -10]} intensity={0.5} />
+                  
+                  {/* Floating Object 1: Torus */}
+                  <FloatingObject speed={0.8} amplitude={0.5}>
+                    <mesh position={[-2, 0, 0]}>
+                      <torusKnotGeometry args={[0.6, 0.2, 100, 16]} />
+                      <meshStandardMaterial color="#ec4899" roughness={0.1} metalness={0.8} />
+                    </mesh>
+                  </FloatingObject>
+
+                  {/* Floating Object 2: Octahedron */}
+                  <FloatingObject speed={1.2} amplitude={0.3}>
+                    <mesh position={[2, 1, -1]}>
+                      <octahedronGeometry args={[0.8]} />
+                      <meshStandardMaterial color="#3b82f6" roughness={0.2} metalness={0.6} />
+                    </mesh>
+                  </FloatingObject>
+
+                  {/* Floating Object 3: Sphere in center */}
+                  <FloatingObject speed={0.5} amplitude={0.2}>
+                    <mesh position={[0, -0.5, 1]}>
+                      <sphereGeometry args={[0.5, 32, 32]} />
+                      <meshStandardMaterial color="#10b981" roughness={0.3} metalness={0.9} />
+                    </mesh>
+                  </FloatingObject>
+
+                  <OrbitCamera autoRotate={true} autoRotateSpeed={0.5} />
+                </BackgroundScene>
+              </div>
+
+              {/* Foreground content */}
+              <div className="hero-content" style={{ zIndex: 10, pointerEvents: 'none' }}>
+                <span className="btn btn-outline" style={{ pointerEvents: 'none', marginBottom: '1.5rem', fontSize: '0.8rem', padding: '0.4rem 1rem' }}>
+                  Axe C : Three.js &bull; React Three Fiber
+                </span>
+                <h1 className="hero-title">
+                  <DecryptedText
+                    text="INTERACTIVE R3F 3D CANVAS"
+                    animateOn="view"
+                  />
+                </h1>
+                <p className="hero-subtitle">
+                  Cette démonstration exploite <strong>BackgroundScene</strong>, <strong>FloatingObject</strong> et <strong>OrbitCamera</strong> pour rendre des maillages 3D interactifs animés en temps réel avec accélération matérielle GPU.
+                </p>
+                <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', pointerEvents: 'auto' }}>
+                  <a href="#classic" className="btn btn-primary" style={{ background: 'linear-gradient(135deg, #ec4899, #8b5cf6)', color: 'white' }}>
+                    Retourner au début &larr;
+                  </a>
+                  <a href="https://github.com/pmndrs/react-three-fiber" className="btn btn-outline" target="_blank" rel="noreferrer">
+                    R3F Docs
                   </a>
                 </div>
               </div>
