@@ -21,11 +21,27 @@ export function Navbar({ logo, links, cta, className }: NavbarProps) {
 
   return (
     <>
+      <style>{`
+        .navbar-inner {
+          width: min(90%, 400px);
+        }
+        .navbar-mobile-menu {
+          width: min(90%, 400px);
+        }
+        @media (min-width: 768px) {
+          .navbar-inner {
+            width: min(60%, 1024px);
+          }
+          .navbar-mobile-menu {
+            width: min(60%, 1024px);
+          }
+        }
+      `}</style>
       <nav
         className={cn(
-          "fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-4xl",
-          "flex flex-row items-center justify-between px-6 py-3",
-          "rounded-full border border-white/10",
+          "navbar-inner fixed top-6 left-1/2 -translate-x-1/2 z-50",
+          "flex flex-row items-center justify-between px-8 py-3",
+          "rounded-2xl border border-white/10",
           "gs-glass backdrop-blur-xl shadow-xl",
           className,
         )}
@@ -83,7 +99,7 @@ export function Navbar({ logo, links, cta, className }: NavbarProps) {
 
       {menuOpen && (
         <div
-          className="fixed md:hidden left-1/2 -translate-x-1/2 z-40 w-[90%] max-w-4xl flex flex-col gap-2 p-4 mt-2"
+          className="navbar-mobile-menu fixed md:hidden left-1/2 -translate-x-1/2 z-40 flex flex-col gap-2 p-4 mt-2"
           style={{
             top: "calc(6px + 3.5rem)",
             background: "var(--gs-surface)",
