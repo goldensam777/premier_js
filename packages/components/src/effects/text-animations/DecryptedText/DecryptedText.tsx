@@ -23,8 +23,8 @@ type Direction = 'forward' | 'reverse';
 
 function DecryptedText({
   text = "Premier.js",
-  speed = 50,
-  maxIterations = 10,
+  speed = 80,
+  maxIterations = 8,
   sequential = false,
   revealDirection = 'start',
   useOriginalCharsOnly = false,

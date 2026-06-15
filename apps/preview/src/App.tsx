@@ -83,7 +83,6 @@ function App() {
                   <DecryptedText
                     text="EXPERIENCE THE CLASSIC FLOATING PILL"
                     animateOn="view"
-                    speed={60}
                     className="text-purple-accent"
                   />
                 </h1>
@@ -160,7 +159,6 @@ function App() {
                   <DecryptedText
                     text="SLIDING TAB INTERACTIVE NAVIGATION"
                     animateOn="view"
-                    speed={50}
                   />
                 </h1>
                 <p className="hero-subtitle">
@@ -236,7 +234,6 @@ function App() {
                   <DecryptedText
                     text="ORGANIC LIQUID FLUID EFFECTS"
                     animateOn="view"
-                    speed={70}
                   />
                 </h1>
                 <p className="hero-subtitle">
