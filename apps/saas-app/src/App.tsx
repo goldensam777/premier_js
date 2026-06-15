@@ -6,7 +6,8 @@ import {
   FAQ,
   Footer,
   StatsCards,
-  DataTable
+  DataTable,
+  BorderGlow
 } from "@premier-js/components"
 import "./App.css"
 
@@ -92,24 +93,32 @@ function App() {
   ]
 
   const demoDashboard = (
-    <div className="p-6 space-y-6 bg-white dark:bg-[#121212] rounded-xl">
-      <div className="border-b pb-4 mb-4 border-gray-100 dark:border-gray-800">
-        <span className="text-xs font-bold uppercase tracking-wider text-blue-600">Console d'administration</span>
-        <h3 className="text-lg font-bold text-gray-900 dark:text-white mt-1">Aperçu de l'activité</h3>
-      </div>
-      
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '1rem' }}>
-        <div style={{ transform: 'scale(0.95)', transformOrigin: 'top center' }}>
-          <DataTable
-            title="Transactions Récentes"
-            columns={mockTableColumns}
-            data={mockTableData}
-            searchable={false}
-            pageSize={3}
-          />
+    <BorderGlow
+      borderRadius={12}
+      glowIntensity={0.8}
+      animated={true}
+      backgroundColor="var(--gs-surface)"
+      colors={['var(--gs-primary)', '#f472b6', '#38bdf8']}
+    >
+      <div className="p-6 space-y-6 bg-transparent rounded-xl">
+        <div className="border-b pb-4 mb-4 border-gray-100 dark:border-gray-800">
+          <span className="text-xs font-bold uppercase tracking-wider text-blue-600">Console d'administration</span>
+          <h3 className="text-lg font-bold text-gray-900 dark:text-white mt-1">Aperçu de l'activité</h3>
+        </div>
+        
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '1rem' }}>
+          <div style={{ transform: 'scale(0.95)', transformOrigin: 'top center' }}>
+            <DataTable
+              title="Transactions Récentes"
+              columns={mockTableColumns}
+              data={mockTableData}
+              searchable={false}
+              pageSize={3}
+            />
+          </div>
         </div>
       </div>
-    </div>
+    </BorderGlow>
   )
 
   return (
