@@ -7,7 +7,8 @@ import {
   Footer,
   StatsCards,
   DataTable,
-  BorderGlow
+  BorderGlow,
+  Antigravity
 } from "@premier-js/components"
 import "./App.css"
 
@@ -157,6 +158,19 @@ function App() {
           ctaLabel="Commencer gratuitement"
           ctaHref="#pricing"
           demoContent={demoDashboard}
+          bgContent={
+            <Antigravity 
+              count={250} 
+              magnetRadius={10} 
+              ringRadius={15} 
+              color="#3b82f6" 
+              waveSpeed={0.3} 
+              waveAmplitude={1.5} 
+              particleShape="sphere" 
+              particleSize={1.5} 
+              autoAnimate={true}
+            />
+          }
         />
 
         {/* Features */}

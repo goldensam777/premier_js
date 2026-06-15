@@ -10,6 +10,7 @@ export interface HeroWithDemoProps {
   align?: "left" | "center"
   bgColor?: string
   titleColor?: string
+  bgContent?: React.ReactNode
 }
 
 export function HeroWithDemo({
@@ -22,10 +23,16 @@ export function HeroWithDemo({
   align = "left",
   bgColor = "var(--color-background)",
   titleColor = "var(--color-text)",
+  bgContent,
 }: HeroWithDemoProps) {
   return (
-    <section className="py-20 px-6" style={{ backgroundColor: bgColor }}>
-      <div className={cn("max-w-6xl mx-auto", align === "center" ? "text-center" : "")}>
+    <section className="relative py-20 px-6 overflow-hidden" style={{ backgroundColor: bgColor }}>
+      {bgContent && (
+        <div className="absolute inset-0 z-0 pointer-events-none">
+          {bgContent}
+        </div>
+      )}
+      <div className={cn("relative z-10 max-w-6xl mx-auto", align === "center" ? "text-center" : "")}>
         <div className={cn("grid gap-12 items-center", demoContent ? "lg:grid-cols-2" : "")}>
           <div className={cn("space-y-6", align === "center" && !demoContent ? "mx-auto max-w-3xl" : "")}>
             {subtitle && (
