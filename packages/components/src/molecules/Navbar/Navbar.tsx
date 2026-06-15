@@ -36,14 +36,16 @@ export function Navbar({ logo, links, cta, className }: NavbarProps) {
     <>
       <style>{`
         .navbar-inner {
-          width: min(92%, 480px);
+          width: fit-content;
+          max-width: min(92%, 1200px);
         }
         .navbar-mobile-menu {
           width: min(92%, 480px);
         }
         @media (min-width: 768px) {
           .navbar-inner {
-            width: min(95%, 1000px);
+            width: fit-content;
+            max-width: min(95%, 1200px);
           }
         }
       `}</style>
@@ -51,7 +53,7 @@ export function Navbar({ logo, links, cta, className }: NavbarProps) {
       <nav
         className={cn(
           "navbar-inner fixed top-6 left-1/2 -translate-x-1/2 z-50",
-          "flex flex-row items-center justify-between px-6 py-2.5",
+          "flex flex-row items-center justify-between gap-6 md:gap-12 px-6 py-2.5",
           "rounded-full border",
           "backdrop-blur-2xl shadow-xl transition-all duration-300",
           className,
