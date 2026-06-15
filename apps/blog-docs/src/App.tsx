@@ -112,6 +112,12 @@ function App() {
       <Footer
         logo="LAB_LOG"
         copyright="LabLog &copy; 2026. Tous droits réservés."
+        bgColor="transparent"
+        borderColor="var(--gs-border-subtle)"
+        logoColor="var(--gs-text)"
+        sectionTitleColor="var(--gs-text)"
+        linkColor="var(--gs-text-muted)"
+        copyrightColor="var(--gs-text-muted)"
         linkGroups={[
           {
             section: "Navigation",

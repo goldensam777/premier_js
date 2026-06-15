@@ -204,6 +204,12 @@ function App() {
       <Footer
         logo="AETHER"
         copyright="Aether Inc. Tous droits réservés."
+        bgColor="transparent"
+        borderColor="var(--gs-border-subtle)"
+        logoColor="var(--gs-text)"
+        sectionTitleColor="var(--gs-text)"
+        linkColor="var(--gs-text-muted)"
+        copyrightColor="var(--gs-text-muted)"
         linkGroups={[
           {
             section: "Produit",
