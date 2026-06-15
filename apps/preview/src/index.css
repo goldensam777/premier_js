@@ -1,0 +1,170 @@
+@import "../../../node_modules/tailwindcss/index.css";
+@source "../../../packages/components/src";
+@import "../../../packages/core/src/styles/index.css";
+
+/* Styles généraux pour l'application de démonstration */
+:root {
+  --font-sans: 'Outfit', 'Inter', system-ui, -apple-system, sans-serif;
+  font-family: var(--font-sans);
+  background: var(--gs-bg);
+  color: var(--gs-text);
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background-color: var(--gs-bg);
+  color: var(--gs-text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* Transitions pour le switch de thème/page */
+main {
+  transition: background-color 0.4s ease, color 0.4s ease;
+  min-height: 100vh;
+  position: relative;
+}
+
+/* Sections & layouts */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  width: 100%;
+}
+
+.hero-section {
+  min-height: 85vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.hero-title {
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.03em;
+  color: var(--gs-text);
+}
+
+.hero-subtitle {
+  font-size: clamp(1.1rem, 2vw, 1.4rem);
+  color: var(--gs-text-muted);
+  margin-bottom: 2.5rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.6;
+}
+
+/* Grille de cartes minimaliste pour le Dashboard */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 3rem;
+  position: relative;
+  z-index: 10;
+}
+
+.stat-card-custom {
+  background: var(--gs-surface);
+  border: 1px solid var(--gs-border-subtle);
+  border-radius: var(--gs-radius);
+  padding: 2rem;
+  text-align: left;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stat-card-custom:hover {
+  border-color: var(--gs-primary);
+  box-shadow: 0 10px 30px -10px rgba(0,0,0,0.1);
+}
+
+/* Styles boutons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.8rem 1.6rem;
+  font-weight: 600;
+  border-radius: 9999px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  border: none;
+  font-size: 0.95rem;
+}
+
+.btn-primary {
+  background: var(--gs-text);
+  color: var(--gs-bg);
+}
+
+.btn-primary:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid var(--gs-border);
+  color: var(--gs-text);
+}
+
+.btn-outline:hover {
+  background: var(--gs-surface);
+}
+
+/* Section explicative en bas de page */
+.info-section {
+  padding: 6rem 0;
+  border-top: 1px solid var(--gs-border-subtle);
+  background: var(--gs-bg-subtle);
+  position: relative;
+  z-index: 10;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 3rem;
+}
+
+.info-block h3 {
+  font-size: 1.5rem;
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+.info-block p {
+  color: var(--gs-text-muted);
+  line-height: 1.6;
+}
+
+/* Style de fond 3D / Canvas */
+.canvas-bg-wrapper {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
