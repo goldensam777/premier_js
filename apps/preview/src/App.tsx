@@ -14,7 +14,8 @@ import {
   FloatingObject,
   ParticleField,
   BackgroundScene,
-  OrbitCamera
+  OrbitCamera,
+  OrbitalAtom
 } from "@premier-js/components"
 import "./App.css"
 
@@ -85,6 +86,9 @@ function App() {
               </div>
               
               <div className="hero-content">
+                <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1rem' }}>
+                  <OrbitalAtom size={120} orbitCount={3} speed={5} />
+                </div>
                 <span className="btn btn-outline" style={{ pointerEvents: 'none', marginBottom: '1.5rem', fontSize: '0.8rem', padding: '0.4rem 1rem' }}>
                   Axe A : Rendu Hybride &bull; Axe B : Glassmorphism
                 </span>

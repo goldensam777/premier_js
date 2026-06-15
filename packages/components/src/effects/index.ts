@@ -24,6 +24,7 @@ export { Antigravity }    from "./animations/Antigravity/Antigravity"
 export { ShapeBlur }      from "./animations/ShapeBlur/ShapeBlur"
 export { ElasticSlider }  from "./animations/ElasticSlider/ElasticSlider"
 export { LogoLoop }       from "./animations/LogoLoop/LogoLoop"
+export { OrbitalAtom }    from "./animations/OrbitalAtom/OrbitalAtom"
 export { ScrollStack, ScrollStackItem } from "./animations/ScrollStack/ScrollStack"
 
 export { GooeyNav }       from "./nav/GooeyNav/GooeyNav"
