@@ -32,14 +32,14 @@ export function FeaturesGrid({
   iconColor = "text-blue-600",
 }: FeaturesGridProps) {
   const colStyles = {
-    2: "sm:grid-cols-2",
-    3: "sm:grid-cols-2 lg:grid-cols-3",
-    4: "sm:grid-cols-2 lg:grid-cols-4",
+    2: "@xl:grid-cols-2",
+    3: "@xl:grid-cols-2 @4xl:grid-cols-3",
+    4: "@xl:grid-cols-2 @4xl:grid-cols-3 @6xl:grid-cols-4",
   }
 
   return (
     <section className={cn("py-20 px-6", bgColor)}>
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-6xl mx-auto @container">
         {(title || subtitle) && (
           <div className="text-center mb-14">
             {title && <h2 className={cn("text-3xl md:text-4xl font-bold", titleColor)}>{title}</h2>}

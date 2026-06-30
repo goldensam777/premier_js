@@ -3,7 +3,6 @@ import { cn } from "@premier-js/core"
 import React, {
   Children,
   cloneElement,
-  forwardRef,
   isValidElement,
   ReactElement,
   ReactNode,
@@ -30,9 +29,10 @@ export interface CardSwapProps {
 
 export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   customClass?: string;
+  ref?: React.Ref<HTMLDivElement>;
 }
 
-export const Card = forwardRef<HTMLDivElement, CardProps>(({ customClass, ...rest }, ref) => (
+export const Card = ({ customClass, ref, ...rest }: CardProps) => (
   <div
     ref={ref}
     {...rest}
@@ -43,7 +43,7 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(({ customClass, ...res
       rest.className
     )}
   />
-));
+);
 Card.displayName = 'Card';
 
 type CardRef = RefObject<HTMLDivElement | null>;

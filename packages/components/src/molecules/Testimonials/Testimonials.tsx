@@ -26,21 +26,21 @@ export function Testimonials({
   subtitle,
   items = [],
   columns = 3,
-  bgColor = "var(--color-surface)",
-  titleColor = "var(--color-text)",
-  subtitleColor = "var(--color-text-muted)",
-  quoteColor = "var(--color-text-muted)",
-  nameColor = "var(--color-text)",
-  roleColor = "var(--color-text-muted)",
+  bgColor = "var(--gs-bg)",
+  titleColor = "var(--gs-text)",
+  subtitleColor = "var(--gs-text-muted)",
+  quoteColor = "var(--gs-text-muted)",
+  nameColor = "var(--gs-text)",
+  roleColor = "var(--gs-text-muted)",
 }: TestimonialsProps) {
   const colStyles = {
-    2: "grid-cols-1 sm:grid-cols-2",
-    3: "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3",
+    2: "@xl:grid-cols-2",
+    3: "@xl:grid-cols-2 @4xl:grid-cols-3",
   }
 
   return (
     <section className="py-20 px-6" style={{ backgroundColor: bgColor }}>
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-6xl mx-auto @container">
         {(title || subtitle) && (
           <div className="text-center mb-14">
             {title && (
@@ -61,7 +61,7 @@ export function Testimonials({
             <div
               key={i}
               className="rounded-xl p-6 shadow-sm border"
-              style={{ backgroundColor: "var(--color-surface)", borderColor: "var(--color-border)" }}
+              style={{ backgroundColor: "var(--gs-surface)", borderColor: "var(--gs-border)" }}
             >
               <p className="text-sm leading-relaxed mb-5" style={{ color: quoteColor }}>
                 &ldquo;{item.quote}&rdquo;
@@ -70,7 +70,7 @@ export function Testimonials({
                 <div
                   className={cn(
                     "inline-flex items-center justify-center rounded-full overflow-hidden",
-                    "w-10 h-10 text-base bg-gray-200 text-gray-700 font-semibold",
+                    "w-10 h-10 text-base bg-[var(--gs-border-subtle)] text-[var(--gs-text-muted)] font-semibold",
                   )}
                 >
                   {item.avatarSrc

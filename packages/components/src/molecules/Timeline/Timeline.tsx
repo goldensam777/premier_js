@@ -24,11 +24,11 @@ export function Timeline({
   title,
   subtitle,
   variant = "left",
-  bgColor = "bg-white",
-  titleColor = "text-gray-900",
-  lineColor = "bg-gray-200",
-  dotColor = "bg-blue-600",
-  dateColor = "text-blue-600",
+  bgColor = "bg-[var(--gs-bg)]",
+  titleColor = "text-[var(--gs-text)]",
+  lineColor = "bg-[var(--gs-border)]",
+  dotColor = "bg-[var(--gs-primary)]",
+  dateColor = "text-[var(--gs-primary)]",
 }: TimelineProps) {
   return (
     <section className={cn("py-20 px-6", bgColor)}>
@@ -36,7 +36,7 @@ export function Timeline({
         {(title || subtitle) && (
           <div className="text-center mb-14">
             {title && <h2 className={cn("text-3xl md:text-4xl font-bold", titleColor)}>{title}</h2>}
-            {subtitle && <p className="mt-4 text-lg text-gray-500">{subtitle}</p>}
+            {subtitle && <p className="mt-4 text-lg text-[var(--gs-text-muted)]">{subtitle}</p>}
           </div>
         )}
 
@@ -55,7 +55,7 @@ export function Timeline({
               >
                 <div
                   className={cn(
-                    "absolute left-4 md:left-1/2 -translate-x-1/2 w-3 h-3 rounded-full border-2 border-white z-10",
+                    "absolute left-4 md:left-1/2 -translate-x-1/2 w-3 h-3 rounded-full border-2 border-[var(--gs-bg)] z-10",
                     dotColor,
                   )}
                 />
@@ -68,9 +68,9 @@ export function Timeline({
                   )}
                 >
                   <span className={cn("text-sm font-semibold", dateColor)}>{event.date}</span>
-                  <h3 className="mt-1 text-lg font-semibold text-gray-900">{event.title}</h3>
+                  <h3 className="mt-1 text-lg font-semibold text-[var(--gs-text)]">{event.title}</h3>
                   {event.description && (
-                    <p className="mt-1 text-sm text-gray-500">{event.description}</p>
+                    <p className="mt-1 text-sm text-[var(--gs-text-muted)]">{event.description}</p>
                   )}
                 </div>
               </div>

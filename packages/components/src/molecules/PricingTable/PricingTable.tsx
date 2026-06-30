@@ -34,7 +34,7 @@ export function PricingTable({
 }: PricingTableProps) {
   return (
     <section id={id} className="py-20 px-6" style={{ backgroundColor: bgColor }}>
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-6xl mx-auto @container">
         {(title || subtitle) && (
           <div className="text-center mb-14">
             {title && (
@@ -50,7 +50,7 @@ export function PricingTable({
           </div>
         )}
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 @xl:grid-cols-2 @4xl:grid-cols-3 gap-6">
           {plans.map((plan, i) => {
             const isHighlighted = plan.highlighted
 

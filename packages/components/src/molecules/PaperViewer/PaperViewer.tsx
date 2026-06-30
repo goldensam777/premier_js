@@ -22,13 +22,13 @@ export function PaperViewer({
   journal,
   year,
   pdfUrl,
-  bgColor = "bg-white",
-  titleColor = "text-gray-900",
-  textColor = "text-gray-600",
-  accentColor = "text-blue-600",
+  bgColor = "bg-[var(--gs-surface)]",
+  titleColor = "text-[var(--gs-text)]",
+  textColor = "text-[var(--gs-text-muted)]",
+  accentColor = "text-[var(--gs-primary)]",
 }: PaperViewerProps) {
   return (
-    <div className={cn("rounded-xl border border-gray-200 p-6 space-y-4", bgColor)}>
+    <div className={cn("rounded-xl border border-[var(--gs-border)] p-6 space-y-4", bgColor)}>
       <div>
         <h3 className={cn("text-lg font-bold leading-snug", titleColor)}>{title}</h3>
         <p className={cn("mt-1 text-sm", textColor)}>

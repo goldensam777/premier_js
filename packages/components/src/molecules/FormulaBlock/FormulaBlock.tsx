@@ -1,4 +1,6 @@
 import { cn } from "@premier-js/core"
+import katex from "katex"
+import "katex/dist/katex.min.css"
 
 export interface FormulaBlockProps {
   latex: string
@@ -11,29 +13,29 @@ export interface FormulaBlockProps {
 export function FormulaBlock({
   latex,
   inline = false,
-  bgColor = "bg-gray-50",
-  textColor = "text-gray-900",
+  bgColor = "bg-[var(--gs-bg-subtle)] border border-[var(--gs-border-subtle)]",
+  textColor = "text-[var(--gs-text)]",
   className,
 }: FormulaBlockProps) {
-  if (inline) {
-    return (
-      <span
-        className={cn("font-mono text-sm italic px-1", textColor, className)}
-        title={latex}
-      >
-        {latex}
-      </span>
-    )
-  }
+  const html = katex.renderToString(latex, {
+    displayMode: !inline,
+    throwOnError: false,
+  })
 
-  return (
+  return inline ? (
+    <span
+      className={cn("inline-block", textColor, className)}
+      dangerouslySetInnerHTML={{ __html: html }}
+    />
+  ) : (
     <div
       className={cn(
-        "rounded-lg p-4 overflow-x-auto text-center font-mono text-sm",
-        bgColor, textColor, className,
+        "rounded-lg p-6 overflow-x-auto text-center text-base",
+        bgColor,
+        textColor,
+        className,
       )}
-    >
-      {latex}
-    </div>
+      dangerouslySetInnerHTML={{ __html: html }}
+    />
   )
 }

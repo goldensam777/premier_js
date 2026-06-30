@@ -148,6 +148,9 @@ export type { ProductCardProps } from "./ProductCard"
 export { ProductGrid } from "./ProductGrid"
 export type { ProductGridProps } from "./ProductGrid"
 
+export { ProjectsGrid } from "./ProjectsGrid"
+export type { ProjectsGridProps, ProjectItem } from "./ProjectsGrid"
+
 export { ReviewsSection } from "./ReviewsSection"
 export type { ReviewsSectionProps, Review } from "./ReviewsSection"
 

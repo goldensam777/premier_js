@@ -121,9 +121,9 @@ export function Navbar({
           className,
         )}
         style={{
-          background: "color-mix(in srgb, var(--gs-bg) 80%, transparent)",
-          borderColor: "color-mix(in srgb, var(--gs-text) 15%, transparent)",
-          boxShadow: "0 20px 40px -15px rgba(0,0,0,0.18), inset 0 1px 0 0 color-mix(in srgb, var(--gs-text) 22%, transparent)"
+          background: "color-mix(in srgb, var(--gs-bg) 35%, rgba(255, 255, 255, 0.05))",
+          borderColor: "color-mix(in srgb, var(--gs-text) 18%, rgba(255, 255, 255, 0.15))",
+          boxShadow: "0 20px 40px -15px rgba(0,0,0,0.15), inset 0 1.2px 0 0 color-mix(in srgb, var(--gs-text) 30%, rgba(255, 255, 255, 0.45))"
         }}
       >
         {/* Logo Slot */}
@@ -243,11 +243,11 @@ export function Navbar({
             className={cn("navbar-mobile-menu fixed left-1/2 -translate-x-1/2 z-40 flex flex-col gap-2 p-5 mt-2 border", isCollapsed ? "flex" : "hidden")}
             style={{
               top: "calc(6px + 3.75rem)",
-              background: "color-mix(in srgb, var(--gs-surface) 92%, transparent)",
-              borderColor: "color-mix(in srgb, var(--gs-text) 15%, transparent)",
+              background: "color-mix(in srgb, var(--gs-surface) 60%, rgba(255, 255, 255, 0.05))",
+              borderColor: "color-mix(in srgb, var(--gs-text) 18%, rgba(255, 255, 255, 0.15))",
               borderRadius: "20px",
               backdropFilter: "blur(28px)",
-              boxShadow: "0 30px 60px -20px rgba(0,0,0,0.3)"
+              boxShadow: "0 30px 60px -20px rgba(0,0,0,0.25)"
             }}
           >
             {links.map((link) => {
