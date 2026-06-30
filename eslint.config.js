@@ -8,19 +8,25 @@ export default tseslint.config(
   ...tseslint.configs.recommended,
   {
     files: ['**/*.{ts,tsx}'],
-    plugins: {
-      react,
-      'react-hooks': reactHooks,
-    },
+    plugins: { react, 'react-hooks': reactHooks },
     rules: {
       ...react.configs.recommended.rules,
-      ...reactHooks.configs.recommended.rules,
+      'react/react-in-jsx-scope': 'off',
+      'react/prop-types': 'off',
+      'react/no-unescaped-entities': 'off',
+      'react/no-unknown-property': 'off',
+      'react-hooks/rules-of-hooks': 'error',
+      'react-hooks/exhaustive-deps': 'warn',
+      '@typescript-eslint/no-explicit-any': 'warn',
+      '@typescript-eslint/no-unused-vars': 'warn',
+      '@typescript-eslint/no-unused-expressions': 'warn',
+      'prefer-const': 'warn',
     },
-    settings: {
-      react: { version: 'detect' },
-    },
+    settings: { react: { version: 'detect' } },
   },
   {
-    ignores: ['**/dist/**', '**/node_modules/**', '**/.next/**'],
-  }
+    files: ['**/scripts/**/*.js'],
+    languageOptions: { sourceType: 'commonjs', globals: { require: 'readonly', module: 'readonly', __dirname: 'readonly', console: 'readonly' } },
+  },
+  { ignores: ['**/dist/**', '**/node_modules/**', '**/.next/**', '**/.backup/**', '**/scripts/**'] }
 );

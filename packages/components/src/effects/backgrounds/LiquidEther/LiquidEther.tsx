@@ -821,7 +821,7 @@ constructor(options?: any) {
           wrapS: THREE.ClampToEdgeWrapping,
           wrapT: THREE.ClampToEdgeWrapping
         };
-        for (let key in this.fbos) {
+        for (const key in this.fbos) {
           this.fbos[key] = new THREE.WebGLRenderTarget(this.fboSize.x, this.fboSize.y, opts);
         }
       }
@@ -880,7 +880,7 @@ constructor(options?: any) {
       }
       resize() {
         this.calcSize();
-        for (let key in this.fbos) {
+        for (const key in this.fbos) {
           this.fbos[key].setSize(this.fboSize.x, this.fboSize.y);
         }
       }
