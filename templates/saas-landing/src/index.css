@@ -1,0 +1,30 @@
+@import "../../../node_modules/tailwindcss/index.css";
+@source "../../../packages/components/src";
+@import "../../../packages/core/src/styles/index.css";
+
+:root {
+  --font-sans: 'Outfit', 'Inter', system-ui, -apple-system, sans-serif;
+  font-family: var(--font-sans);
+  background: var(--gs-bg);
+  color: var(--gs-text);
+  margin: 0;
+  padding: 0;
+
+  /* Mappage des variables de composants legacy/Tailwind vers nos design tokens core */
+  --color-background: var(--gs-bg);
+  --color-surface: var(--gs-surface);
+  --color-border: var(--gs-border);
+  --color-text: var(--gs-text);
+  --color-text-muted: var(--gs-text-muted);
+  --color-primary: var(--gs-primary);
+}
+
+body {
+  margin: 0;
+  background-color: var(--gs-bg);
+  color: var(--gs-text);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
