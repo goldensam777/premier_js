@@ -1,4 +1,4 @@
-@import "../../../node_modules/tailwindcss/index.css";
+@import "tailwindcss";
 @source "../../../packages/components/src";
 @import "../../../packages/core/src/styles/index.css";
 
